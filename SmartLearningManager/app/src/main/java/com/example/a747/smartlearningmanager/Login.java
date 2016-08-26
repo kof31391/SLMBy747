@@ -23,8 +23,8 @@ public class Login extends AppCompatActivity {   //อันนี้คือ�
     TextView uid;
     TextView pwd;
     Button btn;
-    String uidString ;
-    String passString ;
+    String uidString;
+    String passString;
     TextView Err;
     RequestQueue req;
 
@@ -33,17 +33,20 @@ public class Login extends AppCompatActivity {   //อันนี้คือ�
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
     }
+
     public void onClickLogin(View view) throws IOException, ExecutionException, InterruptedException {
 
-            uid= (TextView)findViewById(R.id.IdForm);
-            pwd = (TextView)findViewById(R.id.PwdForm);
-            btn = (Button)findViewById(R.id.LoginBtn);
-            Err = (TextView)findViewById(R.id.err);
-            uidString = uid.getText().toString();
-            passString = pwd.getText().toString();
-            LDAPRequests ldap = new LDAPRequests();
-            ldap.execute(uidString,passString);
+        uid = (TextView) findViewById(R.id.IdForm);
+        pwd = (TextView) findViewById(R.id.PwdForm);
+        btn = (Button) findViewById(R.id.LoginBtn);
+        Err = (TextView) findViewById(R.id.err);
+        uidString = uid.getText().toString();
+        passString = pwd.getText().toString();
+        LDAPRequests ldap = new LDAPRequests();
 
+        ldap.execute(uidString, passString);
+
+        ldap.execute(uidString, passString);
 
 
     }
@@ -61,7 +64,7 @@ public class Login extends AppCompatActivity {   //อันนี้คือ�
                 //client.setConnectTimeout(2000);
                 client.setRequestMethod("POST");
                 String urlParameters = "username=" + params[0] + "&password=" + params[1];
-                System.out.println("USERNAME "+ params[0]);
+                System.out.println("USERNAME " + params[0]);
                 client.setDoOutput(true);
                 DataOutputStream wr = new DataOutputStream(client.getOutputStream());
                 wr.writeBytes(urlParameters);
@@ -89,12 +92,18 @@ public class Login extends AppCompatActivity {   //อันนี้คือ�
         @Override
         protected void onPostExecute(String message) {
             Intent intent = new Intent(getApplicationContext(), Main.class);
-            if(message.trim().equals("true")) {
-                intent.putExtra("msg", message);
-                startActivity(intent);
-                finish();
-            }else{
-                Err.setText("Wrong Username or password");
+            System.out.println(message);
+            if (message.toString().trim().equals("true")) {
+                for (int i = 0; i < message.length(); i++) {
+                    System.out.print(message.length());
+                }
+                if (message.trim().equals("true")) {
+                    intent.putExtra("msg", message);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Err.setText("Wrong Username or password");
+                }
             }
         }
     }
