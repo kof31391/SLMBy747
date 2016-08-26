@@ -156,7 +156,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></LinearLayout>
+                android:layout_height="150dp" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -188,10 +188,158 @@
                     android:layout_alignParentStart="true" />
 
             </LinearLayout>
-            <LinearLayout
-                android:orientation="vertical"
+
+            <ScrollView
+                android:id="@+id/scroller"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></LinearLayout>
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                android:layout_below="@+id/imageButton6"
+                android:layout_marginTop="-10dp">
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/textView3"
+                    android:background="#cecece">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/tv_news_1"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true"
+                        android:textSize="20dp"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="10dp"
+                        android:lines="1"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"
+                        android:editable="true"
+                        android:background="#cecece"
+                        android:onClick="onClickNews" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/tv_news_2"
+                        android:textSize="20dp"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="10dp"
+                        android:layout_below="@+id/tv_news_1"
+                        android:layout_alignParentStart="true"
+                        android:lines="1"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"
+                        android:background="#e1e1e1"
+                        android:onClick="onClickNews" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/tv_news_3"
+                        android:textSize="20dp"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="10dp"
+                        android:layout_below="@+id/tv_news_2"
+                        android:layout_alignParentStart="true"
+                        android:lines="1"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"
+                        android:onClick="onClickNews" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/tv_news_4"
+                        android:textSize="20dp"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="10dp"
+                        android:layout_below="@+id/tv_news_3"
+                        android:layout_alignParentStart="true"
+                        android:lines="1"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"
+                        android:background="#e1e1e1"
+                        android:onClick="onClickNews" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/tv_news_5"
+                        android:textSize="20dp"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="10dp"
+                        android:lines="1"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"
+                        android:layout_below="@+id/tv_news_4"
+                        android:layout_alignParentStart="true"
+                        android:onClick="onClickNews" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/tv_news_6"
+                        android:textSize="20dp"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="10dp"
+                        android:lines="1"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentStart="true"
+                        android:background="#e1e1e1"
+                        android:onClick="onClickNews" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/tv_news_7"
+                        android:textSize="20dp"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="10dp"
+                        android:lines="1"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentStart="true"
+                        android:onClick="onClickNews" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/tv_news_8"
+                        android:textSize="20dp"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="10dp"
+                        android:lines="1"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentStart="true"
+                        android:background="#e1e1e1"
+                        android:onClick="onClickNews" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="ABC3"
+                        android:id="@+id/tv_news_9"
+                        android:textSize="20dp"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="10dp"
+                        android:lines="1"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentStart="true"
+                        android:onClick="onClickNews"
+                        android:layout_marginBottom="10dp" />
+
+                </TableLayout>
+            </ScrollView>
+
         </LinearLayout>
 
     </LinearLayout>

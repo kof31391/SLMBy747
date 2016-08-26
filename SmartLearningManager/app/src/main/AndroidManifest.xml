@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Main" />
-        <activity android:name=".Todo"></activity>
+        <activity android:name=".Todo" />
+        <activity android:name=".News"></activity>
     </application>
 
 </manifest>

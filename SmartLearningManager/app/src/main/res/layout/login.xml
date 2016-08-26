@@ -24,7 +24,7 @@
 
     <EditText
         android:layout_width="300dp"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:id="@+id/IdForm"
         android:hint="Username"
         android:textSize="20dp"
@@ -34,7 +34,8 @@
         android:layout_marginTop="100dp"
         android:layout_below="@+id/TxtUid"
         android:layout_centerHorizontal="true"
-        style="@android:style/Theme.Black.NoTitleBar" />
+        style="@android:style/Theme.Black.NoTitleBar"
+        android:paddingLeft="15dp" />
 
     <EditText
         android:layout_width="300dp"
@@ -48,7 +49,8 @@
         android:layout_marginTop="20dp"
         android:width="250dp"
         android:layout_below="@+id/IdForm"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="15dp" />
 
 
     <Button
