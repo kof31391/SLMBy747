@@ -42,7 +42,7 @@ public class Login extends AppCompatActivity {   //อันนี้คือ�
             uidString = uid.getText().toString();
             passString = pwd.getText().toString();
             LDAPRequests ldap = new LDAPRequests();
-            ldap.execute(passString, uidString);
+            ldap.execute( uidString,passString);
 
 
 
@@ -90,7 +90,7 @@ public class Login extends AppCompatActivity {   //อันนี้คือ�
         protected void onPostExecute(String message) {
             Intent intent = new Intent(getApplicationContext(), Main.class);
             System.out.println(message);
-            if(message.toString().equals("true")) {
+            if(message.toString().trim().equals("true")) {
                 intent.putExtra("msg", message);
                 startActivity(intent);
                 finish();
