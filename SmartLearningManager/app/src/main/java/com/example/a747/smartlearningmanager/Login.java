@@ -89,8 +89,15 @@ public class Login extends AppCompatActivity {   //อันนี้คือ�
         @Override
         protected void onPostExecute(String message) {
             Intent intent = new Intent(getApplicationContext(), Main.class);
+<<<<<<< HEAD
             System.out.println(message);
             if(message.toString().trim().equals("true")) {
+=======
+            for(int i =0;i<message.length();i++){
+                System.out.print(message.length());
+            }
+            if(message.trim().equals("true")) {
+>>>>>>> origin/master
                 intent.putExtra("msg", message);
                 startActivity(intent);
                 finish();
