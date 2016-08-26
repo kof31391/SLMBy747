@@ -4,36 +4,178 @@
     android:layout_height="match_parent"
     tools:context=".Todo">
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/lvItems"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/btnAddItem" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/etNewItem"
-        android:layout_alignTop="@+id/btnAddItem"
-        android:hint="Enter new Todo"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/btnAddItem"
-        android:layout_toStartOf="@+id/btnAddItem"
-        android:layout_alignParentBottom="true" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#091534" >
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Item"
-        android:id="@+id/btnAddItem"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="onClickAddTodo"
-        android:clickable="true"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:weightSum="1" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Smart Learning Manager"
+                        android:id="@+id/textView5"
+                        android:textColor="#ffffff"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/imageButton4"
+                            android:src="@drawable/infow"
+                            android:background="#091534"
+                            android:layout_alignTop="@+id/textView"
+                            android:layout_gravity="right" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal" >
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageButton5"
+                        android:src="@drawable/homew"
+                        android:background="#091534"
+                        android:layout_alignParentBottom="true" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageButton16"
+                        android:src="@drawable/pencilb"
+                        android:background="#091534"
+                        android:layout_marginLeft="35dp"
+                        android:layout_alignTop="@+id/imageButton"
+                        android:layout_toEndOf="@+id/imageButton" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageButton15"
+                        android:src="@drawable/videow"
+                        android:background="#091534"
+                        android:layout_marginLeft="35dp"
+                        android:layout_alignTop="@+id/imageButton"
+                        android:layout_toEndOf="@+id/imageButton" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageButton17"
+                        android:src="@drawable/notiw"
+                        android:background="#091534"
+                        android:layout_marginLeft="35dp"
+                        android:layout_alignTop="@+id/imageButton2"
+                        android:layout_toEndOf="@+id/textView"
+                        android:onClick="gotoToProfile" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageButton24"
+                        android:src="@drawable/morew"
+                        android:background="#091534"
+                        android:layout_marginLeft="35dp"
+                        android:layout_alignTop="@+id/imageButton3"
+                        android:layout_alignParentEnd="true"
+                        android:onClick="gotoTodo" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="250dp"
+                android:id="@+id/lvItems"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_above="@+id/btnAddItem" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal">
+
+                        <EditText
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etNewItem"
+                            android:layout_alignTop="@+id/btnAddItem"
+                            android:hint="Enter new Todo"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_toLeftOf="@+id/btnAddItem"
+                            android:layout_toStartOf="@+id/btnAddItem"
+                            android:layout_alignParentBottom="true" />
+
+                        <Button
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Add Item"
+                            android:id="@+id/btnAddItem"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:onClick="onClickAddTodo"
+                            android:clickable="true"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

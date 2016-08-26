@@ -4,7 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     tools:context=".Main"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff">
 
     <LinearLayout
         android:orientation="vertical"
@@ -82,9 +83,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageButton10"
+                        android:src="@drawable/pencilw"
+                        android:background="#091534"
+                        android:layout_marginLeft="35dp"
+                        android:layout_alignTop="@+id/imageButton"
+                        android:layout_toEndOf="@+id/imageButton"
+                        android:onClick="gotoTodo"/>
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageButton0"
                         android:src="@drawable/videow"
                         android:background="#091534"
-                        android:layout_marginLeft="50dp"
+                        android:layout_marginLeft="35dp"
                         android:layout_alignTop="@+id/imageButton"
                         android:layout_toEndOf="@+id/imageButton" />
 
@@ -92,11 +104,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageButton11"
-                        android:src="@drawable/contactsw"
+                        android:src="@drawable/notiw"
                         android:background="#091534"
-                        android:layout_marginLeft="50dp"
+                        android:layout_marginLeft="35dp"
                         android:layout_alignTop="@+id/imageButton2"
-                        android:layout_toEndOf="@+id/textView" />
+                        android:layout_toEndOf="@+id/textView"
+                        android:onClick="gotoToProfile"/>
 
                     <ImageButton
                         android:layout_width="wrap_content"
@@ -104,10 +117,10 @@
                         android:id="@+id/imageButton12"
                         android:src="@drawable/morew"
                         android:background="#091534"
-                        android:layout_marginLeft="50dp"
+                        android:layout_marginLeft="35dp"
                         android:layout_alignTop="@+id/imageButton3"
                         android:layout_alignParentEnd="true"
-                        android:onClick="gotoTodo"/>
+                        />
 
                 </LinearLayout>
 
