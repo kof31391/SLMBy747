@@ -3,4 +3,7 @@
     <string name="uid">User ID</string>
     <string name="pwd">Password</string>
     <string name="login">Login</string>
+    <string name="menu_add">Add Todo</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
 </resources>
