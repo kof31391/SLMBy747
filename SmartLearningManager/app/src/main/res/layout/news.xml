@@ -9,53 +9,83 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.a747.smartlearningmanager.News">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageButton8"
-        android:src="@drawable/rssb"
-        android:layout_marginLeft="10dp"
-        android:background="#ffffff"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/textView4" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="News"
-        android:id="@+id/textView4"
-        android:textColor="#000000"
-        android:textSize="25dp"
-        android:layout_alignTop="@+id/imageButton8"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tv_news_title"
-        android:textSize="30dp"
-        android:background="#bebebe"
-        android:layout_below="@+id/imageButton8"
-        android:layout_alignParentStart="true"
-        android:paddingTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp"
-        android:paddingBottom="10dp" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tv_news_desc"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:textSize="20dp"
-        android:layout_below="@+id/tv_news_title"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="5dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton25"
+                    android:src="@drawable/rssb"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#ffffff"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="News"
+                    android:id="@+id/textView12"
+                    android:textColor="#000000"
+                    android:paddingTop="5dp"
+                    android:textSize="25dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/imageButton25" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/tv_news_title"
+                android:textSize="30dp"
+                android:background="#bebebe"
+                android:layout_alignParentStart="true"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/tv_news_desc"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:textSize="20dp"
+                android:layout_below="@+id/tv_news_title"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

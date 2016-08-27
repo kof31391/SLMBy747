@@ -9,50 +9,102 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.a747.smartlearningmanager.todo_item">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/todoDesc"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="81dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/todoDate"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="time"
-        android:ems="10"
-        android:id="@+id/todoTime"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" >
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add"
-        android:id="@+id/addTodoBtn"
-        android:layout_below="@+id/todoDate"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="46dp"
-        android:onClick="onClickAddTodo"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton8"
+                    android:src="@drawable/pencilb"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#ffffff"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/topic"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/addTodoBtn"
-        />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Add todo list"
+                    android:id="@+id/textView13"
+                    android:textColor="#000000"
+                    android:paddingTop="5dp"
+                    android:textSize="25dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/imageButton8" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/topic"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/addTodoBtn"
+                />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/todoDesc"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:ems="10"
+                android:id="@+id/todoTime"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/todoDate"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                android:id="@+id/addTodoBtn"
+                android:layout_below="@+id/todoDate"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="50dp"
+                android:onClick="onClickAddTodo"/>
+
+        </LinearLayout>
+    </RelativeLayout>
 
 
 </RelativeLayout>
