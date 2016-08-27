@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".Main" />
         <activity android:name=".Todo" />
-        <activity android:name=".News"></activity>
+        <activity android:name=".News" />
+        <activity android:name=".more_setting"></activity>
     </application>
 
 </manifest>

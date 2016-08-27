@@ -66,9 +66,11 @@
                     android:id="@+id/imageButton19"
                     android:src="@drawable/home"
                     android:background="#091534"
+                    android:onClick="gotoHome"
                     android:layout_alignParentBottom="true" />
 
                 <ImageButton
+                    android:onClick="gotoTodo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageButton21"
@@ -108,7 +110,7 @@
                     android:layout_marginLeft="35dp"
                     android:layout_alignTop="@+id/imageButton3"
                     android:layout_alignParentEnd="true"
-                    android:onClick="gotoTodo" />
+                    android:onClick="gotoSetting" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

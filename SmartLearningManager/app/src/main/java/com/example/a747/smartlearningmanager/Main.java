@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -60,6 +59,7 @@ public class Main extends AppCompatActivity {
 
         while(obj.parsingComplete);
     }
+
     public void onClickNews(View v){
         String idn = v.getResources().getResourceName(v.getId());
         int id = Integer.valueOf(idn.substring(idn.length() - 1));
@@ -73,9 +73,19 @@ public class Main extends AppCompatActivity {
         startActivity(intent);
     }
     public void gotoTodo(View v){
-        Intent intent = new Intent(Main.this, Todo.class);
+        Intent intent = new Intent(this, Todo.class);
         startActivity(intent);
     }
+    public void gotoSetting(View v){
+        Intent intent = new Intent(this, more_setting.class);
+        startActivity(intent);
+    }
+
+    public void gotoHome(View v){
+        Intent intent = new Intent(this, Main.class);
+        startActivity(intent);
+    }
+
 }
 //สำรหบัดึงหน้าเว็บ RSS ที่เป็นแบบ XML
 class HandleXML {
@@ -170,4 +180,5 @@ class HandleXML {
         });
         thread.start();
     }
+
 }

@@ -76,6 +76,7 @@
                         android:id="@+id/imageButton9"
                         android:src="@drawable/home"
                         android:background="#091534"
+                        android:onClick="gotoHome"
                         android:layout_alignParentBottom="true"
   />
 
@@ -120,6 +121,7 @@
                         android:layout_marginLeft="35dp"
                         android:layout_alignTop="@+id/imageButton3"
                         android:layout_alignParentEnd="true"
+                        android:onClick="gotoSetting"
                         />
 
                 </LinearLayout>
