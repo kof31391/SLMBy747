@@ -26,7 +26,6 @@ public class Login extends AppCompatActivity {   //อันนี้คือ�
     String uidString ;
     String passString ;
     TextView Err;
-    RequestQueue req;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

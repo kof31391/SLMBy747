@@ -76,7 +76,6 @@
                         android:id="@+id/imageButton9"
                         android:src="@drawable/home"
                         android:background="#091534"
-                        android:onClick="gotoHome"
                         android:layout_alignParentBottom="true"
   />
 
