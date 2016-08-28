@@ -184,7 +184,7 @@ public class Main extends AppCompatActivity {
         startActivity(intent);
     }
     public void gotoTodo(View v){
-        Intent intent = new Intent(this, Todo_List.class);
+        Intent intent = new Intent(this, Todo.class);
         startActivity(intent);
     }
     public void gotoSetting(View v){
