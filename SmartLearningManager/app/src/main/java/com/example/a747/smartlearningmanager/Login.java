@@ -1,15 +1,16 @@
 package com.example.a747.smartlearningmanager;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 
@@ -28,7 +29,7 @@ public class Login extends AppCompatActivity {   //อันนี้คือ�
     String uidString ;
     String passString ;
     TextView Err;
-    RequestQueue req;
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,6 @@ public class Login extends AppCompatActivity {   //อันนี้คือ�
             Intent intent = new Intent(getApplicationContext(), Main.class);
             if(message.trim().equals("true")) {
                 intent.putExtra("msg", message);
-                intent.putExtra("msg", message);
                 startActivity(intent);
                 SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
                 SharedPreferences.Editor editor = pref.edit();
@@ -107,5 +107,28 @@ public class Login extends AppCompatActivity {   //อันนี้คือ�
                 Err.setText("Wrong Username or password");
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 }

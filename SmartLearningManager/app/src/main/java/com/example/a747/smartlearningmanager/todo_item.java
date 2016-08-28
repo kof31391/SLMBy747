@@ -35,7 +35,6 @@ public class todo_item extends AppCompatActivity {
         desc = (EditText)findViewById(R.id.todoDesc);
         todoTime =(EditText)findViewById(R.id.todoTime);
         todoDate = (EditText)findViewById(R.id.todoDate);
-        show = new ArrayList<String>();
         if(intent.getParcelableExtra("todo")!=null) {
             recObj = intent.getParcelableExtra("todo");
             topic.setText(recObj.getTopic());
@@ -61,11 +60,8 @@ public class todo_item extends AppCompatActivity {
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            while(fis.available()>0){
-                todoObj temp = (todoObj)ois.readObject();
-                items.add(temp);
-                show.add(temp.getTopic());
-            }
+
+            items = (ArrayList<todoObj>)ois.readObject();
 
         } catch (IOException e) {
             items = new ArrayList<todoObj>();
@@ -78,12 +74,14 @@ public class todo_item extends AppCompatActivity {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo.txt");
         try {
+            readItems();
             todoObj temp = new todoObj();
             temp.setTopic(topic.getText().toString());
             temp.setDesc(desc.getText().toString());
+            items.add(temp);
          //   temp.setDate(todoDate.getText().toString());
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
-            ois.writeObject(temp);
+            ois.writeObject(items);
         } catch (IOException e) {
             e.printStackTrace();
         }

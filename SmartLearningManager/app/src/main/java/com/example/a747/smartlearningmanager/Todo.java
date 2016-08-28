@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 
+import android.view.MotionEvent;
 import android.view.View;
 
 import android.widget.AdapterView;
@@ -33,6 +34,7 @@ public class Todo extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private String topic  = "";
     private ArrayList<String> show;
+    private todoObj temp;
 
 
     @Override
@@ -57,7 +59,6 @@ public class Todo extends AppCompatActivity {
         menu.add("Delete");
     }
 
-
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         super.onContextItemSelected(item);
@@ -78,7 +79,6 @@ public class Todo extends AppCompatActivity {
                 sendToEditor(obj);
             }
         });
-
     }
     private  void sendToEditor(todoObj obj){
         Intent intent = new Intent(this,todo_item.class);
@@ -101,11 +101,12 @@ public class Todo extends AppCompatActivity {
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            while(fis.available()>-1){
-                todoObj temp = (todoObj)ois.readObject();
-                items.add(temp);
-                show.add(temp.getTopic());
+
+                items = (ArrayList<todoObj>)ois.readObject();
+            for(int j = 0 ;j<items.size();j++) {
+                show.add(items.get(j).getTopic());
             }
+
 
         } catch (EOFException e) {
 
@@ -122,32 +123,13 @@ public class Todo extends AppCompatActivity {
         }
     }
 
-    private ArrayList<todoObj> getFromFile() {
-        ArrayList<todoObj> obj = new ArrayList<todoObj>();
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            FileInputStream fis = new FileInputStream(todoFile);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            while (ois.available() > 0) {
-                obj.add((todoObj) ois.readObject());
-            }
-
-        } catch (IOException e) {
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return obj;
-    }
-
     private void writeItems() {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo.txt");
         ArrayList<todoObj> obj = new ArrayList<todoObj>();
         try {
             ObjectOutputStream fis = new ObjectOutputStream(new FileOutputStream(todoFile));
-
+            fis.writeObject(items);
         } catch (IOException e) {
             e.printStackTrace();
         }
