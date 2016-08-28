@@ -1,15 +1,22 @@
 package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,11 +29,18 @@ public class Main extends AppCompatActivity {
 
     private String finalUrl="http://www4.sit.kmutt.ac.th/student/bsc_it_feed";
     private HandleXML obj;
+    private String std_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        std_id = pref.getString("std_id", null);
+
+        getSchedule(std_id);
 
         news0 = (TextView) findViewById(R.id.tv_news_1);
         news1 = (TextView) findViewById(R.id.tv_news_1);
@@ -59,7 +73,100 @@ public class Main extends AppCompatActivity {
 
         while(obj.parsingComplete);
     }
-
+    public void getSchedule(String std_id){
+        class GetDataJSON extends AsyncTask<String,Void,String> {
+            HttpURLConnection urlConnection = null;
+            public String strJSON;
+            protected String doInBackground(String... params) {
+                try {
+                    URL url = new URL("http://54.169.58.93/Schedule.php?std_id="+params[0]);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    int code = urlConnection.getResponseCode();
+                    if(code==200){
+                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                        if (in != null) {
+                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+                            String line = "";
+                            while ((line = bufferedReader.readLine()) != null)
+                                strJSON = line;
+                        }
+                        in.close();
+                    }
+                    System.out.println(strJSON);
+                    return strJSON;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    urlConnection.disconnect();
+                }
+                return strJSON;
+            }
+            protected void onPostExecute(String strJSON) {
+                TextView tv_scheduleToday;
+                try{
+                    JSONArray data = new JSONArray(strJSON);
+                    for(int i = 0; i < data.length(); i++) {
+                        JSONObject c = data.getJSONObject(i);
+                        int findViewId = i+1;
+                        TextView tv_scheduleToday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
+                        TextView tv_scheduleToday_name2 = (TextView) findViewById(R.id.tv_scheduleToday_name2);
+                        TextView tv_scheduleToday_room2 = (TextView) findViewById(R.id.tv_scheduleToday_room2);
+                        TextView tv_scheduleToday_ts2 = (TextView) findViewById(R.id.tv_scheduleToday_ts2);
+                        TextView tv_scheduleToday_te2 = (TextView) findViewById(R.id.tv_scheduleToday_te2);
+                        if(findViewId == 1){
+                            tv_scheduleToday_code2.setVisibility(View.GONE);
+                            tv_scheduleToday_name2.setVisibility(View.GONE);
+                            tv_scheduleToday_room2.setVisibility(View.GONE);
+                            tv_scheduleToday_ts2.setVisibility(View.GONE);
+                            tv_scheduleToday_te2.setVisibility(View.GONE);
+                        }else{
+                            tv_scheduleToday_code2.setVisibility(View.VISIBLE);
+                            tv_scheduleToday_name2.setVisibility(View.VISIBLE);
+                            tv_scheduleToday_room2.setVisibility(View.VISIBLE);
+                            tv_scheduleToday_ts2.setVisibility(View.VISIBLE);
+                            tv_scheduleToday_te2.setVisibility(View.VISIBLE);
+                        }
+                        String name = "tv_scheduleToday_code"+findViewId;
+                        int id = getResources().getIdentifier(name, "id", getPackageName());
+                        if (id != 0) {
+                            tv_scheduleToday = (TextView) findViewById(id);
+                            tv_scheduleToday.setText(c.getString("subject_code"));
+                        }
+                        name = "tv_scheduleToday_name"+findViewId;
+                        id = getResources().getIdentifier(name, "id", getPackageName());
+                        if(id != 0){
+                            tv_scheduleToday = (TextView) findViewById(id);
+                            tv_scheduleToday.setText(c.getString("subject_name"));
+                        }
+                        name = "tv_scheduleToday_room"+findViewId;
+                        id = getResources().getIdentifier(name, "id", getPackageName());
+                        if(id != 0){
+                            tv_scheduleToday = (TextView) findViewById(id);
+                            tv_scheduleToday.setText(c.getString("subject_room"));
+                        }
+                        name = "tv_scheduleToday_ts"+findViewId;
+                        id = getResources().getIdentifier(name, "id", getPackageName());
+                        if(id != 0){
+                            tv_scheduleToday = (TextView) findViewById(id);
+                            tv_scheduleToday.setText(c.getString("subject_time_start"));
+                        }
+                        name = "tv_scheduleToday_te"+findViewId;
+                        id = getResources().getIdentifier(name, "id", getPackageName());
+                        if(id != 0){
+                            tv_scheduleToday = (TextView) findViewById(id);
+                            tv_scheduleToday.setText(c.getString("subject_time_ended"));
+                        }
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        GetDataJSON g = (GetDataJSON) new GetDataJSON().execute(std_id);
+    }
+    public void refreshSchedule(View v){
+        getSchedule(std_id);
+    }
     public void onClickNews(View v){
         String idn = v.getResources().getResourceName(v.getId());
         int id = Integer.valueOf(idn.substring(idn.length() - 1));
@@ -70,6 +177,10 @@ public class Main extends AppCompatActivity {
         Intent intent = new Intent(Main.this, News.class);
         intent.putExtra("title",title);
         intent.putExtra("desc", desc);
+        startActivity(intent);
+    }
+    public void gotoMoreNews(View v){
+        Intent intent = new Intent(this, More_News.class);
         startActivity(intent);
     }
     public void gotoTodo(View v){

@@ -134,7 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Profile & Setting"
+            android:text="ProfileSetting"
             android:id="@+id/textView14"
             android:layout_marginLeft="20dp"
             android:textColor="#000000"
@@ -209,6 +209,13 @@
                         </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Logout"
+                    android:id="@+id/bt_logout"
+                    android:layout_gravity="right"
+                    android:onClick="logout" />
 
             </LinearLayout>
         </ScrollView>

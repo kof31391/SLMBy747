@@ -21,7 +21,8 @@
         <activity android:name=".Todo" />
         <activity android:name=".News" />
         <activity android:name=".more_setting" />
-        <activity android:name=".todo_item"></activity>
+        <activity android:name=".todo_item" />
+        <activity android:name=".More_News"></activity>
     </application>
 
 </manifest>

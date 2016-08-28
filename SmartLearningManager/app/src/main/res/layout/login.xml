@@ -108,8 +108,6 @@
                         android:layout_centerHorizontal="true" />
 
                 </LinearLayout>
-
 </ScrollView>
-
     </LinearLayout>
 </RelativeLayout>

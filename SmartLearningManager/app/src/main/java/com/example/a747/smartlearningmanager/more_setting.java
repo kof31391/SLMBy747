@@ -1,6 +1,7 @@
 package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,14 @@ public class more_setting extends AppCompatActivity {
 
     public void gotoHome(View v){
         Intent intent = new Intent(this, Main.class);
+        startActivity(intent);
+    }
+    public void logout(View v){
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+        Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
 }
