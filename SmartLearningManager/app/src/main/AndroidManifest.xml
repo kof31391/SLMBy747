@@ -18,10 +18,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".Main" />
-        <activity android:name=".Todo" />
+        <activity android:name=".Todo_List" />
         <activity android:name=".News" />
         <activity android:name=".more_setting" />
-        <activity android:name=".todo_item" />
+        <activity android:name=".Todo_edit" />
         <activity android:name=".More_News"></activity>
     </application>
 
