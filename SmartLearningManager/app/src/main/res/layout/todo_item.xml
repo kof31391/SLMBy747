@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Todo_edit">
+    tools:context="com.example.a747.smartlearningmanager.todo_item">
 
     <RelativeLayout
         android:layout_width="match_parent"
