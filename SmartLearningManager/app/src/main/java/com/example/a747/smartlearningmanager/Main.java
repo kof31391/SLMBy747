@@ -2,14 +2,22 @@ package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -31,6 +39,8 @@ public class Main extends AppCompatActivity {
     private HandleXML obj;
     private String std_id;
 
+    private int lastest_news = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,38 +50,82 @@ public class Main extends AppCompatActivity {
         SharedPreferences.Editor editor = pref.edit();
         std_id = pref.getString("std_id", null);
 
+        getNews();
         getSchedule(std_id);
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            Log.d("CDA", "onKeyDown Called");
+            Intent setIntent = new Intent(Intent.ACTION_MAIN);
+            setIntent.addCategory(Intent.CATEGORY_HOME);
+            setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(setIntent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
-        news0 = (TextView) findViewById(R.id.tv_news_1);
-        news1 = (TextView) findViewById(R.id.tv_news_1);
-        news2 = (TextView) findViewById(R.id.tv_news_2);
-        news3 = (TextView) findViewById(R.id.tv_news_3);
-        news4 = (TextView) findViewById(R.id.tv_news_4);
-        news5 = (TextView) findViewById(R.id.tv_news_5);
-        news6 = (TextView) findViewById(R.id.tv_news_6);
-        news7 = (TextView) findViewById(R.id.tv_news_7);
-        news8 = (TextView) findViewById(R.id.tv_news_8);
-        news9 = (TextView) findViewById(R.id.tv_news_9);
-
-        ArrayList al_news = new ArrayList();
-        al_news.add(news0);
-        al_news.add(news1);
-        al_news.add(news2);
-        al_news.add(news3);
-        al_news.add(news4);
-        al_news.add(news5);
-        al_news.add(news6);
-        al_news.add(news7);
-        al_news.add(news8);
-        al_news.add(news9);
-
-
+    public void getNews(){
         obj = new HandleXML(finalUrl);
-        obj.fetchXML(al_news);
+        obj.fetchXML();
         al_title = obj.getAl_title();
         al_desc = obj.getAl_desc();
-
         while(obj.parsingComplete);
+
+        TableLayout tl_news = (TableLayout) findViewById(R.id.tl_news);
+        TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams params2=new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+        int count = 7;
+        for(int i=al_title.size()-1;i>=0;i--){
+            TableRow row = new TableRow(this);
+            TextView title = new TextView(this);
+            if(count > 0) {
+                title.setId(i);
+                title.setClickable(true);
+                title.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickNews(v);
+                    }
+                });
+                title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 23);
+                title.setPadding(20, 20, 0, 20);
+                if ((i % 2) == 0) {
+                    title.setBackgroundColor(Color.parseColor("#E6E6E6"));
+                }
+                title.setText(al_title.get(i).toString());
+                title.setLayoutParams(params1);
+                row.addView(title);
+                row.setLayoutParams(params2);
+                tl_news.addView(row);
+                count--;
+            }else{
+                //More News
+                title.setId(i);
+                title.setClickable(true);
+                lastest_news = count+1;
+                title.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickMoreNews(v);
+                    }
+                });
+                title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 23);
+                title.setPadding(500, 20, 0, 50);
+                if ((i % 2) == 0) {
+                    title.setBackgroundColor(Color.parseColor("#E6E6E6"));
+                }
+                title.setText("More");
+                title.setLayoutParams(params1);
+                row.addView(title);
+                row.setLayoutParams(params2);
+                tl_news.addView(row);
+                break;
+            }
+        }
     }
     public void getSchedule(String std_id){
         class GetDataJSON extends AsyncTask<String,Void,String> {
@@ -92,7 +146,6 @@ public class Main extends AppCompatActivity {
                         }
                         in.close();
                     }
-                    System.out.println(strJSON);
                     return strJSON;
                 }catch (Exception e){
                     e.printStackTrace();
@@ -167,17 +220,66 @@ public class Main extends AppCompatActivity {
     public void refreshSchedule(View v){
         getSchedule(std_id);
     }
+
     public void onClickNews(View v){
-        String idn = v.getResources().getResourceName(v.getId());
-        int id = Integer.valueOf(idn.substring(idn.length() - 1));
-        String title = al_title.get(id).toString();
-        String desc = android.text.Html.fromHtml(al_desc.get(id).toString()).toString();
-        System.out.println(title);
-        System.out.println(desc);
+        int idv = v.getId();
+        String title = al_title.get(idv).toString();
+        String desc = android.text.Html.fromHtml(al_desc.get(idv).toString()).toString();
         Intent intent = new Intent(Main.this, News.class);
         intent.putExtra("title",title);
         intent.putExtra("desc", desc);
         startActivity(intent);
+    }
+    public void onClickMoreNews(View v){
+        if(lastest_news >= 0) {
+            for (int i = 0; i < 4; i++) {
+                TableLayout tl_news = (TableLayout) findViewById(R.id.tl_news);
+                TextView remove_more_news = (TextView) findViewById(v.getId());
+                remove_more_news.setVisibility(v.GONE);
+                TableRow row = new TableRow(this);
+                TextView title = new TextView(this);
+                if (lastest_news >= 0) {
+                    title.setId(lastest_news);
+                    title.setClickable(true);
+                    title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 23);
+                    title.setPadding(20, 20, 0, 20);
+                    if ((lastest_news % 2) == 1) {
+                        title.setBackgroundColor(Color.parseColor("#E6E6E6"));
+                    }
+                    title.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onClickNews(v);
+                        }
+                    });
+                    title.setText(al_title.get(lastest_news).toString());
+                    row.addView(title);
+                    tl_news.addView(row);
+                    lastest_news--;
+                } else {
+                    if(lastest_news > 0) {
+                        //More News
+                        title.setId(i);
+                        title.setClickable(true);
+                        title.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                onClickMoreNews(v);
+                            }
+                        });
+                        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 23);
+                        title.setPadding(500, 20, 0, 50);
+                        if ((i % 2) == 0) {
+                            title.setBackgroundColor(Color.parseColor("#E6E6E6"));
+                        }
+                        title.setText("More");
+                        row.addView(title);
+                        tl_news.addView(row);
+                        break;
+                    }
+                }
+            }
+        }
     }
     public void gotoMoreNews(View v){
         Intent intent = new Intent(this, More_News.class);
@@ -213,7 +315,7 @@ class HandleXML {
     }
     public ArrayList getAl_title(){ return al_title; }
 
-    public void parseXMLAndStoreIt(XmlPullParser myParser, ArrayList al_news) {
+    public void parseXMLAndStoreIt(XmlPullParser myParser) {
 
         int event;
         String text = null;
@@ -231,8 +333,6 @@ class HandleXML {
                     case XmlPullParser.END_TAG:
                         if(name.equals("title")){
                             if(count < 10) {
-                                TextView tf = (TextView) al_news.get(count);
-                                tf.setText(text);
                                 al_title.add(text);
                                 count++;
                             }else{
@@ -257,8 +357,7 @@ class HandleXML {
     public HandleXML(String url){
         this.urlString = url;
     }
-    public void fetchXML(ArrayList al_news){
-        final ArrayList f_al_news = al_news;
+    public void fetchXML(){
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
@@ -282,7 +381,7 @@ class HandleXML {
                     myparser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
                     myparser.setInput(stream, null);
 
-                    parseXMLAndStoreIt(myparser,f_al_news);
+                    parseXMLAndStoreIt(myparser);
                     stream.close();
                 }
                 catch (Exception e) {
