@@ -1,6 +1,8 @@
 package com.example.a747.smartlearningmanager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +22,7 @@ import java.util.Collections;
 import java.util.Date;
 
 
-class Todo_Edit extends AppCompatActivity {
+public class Todo_Edit extends AppCompatActivity {
 
     private EditText desc;
     private DatePicker todoDate;
@@ -52,9 +54,22 @@ class Todo_Edit extends AppCompatActivity {
     }
 
     public void onClickAddTodo(View view) {
-        writeItems();
-        Intent intent = new Intent(this,Todo_List.class);
-        startActivity(intent);
+        if(topic.length()>0) {
+            writeItems();
+            Intent intent = new Intent(this,Todo_List.class);
+            startActivity(intent);
+        }else{
+            AlertDialog alertDialog = new AlertDialog.Builder(Todo_Edit.this).create();
+            alertDialog.setTitle("Alert: No Topic");
+            alertDialog.setMessage("Please Enter Topic.");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            topic.requestFocus();
+                        }
+                    });
+            alertDialog.show();
+        }
     }
 
 

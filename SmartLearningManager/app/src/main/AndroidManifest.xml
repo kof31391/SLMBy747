@@ -26,5 +26,5 @@
         <activity android:name=".Todo_Edit" />
         <activity android:name=".Profile"></activity>
     </application>
-
+    <receiver android:process=":remote" android:name="AlarmReceiver"></receiver>
 </manifest>
