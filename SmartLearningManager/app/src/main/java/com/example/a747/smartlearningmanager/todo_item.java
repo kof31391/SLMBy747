@@ -48,7 +48,7 @@ public class todo_item extends AppCompatActivity {
     public void onClickAddTodo(View view) {
 
         writeItems();
-        Intent intent = new Intent(this,Todo.class);
+        Intent intent = new Intent(this,Todo_List.class);
         startActivity(intent);
     }
 
