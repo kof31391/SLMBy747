@@ -63,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/topic"
                 android:layout_alignParentTop="true"
+                android:enabled="false"
                 android:layout_toStartOf="@+id/addTodoBtn"
                 />
 
@@ -73,7 +74,8 @@
                 android:ems="10"
                 android:id="@+id/todoDesc"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:enabled="false"/>
 
             EditText
                 android:layout_width="wrap_content"

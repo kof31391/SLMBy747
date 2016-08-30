@@ -1,5 +1,8 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -28,6 +31,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Main extends AppCompatActivity {
 
@@ -43,7 +47,6 @@ public class Main extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         std_id = pref.getString("std_id", null);
         if(std_id != null){

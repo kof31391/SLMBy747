@@ -30,7 +30,7 @@ public class Todo_List extends AppCompatActivity {
     private ListView lvItems;
     private int pos;
     private ArrayAdapter<String> adapter;
-    private ArrayList<String> show;    private todoObj temp;
+    private ArrayList<String> show;
 
 
     @Override

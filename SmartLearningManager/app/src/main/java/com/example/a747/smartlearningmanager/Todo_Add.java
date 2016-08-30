@@ -1,15 +1,20 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
@@ -27,6 +33,7 @@ public class Todo_Add extends AppCompatActivity {
     private TimePicker todoTime;
     private TextView topic;
     private ArrayList<todoObj> items;
+    private Date date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,7 @@ public class Todo_Add extends AppCompatActivity {
             topic.setHint("Enter Topic Here");
             topic.requestFocus();
     }
+
 
     public void onClickAddTodo(View view) {
         if(topic.length()>0) {
@@ -81,7 +89,6 @@ public class Todo_Add extends AppCompatActivity {
         File todoFile = new File(filesDir, "todo_list.txt");
         try {
             readItems();
-            Date date;
             todoObj temp = new todoObj();
             temp.setTopic(topic.getText().toString());
             temp.setDesc(desc.getText().toString());
@@ -95,4 +102,7 @@ public class Todo_Add extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+
 }
