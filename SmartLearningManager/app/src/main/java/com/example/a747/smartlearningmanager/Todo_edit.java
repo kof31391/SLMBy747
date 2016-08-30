@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-public class Todo_Edit extends AppCompatActivity {
+class Todo_Edit extends AppCompatActivity {
 
     private EditText desc;
     private DatePicker todoDate;

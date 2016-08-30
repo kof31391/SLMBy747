@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -41,12 +43,16 @@ public class Main extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-        SharedPreferences.Editor editor = pref.edit();
         std_id = pref.getString("std_id", null);
+        if(std_id != null){
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.main);
+        }else{
+            Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+        }
 
         getNews();
         getSchedule(std_id);
@@ -138,7 +144,7 @@ public class Main extends AppCompatActivity {
                         InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                         if (in != null) {
                             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
-                            String line = "";
+                            String line;
                             while ((line = bufferedReader.readLine()) != null)
                                 strJSON = line;
                         }
@@ -213,7 +219,7 @@ public class Main extends AppCompatActivity {
                 }
             }
         }
-        GetDataJSON g = (GetDataJSON) new GetDataJSON().execute(std_id);
+        new GetDataJSON().execute(std_id);
     }
     public void refreshSchedule(View v){
         getSchedule(std_id);
@@ -279,12 +285,8 @@ public class Main extends AppCompatActivity {
             }
         }
     }
-    public void gotoMoreNews(View v){
-        Intent intent = new Intent(this, More_News.class);
-        startActivity(intent);
-    }
     public void gotoTodo(View v){
-        Intent intent = new Intent(this, Todo_List.class);
+        Intent intent = new Intent(this, Todo.class);
         startActivity(intent);
     }
     public void gotoSetting(View v){

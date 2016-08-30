@@ -77,7 +77,7 @@
                         android:src="@drawable/home"
                         android:background="#091534"
                         android:layout_alignParentBottom="true"
-  />
+                        />
 
                     <ImageButton
                         android:layout_width="wrap_content"
@@ -296,14 +296,6 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true" />
 
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:text="more"
-                        android:id="@+id/button2"
-                        android:onClick="gotoMoreNews" />
-
                 </LinearLayout>
 
                 <ScrollView
@@ -317,7 +309,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
-                        android:layout_below="@+id/textView3"
+                        android:layout_below="@+id/tv_ms_std_id"
                         android:background="#cecece"
                         android:id="@+id/tl_news">
 

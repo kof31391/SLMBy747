@@ -23,7 +23,8 @@
         <activity android:name=".more_setting" />
         <activity android:name=".Todo_Add" />
         <activity android:name=".More_News" />
-        <activity android:name=".Todo_Edit"></activity>
+        <activity android:name=".Todo_Edit" />
+        <activity android:name=".Profile"></activity>
     </application>
 
 </manifest>
