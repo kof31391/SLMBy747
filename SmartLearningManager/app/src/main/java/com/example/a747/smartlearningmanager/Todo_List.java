@@ -29,14 +29,16 @@ import java.util.ArrayList;
 public class Todo_List extends AppCompatActivity {
     private ArrayList<todoObj> items;
     private ListView lvItems;
+    private int pos;
     private ArrayAdapter<String> adapter;
-    private ArrayList<String> show;
+    private String topic  = "";
+    private ArrayList<String> show;    private todoObj temp;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.todo);
+        setContentView(R.layout.todo_list);
         lvItems = (ListView) findViewById(R.id.lvItems);
         show = new ArrayList<String>();
         items = new ArrayList<todoObj>();
@@ -59,14 +61,15 @@ public class Todo_List extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         super.onContextItemSelected(item);
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int index = info.position;
-        if (item.getTitle().equals("Delete")) {
-            items.remove(index);
-            show.remove(index);
-            adapter.notifyDataSetChanged();
-            writeItems();
-        }
-        return true;
+               int index = info.position;
+               if (item.getTitle().equals("Delete")) {
+                       items.remove(index);
+                       items.trimToSize();
+                       show.remove(index);
+                       adapter.notifyDataSetChanged();
+                       writeItems();
+                    }
+                return true;
     }
 
     private void setupListViewListener(){
@@ -74,19 +77,20 @@ public class Todo_List extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                todoObj obj = ((todoObj)items.get(position));
-                sendToEditor(obj);
+                todoObj obj = items.get(position);
+                pos = position;
+                sendToEditor(pos);
             }
         });
     }
-    private  void sendToEditor(todoObj obj){
-        Intent intent = new Intent(this,Todo_edit.class);
-        intent.putExtra("todo", (Parcelable) obj);
+    private  void sendToEditor(int pos){
+        Intent intent = new Intent(this,Todo_Edit.class);
+        intent.putExtra("todo", pos);
         startActivity(intent);
     }
 
     public void gotoEditor(View v){
-    Intent intent = new Intent(this,Todo_edit.class);
+    Intent intent = new Intent(this,Todo_Add.class);
     startActivity(intent);
     }
 
@@ -95,12 +99,14 @@ public class Todo_List extends AppCompatActivity {
     private void readItems() {
         int i = 1;
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
+        File todoFile = new File(filesDir, "todo_list.txt");
         items = new ArrayList<todoObj>();
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
+
                 items = (ArrayList<todoObj>)ois.readObject();
+            System.out.println(items.size());
             for(int j = 0 ;j<items.size();j++) {
                 show.add(items.get(j).getTopic());
             }
@@ -123,8 +129,7 @@ public class Todo_List extends AppCompatActivity {
 
     private void writeItems() {
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        ArrayList<todoObj> obj = new ArrayList<todoObj>();
+        File todoFile = new File(filesDir, "todo_list.txt");
         try {
             ObjectOutputStream fis = new ObjectOutputStream(new FileOutputStream(todoFile));
             fis.writeObject(items);

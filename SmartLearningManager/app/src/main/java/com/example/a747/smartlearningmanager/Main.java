@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -286,7 +284,7 @@ public class Main extends AppCompatActivity {
         startActivity(intent);
     }
     public void gotoTodo(View v){
-        Intent intent = new Intent(this, Todo.class);
+        Intent intent = new Intent(this, Todo_List.class);
         startActivity(intent);
     }
     public void gotoSetting(View v){

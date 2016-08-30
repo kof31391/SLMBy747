@@ -19,36 +19,27 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
-
-public class Todo_Edit extends AppCompatActivity {
-
+public class Todo_Add extends AppCompatActivity {
     private EditText desc;
     private DatePicker todoDate;
     private TimePicker todoTime;
     private TextView topic;
     private ArrayList<todoObj> items;
     private todoObj recObj;
-    private int pos;
-
+    private ArrayList<String> show;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.todo_edit);
+        setContentView(R.layout.todo_add);
         Intent intent = getIntent();
         items = new ArrayList<todoObj>();
         topic = (TextView)findViewById(R.id.topic);
         desc = (EditText)findViewById(R.id.todoDesc);
-        todoDate =(DatePicker) findViewById(R.id.datePicker);
-        todoTime = (TimePicker)findViewById(R.id.timePicker);
-        readItems();
-        pos=intent.getIntExtra("todo",0);
-        recObj = items.get(pos);
-            topic.setText(recObj.getTopic());
-            desc.setText(recObj.getDesc());
-            todoDate.updateDate(recObj.getDate().getYear(), recObj.getDate().getMonth(), recObj.getDate().getDate());
-            todoTime.setCurrentHour(recObj.getDate().getHours());
-            todoTime.setCurrentMinute(recObj.getDate().getMinutes());
+        todoTime =(TimePicker) findViewById(R.id.timePicker);
+        todoDate = (DatePicker)findViewById(R.id.datePicker);
+            topic.setHint("Enter Topic Here");
+            topic.requestFocus();
     }
 
     public void onClickAddTodo(View view) {
@@ -61,12 +52,11 @@ public class Todo_Edit extends AppCompatActivity {
     private void readItems() {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo_list.txt");
+        items = new ArrayList<todoObj>();
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
-
             items = (ArrayList<todoObj>)ois.readObject();
-
         } catch (IOException e) {
             items = new ArrayList<todoObj>();
         } catch (ClassNotFoundException e) {
@@ -78,18 +68,16 @@ public class Todo_Edit extends AppCompatActivity {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo_list.txt");
         try {
-            Date date;
             readItems();
+            Date date;
             todoObj temp = new todoObj();
             temp.setTopic(topic.getText().toString());
             temp.setDesc(desc.getText().toString());
             date = Util.getDateFromDatePicker(todoDate,todoTime);
             temp.setDate(date);
-            items.remove(pos);
             items.add(temp);
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
             ois.writeObject(items);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
