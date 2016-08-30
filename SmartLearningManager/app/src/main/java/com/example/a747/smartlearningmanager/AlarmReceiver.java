@@ -16,7 +16,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationManager mNM;
         mNM = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
         // Set the icon, scrolling text and timestamp
-        Notification notification = new Notification(R.drawable.icon, "Test Alarm",
+      /*  Notification notification = new Notification(R.drawable.home, "Todo Activity Time",
                 System.currentTimeMillis());
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, TestActivity.class), 0);
@@ -24,6 +24,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         notification.setLatestEventInfo(context, context.getText(R.string.alarm_service_label), "This is a Test Alarm", contentIntent);
         // Send the notification.
         // We use a layout id because it is a unique number. We use it later to cancel.
-        mNM.notify(R.string.alarm_service_label, notification);
+        mNM.notify(R.string.alarm_service_label, notification);*/
     }
 }

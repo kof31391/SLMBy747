@@ -2,7 +2,6 @@ package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -31,7 +30,6 @@ public class Todo_List extends AppCompatActivity {
     private ListView lvItems;
     private int pos;
     private ArrayAdapter<String> adapter;
-    private String topic  = "";
     private ArrayList<String> show;    private todoObj temp;
 
 
@@ -40,10 +38,10 @@ public class Todo_List extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_list);
         lvItems = (ListView) findViewById(R.id.lvItems);
-        show = new ArrayList<String>();
-        items = new ArrayList<todoObj>();
+        show = new ArrayList<>();
+        items = new ArrayList<>();
         readItems();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, show);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, show);
         lvItems.setAdapter(adapter);
         setupListViewListener();
         registerForContextMenu(lvItems);
@@ -54,6 +52,7 @@ public class Todo_List extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add("Edit");
         menu.add("Delete");
     }
 
@@ -68,7 +67,9 @@ public class Todo_List extends AppCompatActivity {
                        show.remove(index);
                        adapter.notifyDataSetChanged();
                        writeItems();
-                    }
+                    }else if(item.getTitle().equals("Edit")){
+                   sendToEditor(index);
+               }
                 return true;
     }
 
@@ -77,14 +78,19 @@ public class Todo_List extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                todoObj obj = items.get(position);
                 pos = position;
-                sendToEditor(pos);
+                sendToView(pos);
             }
         });
     }
     private  void sendToEditor(int pos){
         Intent intent = new Intent(this,Todo_Edit.class);
+        intent.putExtra("todo", pos);
+        startActivity(intent);
+    }
+
+    private void sendToView(int pos){
+        Intent intent = new Intent(this,Todo_View.class);
         intent.putExtra("todo", pos);
         startActivity(intent);
     }

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 
-import android.view.MotionEvent;
 import android.view.View;
 
 import android.widget.AdapterView;
@@ -81,13 +80,13 @@ public class Todo extends AppCompatActivity {
         });
     }
     private  void sendToEditor(todoObj obj){
-        Intent intent = new Intent(this,todo_item.class);
+        Intent intent = new Intent(this,Todo_View.class);
         intent.putExtra("todo", (Parcelable) obj);
         startActivity(intent);
     }
 
     public void gotoEditor(View v){
-    Intent intent = new Intent(this,todo_item.class);
+    Intent intent = new Intent(this,Todo_View.class);
     startActivity(intent);
     }
 
