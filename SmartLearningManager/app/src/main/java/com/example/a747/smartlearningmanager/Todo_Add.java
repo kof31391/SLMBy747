@@ -15,8 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class Todo_Add extends AppCompatActivity {
@@ -25,15 +25,12 @@ public class Todo_Add extends AppCompatActivity {
     private TimePicker todoTime;
     private TextView topic;
     private ArrayList<todoObj> items;
-    private todoObj recObj;
-    private ArrayList<String> show;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_add);
-        Intent intent = getIntent();
-        items = new ArrayList<todoObj>();
+        items = new ArrayList<>();
         topic = (TextView)findViewById(R.id.topic);
         desc = (EditText)findViewById(R.id.todoDesc);
         todoTime =(TimePicker) findViewById(R.id.timePicker);
@@ -52,13 +49,13 @@ public class Todo_Add extends AppCompatActivity {
     private void readItems() {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo_list.txt");
-        items = new ArrayList<todoObj>();
+        items = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
             items = (ArrayList<todoObj>)ois.readObject();
         } catch (IOException e) {
-            items = new ArrayList<todoObj>();
+            items = new ArrayList<>();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -76,6 +73,7 @@ public class Todo_Add extends AppCompatActivity {
             date = Util.getDateFromDatePicker(todoDate,todoTime);
             temp.setDate(date);
             items.add(temp);
+            Collections.sort(items);
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
             ois.writeObject(items);
         } catch (IOException e) {

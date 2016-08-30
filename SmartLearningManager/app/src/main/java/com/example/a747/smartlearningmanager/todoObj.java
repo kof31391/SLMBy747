@@ -11,13 +11,17 @@ import java.util.Date;
 /**
  * Created by 747 on 27-Aug-16.
  */
-public class todoObj implements Parcelable,Serializable{
+public class todoObj implements Parcelable,Serializable,Comparable<todoObj>{
     private String topic;
     private String desc;
     private Date date;
-    private DateTime time;
 
     public todoObj() {
+    }
+
+    @Override
+    public int compareTo(todoObj o) {
+        return getDate().compareTo(o.getDate());
     }
 
     public Date getDate() {
@@ -28,13 +32,6 @@ public class todoObj implements Parcelable,Serializable{
         this.date = date;
     }
 
-    public DateTime getTime() {
-        return time;
-    }
-
-    public void setTime(DateTime time) {
-        this.time = time;
-    }
 
     public static final Creator<todoObj> CREATOR = new Creator<todoObj>() {
         @Override

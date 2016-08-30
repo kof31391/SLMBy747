@@ -2,10 +2,7 @@ package com.example.a747.smartlearningmanager;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.GridLayout;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParser;

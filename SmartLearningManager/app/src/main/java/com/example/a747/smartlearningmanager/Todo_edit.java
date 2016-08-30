@@ -15,8 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 
@@ -36,7 +36,7 @@ class Todo_Edit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_edit);
         Intent intent = getIntent();
-        items = new ArrayList<todoObj>();
+        items = new ArrayList<>();
         topic = (TextView)findViewById(R.id.topic);
         desc = (EditText)findViewById(R.id.todoDesc);
         todoDate =(DatePicker) findViewById(R.id.datePicker);
@@ -68,7 +68,7 @@ class Todo_Edit extends AppCompatActivity {
             items = (ArrayList<todoObj>)ois.readObject();
 
         } catch (IOException e) {
-            items = new ArrayList<todoObj>();
+            items = new ArrayList<>();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -87,6 +87,7 @@ class Todo_Edit extends AppCompatActivity {
             temp.setDate(date);
             items.remove(pos);
             items.add(temp);
+            Collections.sort(items);
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
             ois.writeObject(items);
 

@@ -4,7 +4,6 @@ package com.example.a747.smartlearningmanager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -12,9 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.content.SharedPreferences;
-import android.widget.Toast;
-
-import com.android.volley.RequestQueue;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -24,14 +20,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-public class Login extends AppCompatActivity {   //อันนี้คือหน้า login
+public class Login extends AppCompatActivity {
     TextView uid;
     TextView pwd;
     Button btn;
     String uidString ;
     String passString ;
     TextView Err;
-    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
