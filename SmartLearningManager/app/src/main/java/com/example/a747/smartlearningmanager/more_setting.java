@@ -43,6 +43,14 @@ public class more_setting extends AppCompatActivity {
         Intent intent = new Intent(this, Profile.class);
         startActivity(intent);
     }
+    public void gotonoti(View v){
+        Intent intent = new Intent(this, Noti.class);
+        startActivity(intent);
+    }
+    public void gotoelean(View v){
+        Intent intent = new Intent(this, Elearning.class);
+        startActivity(intent);
+    }
     public void logout(View v){
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         SharedPreferences.Editor editor = pref.edit();

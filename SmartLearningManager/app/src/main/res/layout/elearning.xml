@@ -79,9 +79,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageButton16"
-                        android:src="@drawable/pencilb"
+                        android:src="@drawable/pencilw"
                         android:background="#091534"
                         android:layout_marginLeft="35dp"
+                        android:onClick="gotoTodo"
                         android:layout_alignTop="@+id/imageButton"
                         android:layout_toEndOf="@+id/imageButton" />
 
@@ -89,7 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageButton15"
-                        android:src="@drawable/videow"
+                        android:src="@drawable/videob"
                         android:background="#091534"
                         android:layout_marginLeft="35dp"
                         android:onClick="gotoelean"
@@ -106,8 +107,8 @@
                         android:onClick="gotonoti"
                         android:layout_alignTop="@+id/imageButton2"
                         android:layout_toEndOf="@+id/imageButton2"
-                      />
-
+                        />
+    ใส่รายละเอียดนิดนึง
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -151,7 +152,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/imageButton13"
-                            android:src="@drawable/pencilb"
+                            android:src="@drawable/videob"
                             android:layout_marginLeft="10dp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentStart="true"
@@ -160,7 +161,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Todo list"
+                            android:text="Eleaning"
                             android:id="@+id/textView6"
                             android:layout_marginLeft="20dp"
                             android:textColor="#000000"
@@ -176,7 +177,7 @@
                         android:layout_height="500dp"
                         android:background="#ffffff"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/lvItems"
+                        android:id="@+id/noti"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
@@ -191,16 +192,5 @@
 
     </LinearLayout>
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnAddItem"
-        android:src="@drawable/addw"
-        android:background="#ffffff"
-        android:onClick="gotoEditor"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

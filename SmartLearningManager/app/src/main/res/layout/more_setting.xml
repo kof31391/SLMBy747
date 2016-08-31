@@ -86,6 +86,7 @@
                     android:id="@+id/imageButton20"
                     android:src="@drawable/videow"
                     android:background="#091534"
+                    android:onClick="gotoelean"
                     android:layout_marginLeft="35dp"
                     android:layout_alignTop="@+id/imageButton"
                     android:layout_toEndOf="@+id/imageButton" />
@@ -97,9 +98,10 @@
                     android:src="@drawable/notiw"
                     android:background="#091534"
                     android:layout_marginLeft="35dp"
+                    android:onClick="gotonoti"
                     android:layout_alignTop="@+id/imageButton2"
-                    android:layout_toEndOf="@+id/textView"
-                    android:onClick="gotoToProfile" />
+                    android:layout_toEndOf="@+id/imageButton2"
+                     />
 
                 <ImageButton
                     android:layout_width="wrap_content"

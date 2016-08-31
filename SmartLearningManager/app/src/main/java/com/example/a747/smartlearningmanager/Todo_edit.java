@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.Date;
 
 
-public class Todo_Edit extends AppCompatActivity {
+public class Todo_edit extends AppCompatActivity {
 
     private EditText desc;
     private DatePicker todoDate;
@@ -53,13 +53,18 @@ public class Todo_Edit extends AppCompatActivity {
             todoTime.setCurrentMinute(recObj.getDate().getMinutes());
     }
 
+    public void onClickBack(View view) {
+        Intent intent = new Intent(this,Todo_List.class);
+        startActivity(intent);
+    }
+
     public void onClickAddTodo(View view) {
         if(topic.length()>0) {
             writeItems();
             Intent intent = new Intent(this,Todo_List.class);
             startActivity(intent);
         }else{
-            AlertDialog alertDialog = new AlertDialog.Builder(Todo_Edit.this).create();
+            AlertDialog alertDialog = new AlertDialog.Builder(Todo_edit.this).create();
             alertDialog.setTitle("Alert: No Topic");
             alertDialog.setMessage("Please Enter Topic.");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",

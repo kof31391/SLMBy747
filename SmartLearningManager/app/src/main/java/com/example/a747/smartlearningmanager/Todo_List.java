@@ -30,7 +30,7 @@ public class Todo_List extends AppCompatActivity {
     private ListView lvItems;
     private int pos;
     private ArrayAdapter<String> adapter;
-    private ArrayList<String> show;
+    private ArrayList<String> show;    private todoObj temp;
 
 
     @Override
@@ -84,7 +84,7 @@ public class Todo_List extends AppCompatActivity {
         });
     }
     private  void sendToEditor(int pos){
-        Intent intent = new Intent(this,Todo_Edit.class);
+        Intent intent = new Intent(this,Todo_edit.class);
         intent.putExtra("todo", pos);
         startActivity(intent);
     }
@@ -99,7 +99,10 @@ public class Todo_List extends AppCompatActivity {
     Intent intent = new Intent(this,Todo_Add.class);
     startActivity(intent);
     }
-
+    public void gotonoti(View v){
+        Intent intent = new Intent(this, Noti.class);
+        startActivity(intent);
+    }
 
 
     private void readItems() {
@@ -157,7 +160,10 @@ public class Todo_List extends AppCompatActivity {
         Intent intent = new Intent(this, Main.class);
         startActivity(intent);
     }
-
+    public void gotoelean(View v){
+        Intent intent = new Intent(this, Elearning.class);
+        startActivity(intent);
+    }
 
 
 
