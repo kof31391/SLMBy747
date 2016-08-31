@@ -25,7 +25,7 @@ import java.util.Date;
 
 public class Todo_Edit extends AppCompatActivity {
 
-    private EditText desc;
+    private TextView desc;
     private DatePicker todoDate;
     private TimePicker todoTime;
     private TextView topic;
@@ -44,7 +44,7 @@ public class Todo_Edit extends AppCompatActivity {
         Intent intent = getIntent();
         items = new ArrayList<>();
         topic = (TextView)findViewById(R.id.topic);
-        desc = (EditText)findViewById(R.id.todoDesc);
+        desc = (TextView) findViewById(R.id.todoDesc);
         todoDate =(DatePicker) findViewById(R.id.datePicker);
         todoTime = (TimePicker)findViewById(R.id.timePicker);
         readItems();

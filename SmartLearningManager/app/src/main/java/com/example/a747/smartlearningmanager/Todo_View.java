@@ -15,7 +15,7 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 public class Todo_View extends AppCompatActivity {
-    private EditText desc;
+    private TextView desc;
     private TextView topic;
     private ArrayList<todoObj> items;
     private todoObj recObj;
@@ -36,7 +36,7 @@ public class Todo_View extends AppCompatActivity {
         Intent intent = getIntent();
         items = new ArrayList<>();
         topic = (TextView)findViewById(R.id.topic);
-        desc = (EditText)findViewById(R.id.todoDesc);
+        desc = (TextView) findViewById(R.id.todoDesc);
         date = (TextView)findViewById(R.id.Date);
         month = (TextView)findViewById(R.id.Month);
         year = (TextView)findViewById(R.id.Year);
