@@ -10,6 +10,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
@@ -26,28 +28,26 @@ public class Todo_Add extends AppCompatActivity {
     private DatePicker todoDate;
     private TimePicker todoTime;
     private TextView topic;
-    private TextView todoDesc;
     private ArrayList<todoObj> items;
+    private Date date;
+    private String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_add);
+        Intent intent = getIntent();
+        fileName = intent.getStringExtra("fileName");
+        System.out.println(fileName);
         items = new ArrayList<>();
         topic = (TextView)findViewById(R.id.topic);
-        todoDesc = (TextView)findViewById(R.id.todoDesc);
         desc = (EditText)findViewById(R.id.todoDesc);
         todoTime =(TimePicker) findViewById(R.id.timePicker);
         todoDate = (DatePicker)findViewById(R.id.datePicker);
-            todoDesc.setHint("Enter Description Here");
             topic.setHint("Enter Topic Here");
             topic.requestFocus();
     }
 
-    public void onClickBack(View view) {
-        Intent intent = new Intent(this,Todo_List.class);
-        startActivity(intent);
-    }
 
     public void onClickAddTodo(View view) {
         if(topic.length()>0) {
@@ -71,14 +71,14 @@ public class Todo_Add extends AppCompatActivity {
 
     private void readItems() {
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo_list.txt");
+        File todoFile = new File(filesDir, fileName);
         items = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
             items = (ArrayList<todoObj>)ois.readObject();
         } catch (IOException e) {
-            items = new ArrayList<>();
+            System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -86,10 +86,9 @@ public class Todo_Add extends AppCompatActivity {
 
     private void writeItems() {
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo_list.txt");
+        File todoFile = new File(filesDir, fileName);
         try {
             readItems();
-            Date date;
             todoObj temp = new todoObj();
             temp.setTopic(topic.getText().toString());
             temp.setDesc(desc.getText().toString());
@@ -103,4 +102,7 @@ public class Todo_Add extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+
 }

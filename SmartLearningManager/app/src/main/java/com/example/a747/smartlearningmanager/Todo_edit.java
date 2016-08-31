@@ -2,6 +2,7 @@ package com.example.a747.smartlearningmanager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import java.util.Collections;
 import java.util.Date;
 
 
-public class Todo_edit extends AppCompatActivity {
+public class Todo_Edit extends AppCompatActivity {
 
     private EditText desc;
     private DatePicker todoDate;
@@ -31,12 +32,15 @@ public class Todo_edit extends AppCompatActivity {
     private ArrayList<todoObj> items;
     private todoObj recObj;
     private int pos;
+    private String temp;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_edit);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        temp = pref.getString("std_id", null);
         Intent intent = getIntent();
         items = new ArrayList<>();
         topic = (TextView)findViewById(R.id.topic);
@@ -53,18 +57,13 @@ public class Todo_edit extends AppCompatActivity {
             todoTime.setCurrentMinute(recObj.getDate().getMinutes());
     }
 
-    public void onClickBack(View view) {
-        Intent intent = new Intent(this,Todo_List.class);
-        startActivity(intent);
-    }
-
     public void onClickAddTodo(View view) {
         if(topic.length()>0) {
             writeItems();
             Intent intent = new Intent(this,Todo_List.class);
             startActivity(intent);
         }else{
-            AlertDialog alertDialog = new AlertDialog.Builder(Todo_edit.this).create();
+            AlertDialog alertDialog = new AlertDialog.Builder(Todo_Edit.this).create();
             alertDialog.setTitle("Alert: No Topic");
             alertDialog.setMessage("Please Enter Topic.");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -80,7 +79,7 @@ public class Todo_edit extends AppCompatActivity {
 
     private void readItems() {
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo_list.txt");
+        File todoFile = new File(filesDir, temp+".txt");
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -96,7 +95,7 @@ public class Todo_edit extends AppCompatActivity {
 
     private void writeItems() {
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo_list.txt");
+        File todoFile = new File(filesDir, temp+".txt");
         try {
             Date date;
             readItems();
