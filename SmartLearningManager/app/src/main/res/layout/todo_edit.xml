@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Todo_Add">
+    tools:context="com.example.a747.smartlearningmanager.Todo_Edit">
 
     <LinearLayout
         android:orientation="vertical"
@@ -17,18 +17,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/gototodo"
-                android:src="@drawable/backb"
-                android:layout_gravity="center_horizontal"
-                android:background="#ffffff"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:onClick="onClickBack"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -51,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Todo list"
+                    android:text="Add todo list"
                     android:id="@+id/textView13"
                     android:textColor="#000000"
                     android:paddingTop="5dp"
@@ -61,77 +52,62 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView5"
+            >
 
-            <ScrollView
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/scrollView5">
+                android:gravity="center_horizontal"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true">
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
+                <EditText
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:layout_centerVertical="true"
+                    android:id="@+id/topic"
+                    android:layout_alignParentTop="true"
+                    android:layout_toStartOf="@+id/addTodoBtn"
+                    />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:ems="10"
+                    android:id="@+id/todoDesc"
                     android:layout_alignParentStart="true"
-                    android:paddingTop="40dp">
+                    android:layout_marginTop="10dp" />
 
-                    <EditText
-                        android:layout_width="280dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/topic"
-                        android:layout_alignParentTop="true"
-                        android:layout_toStartOf="@+id/addTodoBtn"
-                        android:textSize="30dp"
-                        android:background="#bebebe"
-                        android:layout_alignParentStart="true"
-                        android:paddingTop="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="5dp"
-                        android:paddingBottom="10dp"/>
+                <DatePicker
+                    android:calendarViewShown="false"
+                    android:datePickerMode="spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/datePicker" />
 
-                    <EditText
-                        android:layout_width="320dp"
-                        android:layout_height="wrap_content"
-                        android:inputType="textMultiLine"
-                        android:ems="10"
-                        android:id="@+id/todoDesc"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginTop="20dp" />
+                <TimePicker
+                    android:timePickerMode="spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/timePicker"
+                    android:layout_gravity="center_horizontal" />
 
-                    <DatePicker
-                        android:calendarViewShown="false"
-                        android:datePickerMode="spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/datePicker"
-                        android:layout_marginTop="10dp"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add"
+                    android:id="@+id/addTodoBtn"
+                    android:onClick="onClickAddTodo"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true" />
 
-                    <TimePicker
-                        android:timePickerMode="spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/timePicker"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="10dp"/>
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add"
-                        android:id="@+id/addTodoBtn"
-                        android:onClick="onClickAddTodo"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="10dp"/>
-
-                </LinearLayout>
-            </ScrollView>
-        </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
 

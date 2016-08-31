@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Todo_List"
-    android:background="#ffffff">
+    tools:context=".Todo_List">
 
 
     <LinearLayout
@@ -92,7 +91,6 @@
                         android:src="@drawable/videow"
                         android:background="#091534"
                         android:layout_marginLeft="35dp"
-                        android:onClick="gotoelean"
                         android:layout_alignTop="@+id/imageButton"
                         android:layout_toEndOf="@+id/imageButton" />
 
@@ -103,10 +101,9 @@
                         android:src="@drawable/notiw"
                         android:background="#091534"
                         android:layout_marginLeft="35dp"
-                        android:onClick="gotonoti"
                         android:layout_alignTop="@+id/imageButton2"
-                        android:layout_toEndOf="@+id/imageButton2"
-                      />
+                        android:layout_toEndOf="@+id/textView"
+                        android:onClick="gotoToProfile" />
 
                     <ImageButton
                         android:layout_width="wrap_content"
@@ -173,7 +170,7 @@
 
                     <ListView
                         android:layout_width="match_parent"
-                        android:layout_height="500dp"
+                        android:layout_height="429dp"
                         android:background="#ffffff"
                         android:layout_marginTop="10dp"
                         android:id="@+id/lvItems"
@@ -186,21 +183,31 @@
                 </LinearLayout>
             </ScrollView>
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:background="#ffffff"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingBottom="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true">
+
+                <Button
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Add Item"
+                    android:id="@+id/btnAddItem"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:onClick="gotoEditor"
+                    android:background="#0072bc"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
 
         </RelativeLayout>
 
     </LinearLayout>
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnAddItem"
-        android:src="@drawable/addw"
-        android:background="#ffffff"
-        android:onClick="gotoEditor"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
