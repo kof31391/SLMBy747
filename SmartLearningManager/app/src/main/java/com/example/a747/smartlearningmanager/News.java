@@ -1,9 +1,7 @@
 package com.example.a747.smartlearningmanager;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 public class News extends AppCompatActivity {
@@ -24,9 +22,5 @@ public class News extends AppCompatActivity {
             tv_title.setText(title);
             tv_desc.setText(desc);
         }
-    }
-    public void gotoHome(View v){
-        Intent intent = new Intent(this, Main.class);
-        startActivity(intent);
     }
 }

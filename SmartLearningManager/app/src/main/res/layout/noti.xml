@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Todo_List"
+    tools:context=".Noti"
     android:background="#ffffff">
 
 
@@ -93,7 +93,7 @@
                         android:src="@drawable/videow"
                         android:background="#091534"
                         android:layout_marginLeft="35dp"
-                        android:onClick="gotoelean"
+                        android:onClick="gotoElean"
                         android:layout_alignTop="@+id/imageButton"
                         android:layout_toEndOf="@+id/imageButton" />
 

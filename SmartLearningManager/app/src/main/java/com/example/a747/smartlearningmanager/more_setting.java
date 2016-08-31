@@ -25,7 +25,10 @@ public class more_setting extends AppCompatActivity {
         TextView tv_ms_std_id = (TextView) findViewById(R.id.tv_ms_std_id);
         tv_ms_std_id.setText(std_id);
     }
-
+    public void gotoProfile(View v){
+        Intent intent = new Intent(this, Profile.class);
+        startActivity(intent);
+    }
     public void gotoTodo(View v){
         Intent intent = new Intent(this, Todo_List.class);
         startActivity(intent);
@@ -39,15 +42,13 @@ public class more_setting extends AppCompatActivity {
         Intent intent = new Intent(this, Main.class);
         startActivity(intent);
     }
-    public void gotoProfile(View v){
-        Intent intent = new Intent(this, Profile.class);
-        startActivity(intent);
-    }
-    public void gotonoti(View v){
+
+    public void gotoNoti(View v){
         Intent intent = new Intent(this, Noti.class);
         startActivity(intent);
     }
-    public void gotoelean(View v){
+
+    public void gotoElean(View v){
         Intent intent = new Intent(this, Elearning.class);
         startActivity(intent);
     }

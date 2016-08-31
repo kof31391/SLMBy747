@@ -2,12 +2,12 @@ package com.example.a747.smartlearningmanager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -24,23 +24,26 @@ import java.util.Date;
 
 public class Todo_edit extends AppCompatActivity {
 
-    private EditText desc;
+    private TextView desc;
     private DatePicker todoDate;
     private TimePicker todoTime;
     private TextView topic;
     private ArrayList<todoObj> items;
     private todoObj recObj;
     private int pos;
+    private String temp;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_edit);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        temp = pref.getString("std_id", null);
         Intent intent = getIntent();
         items = new ArrayList<>();
         topic = (TextView)findViewById(R.id.topic);
-        desc = (EditText)findViewById(R.id.todoDesc);
+        desc = (TextView) findViewById(R.id.todoDesc);
         todoDate =(DatePicker) findViewById(R.id.datePicker);
         todoTime = (TimePicker)findViewById(R.id.timePicker);
         readItems();
@@ -51,11 +54,6 @@ public class Todo_edit extends AppCompatActivity {
             todoDate.updateDate(recObj.getDate().getYear(), recObj.getDate().getMonth(), recObj.getDate().getDate());
             todoTime.setCurrentHour(recObj.getDate().getHours());
             todoTime.setCurrentMinute(recObj.getDate().getMinutes());
-    }
-
-    public void onClickBack(View view) {
-        Intent intent = new Intent(this,Todo_List.class);
-        startActivity(intent);
     }
 
     public void onClickAddTodo(View view) {
@@ -80,7 +78,7 @@ public class Todo_edit extends AppCompatActivity {
 
     private void readItems() {
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo_list.txt");
+        File todoFile = new File(filesDir, temp+".txt");
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -96,7 +94,7 @@ public class Todo_edit extends AppCompatActivity {
 
     private void writeItems() {
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo_list.txt");
+        File todoFile = new File(filesDir, temp+".txt");
         try {
             Date date;
             readItems();

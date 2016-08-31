@@ -1,27 +1,18 @@
 package com.example.a747.smartlearningmanager;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
-
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 
 public class Todo_View extends AppCompatActivity {
     private TextView desc;
@@ -34,11 +25,14 @@ public class Todo_View extends AppCompatActivity {
     private TextView year;
     private TextView hour;
     private TextView minute;
+    private String temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_view);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        temp = pref.getString("std_id", null);
         Intent intent = getIntent();
         items = new ArrayList<>();
         topic = (TextView)findViewById(R.id.topic);
@@ -67,7 +61,7 @@ public class Todo_View extends AppCompatActivity {
 
     private void readItems() {
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo_list.txt");
+        File todoFile = new File(filesDir, temp+".txt");
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);

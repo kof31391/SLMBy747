@@ -26,11 +26,11 @@ public class Noti extends AppCompatActivity {
         Intent intent = new Intent(this, Main.class);
         startActivity(intent);
     }
-    public void gotonoti(View v){
+    public void gotoNoti(View v){
         Intent intent = new Intent(this, Noti.class);
         startActivity(intent);
     }
-    public void gotoelean(View v){
+    public void gotoElean(View v){
         Intent intent = new Intent(this, Elearning.class);
         startActivity(intent);
     }

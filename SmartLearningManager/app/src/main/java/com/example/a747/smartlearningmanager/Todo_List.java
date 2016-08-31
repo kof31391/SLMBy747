@@ -1,6 +1,7 @@
 package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
@@ -30,23 +31,36 @@ public class Todo_List extends AppCompatActivity {
     private ListView lvItems;
     private int pos;
     private ArrayAdapter<String> adapter;
-    private ArrayList<String> show;    private todoObj temp;
-
+    private ArrayList<String> show;
+    private String temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_list);
-        lvItems = (ListView) findViewById(R.id.lvItems);
-        show = new ArrayList<>();
-        items = new ArrayList<>();
-        readItems();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, show);
-        lvItems.setAdapter(adapter);
-        setupListViewListener();
-        registerForContextMenu(lvItems);
-
-    }
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        temp = pref.getString("std_id", null);
+        try {
+            lvItems = (ListView) findViewById(R.id.lvItems);
+            show = new ArrayList<>();
+            items = new ArrayList<>();
+            readItems();
+            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, show);
+            lvItems.setAdapter(adapter);
+            setupListViewListener();
+            registerForContextMenu(lvItems);
+        }catch(Exception e){
+            new File(temp+".txt");
+            lvItems = (ListView) findViewById(R.id.lvItems);
+            show = new ArrayList<>();
+            items = new ArrayList<>();
+            readItems();
+            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, show);
+            lvItems.setAdapter(adapter);
+            setupListViewListener();
+            registerForContextMenu(lvItems);
+        }
+        }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
@@ -97,19 +111,17 @@ public class Todo_List extends AppCompatActivity {
 
     public void gotoEditor(View v){
     Intent intent = new Intent(this,Todo_Add.class);
+        intent.putExtra("fileName",temp+".txt");
     startActivity(intent);
     }
-    public void gotonoti(View v){
-        Intent intent = new Intent(this, Noti.class);
-        startActivity(intent);
-    }
+
 
 
     private void readItems() {
         int i = 1;
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo_list.txt");
-        items = new ArrayList<todoObj>();
+        File todoFile = new File(filesDir, temp+".txt");
+        items = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -138,7 +150,7 @@ public class Todo_List extends AppCompatActivity {
 
     private void writeItems() {
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo_list.txt");
+        File todoFile = new File(filesDir, temp+".txt");
         try {
             ObjectOutputStream fis = new ObjectOutputStream(new FileOutputStream(todoFile));
             fis.writeObject(items);
@@ -160,10 +172,16 @@ public class Todo_List extends AppCompatActivity {
         Intent intent = new Intent(this, Main.class);
         startActivity(intent);
     }
-    public void gotoelean(View v){
+
+    public void gotoNoti(View v){
+        Intent intent = new Intent(this, Noti.class);
+        startActivity(intent);
+    }
+    public void gotoElean(View v){
         Intent intent = new Intent(this, Elearning.class);
         startActivity(intent);
     }
+
 
 
 

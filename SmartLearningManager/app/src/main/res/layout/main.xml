@@ -97,7 +97,7 @@
                         android:src="@drawable/videow"
                         android:background="#091534"
                         android:layout_marginLeft="35dp"
-                        android:onClick="gotoelean"
+                        android:onClick="gotoElean"
                         android:layout_alignTop="@+id/imageButton"
                         android:layout_toEndOf="@+id/imageButton" />
 
@@ -108,7 +108,7 @@
                         android:src="@drawable/notiw"
                         android:background="#091534"
                         android:layout_marginLeft="35dp"
-                        android:onClick="gotonoti"
+                        android:onClick="gotoNoti"
                         android:layout_alignTop="@+id/imageButton2"
                         android:layout_toEndOf="@+id/imageButton2"
                         />
