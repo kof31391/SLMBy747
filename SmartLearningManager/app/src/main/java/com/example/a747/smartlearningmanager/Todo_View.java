@@ -54,7 +54,7 @@ public class Todo_View extends AppCompatActivity {
         minute.setText(""+recObj.getDate().getMinutes());
     }
 
-    public void onClickBack(View view) {
+    public void onClickBack(View v) {
         Intent intent = new Intent(this,Todo_List.class);
         startActivity(intent);
     }

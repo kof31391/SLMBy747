@@ -1,5 +1,9 @@
 package com.example.a747.smartlearningmanager;
 
+
+
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -18,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
@@ -25,14 +31,18 @@ import java.util.Date;
 public class Todo_edit extends AppCompatActivity {
 
     private TextView desc;
-    private DatePicker todoDate;
-    private TimePicker todoTime;
+    private EditText todoDate;
+    private EditText todoTime;
     private TextView topic;
     private ArrayList<todoObj> items;
     private todoObj recObj;
     private int pos;
     private String temp;
-
+    private Calendar cal;
+    private int day;
+    private int month;
+    private int year;
+    private Date date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +51,65 @@ public class Todo_edit extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         temp = pref.getString("std_id", null);
         Intent intent = getIntent();
-        items = new ArrayList<>();
-        topic = (TextView)findViewById(R.id.topic);
-        desc = (TextView) findViewById(R.id.todoDesc);
-        todoDate =(DatePicker) findViewById(R.id.datePicker);
-        todoTime = (TimePicker)findViewById(R.id.timePicker);
         readItems();
         pos=intent.getIntExtra("todo",0);
         recObj = items.get(pos);
+        items = new ArrayList<>();
+        topic = (TextView)findViewById(R.id.topic);
+        desc = (TextView) findViewById(R.id.todoDesc);
+        todoDate =(EditText) findViewById(R.id.datePicker);
+        todoTime = (EditText) findViewById(R.id.timePicker);
+        date = recObj.getDate();
+        todoDate.setText(date.getDate()+"/"+date.getMonth()+"/"+date.getYear());
+        todoTime.setText(date.getHours()+":"+date.getMinutes());
             topic.setText(recObj.getTopic());
             desc.setText(recObj.getDesc());
-            todoDate.updateDate(recObj.getDate().getYear(), recObj.getDate().getMonth(), recObj.getDate().getDate());
-            todoTime.setCurrentHour(recObj.getDate().getHours());
-            todoTime.setCurrentMinute(recObj.getDate().getMinutes());
+        todoTime.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(Todo_edit.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        todoTime.setText( selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);
+                mTimePicker.show();
+
+            }
+        });
+        cal = Calendar.getInstance();
+        day = cal.get(Calendar.DAY_OF_MONTH);
+        month = cal.get(Calendar.MONTH);
+        year = cal.get(Calendar.YEAR);
+        todoDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DateDialog();
+            }
+        });
+    }
+
+    public void DateDialog(){
+
+        DatePickerDialog.OnDateSetListener listener=new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+            {
+
+                todoDate.setText(dayOfMonth+"/"+monthOfYear+"/"+year);
+
+            }};
+
+        DatePickerDialog dpDialog=new DatePickerDialog(this, listener, year, month, day);
+        dpDialog.show();
+
     }
 
     public void onClickAddTodo(View view) {
@@ -92,17 +148,20 @@ public class Todo_edit extends AppCompatActivity {
         }
     }
 
+    public void onClickBack(View v) {
+        Intent intent = new Intent(this,Todo_List.class);
+        startActivity(intent);
+    }
+
     private void writeItems() {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, temp+".txt");
         try {
-            Date date;
             readItems();
             todoObj temp = new todoObj();
             temp.setTopic(topic.getText().toString());
             temp.setDesc(desc.getText().toString());
-            date = Util.getDateFromDatePicker(todoDate,todoTime);
-            temp.setDate(date);
+            temp.setDate(Util.getDateFromEditText(todoDate,todoTime));
             items.remove(pos);
             items.add(temp);
             Collections.sort(items);
