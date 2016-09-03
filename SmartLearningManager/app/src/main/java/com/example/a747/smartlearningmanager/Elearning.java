@@ -21,7 +21,6 @@ public class Elearning extends AppCompatActivity {
         Intent intent = new Intent(this, more_setting.class);
         startActivity(intent);
     }
-
     public void gotoHome(View v){
         Intent intent = new Intent(this, Main.class);
         startActivity(intent);
@@ -32,6 +31,10 @@ public class Elearning extends AppCompatActivity {
     }
     public void gotoElean(View v){
         Intent intent = new Intent(this, Elearning.class);
+        startActivity(intent);
+    }
+    public void gotoVideo(View v){
+        Intent intent = new Intent(this, Video_elearning.class);
         startActivity(intent);
     }
 }

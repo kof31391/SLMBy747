@@ -91,7 +91,7 @@ public class Main extends AppCompatActivity {
                         onClickNews(v);
                     }
                 });
-                title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 23);
+                title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                 title.setPadding(20, 20, 0, 20);
                 if ((i % 2) == 0) {
                     title.setBackgroundColor(Color.parseColor("#E6E6E6"));
@@ -113,7 +113,7 @@ public class Main extends AppCompatActivity {
                         onClickMoreNews(v);
                     }
                 });
-                title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 23);
+                title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                 title.setPadding(500, 20, 0, 50);
                 if ((i % 2) == 0) {
                     title.setBackgroundColor(Color.parseColor("#E6E6E6"));
@@ -238,10 +238,10 @@ public class Main extends AppCompatActivity {
                 remove_more_news.setVisibility(v.GONE);
                 TableRow row = new TableRow(this);
                 TextView title = new TextView(this);
-                if (lastest_news >= 0) {
+                if (lastest_news > 0) {
                     title.setId(lastest_news);
                     title.setClickable(true);
-                    title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 23);
+                    title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                     title.setPadding(20, 20, 0, 20);
                     if ((lastest_news % 2) == 1) {
                         title.setBackgroundColor(Color.parseColor("#E6E6E6"));
@@ -256,7 +256,25 @@ public class Main extends AppCompatActivity {
                     row.addView(title);
                     tl_news.addView(row);
                     lastest_news--;
-                } else {
+                }else if(lastest_news == 0){
+                    title.setId(lastest_news);
+                    title.setClickable(true);
+                    title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                    title.setPadding(20, 20, 0, 50);
+                    if ((lastest_news % 2) == 1) {
+                        title.setBackgroundColor(Color.parseColor("#E6E6E6"));
+                    }
+                    title.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onClickNews(v);
+                        }
+                    });
+                    title.setText(al_title.get(lastest_news).toString());
+                    row.addView(title);
+                    tl_news.addView(row);
+                    lastest_news--;
+                }else {
                     if(lastest_news > 0) {
                         //More News
                         title.setId(i);
@@ -267,7 +285,7 @@ public class Main extends AppCompatActivity {
                                 onClickMoreNews(v);
                             }
                         });
-                        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 23);
+                        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                         title.setPadding(500, 20, 0, 50);
                         if ((i % 2) == 0) {
                             title.setBackgroundColor(Color.parseColor("#E6E6E6"));

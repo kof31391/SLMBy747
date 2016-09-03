@@ -28,7 +28,7 @@
                 android:background="#ffffff"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
-                android:onClick="onClickBack"/>
+                android:onClick="gotoElearning"/>
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -77,7 +77,8 @@
             <VideoView
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:id="@+id/videoView" />
+                android:id="@+id/vv_display"
+                android:onClick="onClickVideo" />
 
             <TextView
                 android:layout_width="match_parent"
