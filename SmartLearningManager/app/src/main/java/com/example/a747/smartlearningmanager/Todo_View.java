@@ -25,6 +25,7 @@ public class Todo_View extends AppCompatActivity {
     private TextView year;
     private TextView hour;
     private TextView minute;
+    private TextView category;
     private String temp;
 
     @Override
@@ -36,6 +37,7 @@ public class Todo_View extends AppCompatActivity {
         Intent intent = getIntent();
         items = new ArrayList<>();
         topic = (TextView)findViewById(R.id.topic);
+        category = (TextView)findViewById(R.id.category);
         desc = (TextView) findViewById(R.id.todoDesc);
         date = (TextView)findViewById(R.id.Date);
         month = (TextView)findViewById(R.id.Month);
@@ -46,6 +48,7 @@ public class Todo_View extends AppCompatActivity {
         pos=intent.getIntExtra("todo",0);
         recObj = items.get(pos);
         topic.setText(recObj.getTopic());
+        category.setText(recObj.getCategory());
         desc.setText(recObj.getDesc());
         date.setText(""+recObj.getDate().getDate());
         month.setText(""+recObj.getDate().getMonth());

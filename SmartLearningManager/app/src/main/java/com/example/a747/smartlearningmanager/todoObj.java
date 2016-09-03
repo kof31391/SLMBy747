@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -15,6 +16,15 @@ public class todoObj implements Parcelable,Serializable,Comparable<todoObj>{
     private String topic;
     private String desc;
     private Date date;
+    private String category;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public todoObj() {
     }
@@ -75,5 +85,11 @@ public class todoObj implements Parcelable,Serializable,Comparable<todoObj>{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(topic);
         dest.writeString(desc);
+    }
+
+    public int getPosition(){
+        String[] categories = {"Homework","Payment","Meeting","Appointment","Others"};
+        int pos =  Arrays.asList(categories).indexOf(this.category);
+        return pos;
     }
 }

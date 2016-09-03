@@ -7,4 +7,11 @@
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
     <string name="todoTopic"></string>
+    <string-array name="categories">
+        <item>Homework</item>
+        <item>Payment</item>
+        <item>Meeting</item>
+        <item>Appointment</item>
+        <item>Others</item>
+    </string-array>
 </resources>

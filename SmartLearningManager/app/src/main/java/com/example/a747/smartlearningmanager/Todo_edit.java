@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -43,7 +44,8 @@ public class Todo_edit extends AppCompatActivity {
     private int month;
     private int year;
     private Date date;
-
+    private Spinner spinner;
+    private String category;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +57,14 @@ public class Todo_edit extends AppCompatActivity {
         pos=intent.getIntExtra("todo",0);
         recObj = items.get(pos);
         items = new ArrayList<>();
+        spinner = (Spinner)findViewById(R.id.spinner);
         topic = (TextView)findViewById(R.id.topic);
         desc = (TextView) findViewById(R.id.todoDesc);
         todoDate =(EditText) findViewById(R.id.datePicker);
         todoTime = (EditText) findViewById(R.id.timePicker);
         date = recObj.getDate();
+        category = recObj.getCategory();
+        spinner.setSelection(recObj.getPosition());
         todoDate.setText(date.getDate()+"/"+date.getMonth()+"/"+date.getYear());
         todoTime.setText(date.getHours()+":"+date.getMinutes());
             topic.setText(recObj.getTopic());
@@ -113,6 +118,7 @@ public class Todo_edit extends AppCompatActivity {
     }
 
     public void onClickAddTodo(View view) {
+        category = String.valueOf(spinner.getSelectedItem());
         if(topic.length()>0) {
             writeItems();
             Intent intent = new Intent(this,Todo_List.class);
@@ -161,6 +167,7 @@ public class Todo_edit extends AppCompatActivity {
             todoObj temp = new todoObj();
             temp.setTopic(topic.getText().toString());
             temp.setDesc(desc.getText().toString());
+            temp.setCategory(category);
             temp.setDate(Util.getDateFromEditText(todoDate,todoTime));
             items.remove(pos);
             items.add(temp);

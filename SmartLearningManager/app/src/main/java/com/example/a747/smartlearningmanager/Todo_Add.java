@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -33,12 +34,13 @@ public class Todo_Add extends AppCompatActivity {
     private EditText todoTime;
     private TextView topic;
     private ArrayList<todoObj> items;
-    private Date date;
     private String fileName;
     private Calendar cal;
     private int day;
     private int month;
     private int year;
+    private Spinner spin;
+    String category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +48,8 @@ public class Todo_Add extends AppCompatActivity {
         setContentView(R.layout.todo_add);
         Intent intent = getIntent();
         fileName = intent.getStringExtra("fileName");
-        System.out.println(fileName);
         items = new ArrayList<>();
+        spin = (Spinner)findViewById(R.id.spinner);
         topic = (TextView)findViewById(R.id.topic);
         desc = (EditText)findViewById(R.id.todoDesc);
         todoTime =(EditText) findViewById(R.id.timePicker);
@@ -58,7 +60,6 @@ public class Todo_Add extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 Calendar mcurrentTime = Calendar.getInstance();
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
@@ -89,6 +90,7 @@ public class Todo_Add extends AppCompatActivity {
 
 
     public void onClickAddTodo(View view) {
+        category = String.valueOf(spin.getSelectedItem());
         if(topic.length()>0) {
             writeItems();
             Intent intent = new Intent(this,Todo_List.class);
@@ -155,6 +157,7 @@ public class Todo_Add extends AppCompatActivity {
             todoObj temp = new todoObj();
             temp.setTopic(topic.getText().toString());
             temp.setDesc(desc.getText().toString());
+            temp.setCategory(category);
             temp.setDate(Util.getDateFromEditText(todoDate,todoTime));
             items.add(temp);
             Collections.sort(items);
