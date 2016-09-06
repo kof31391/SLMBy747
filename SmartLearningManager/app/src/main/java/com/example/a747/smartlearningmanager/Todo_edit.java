@@ -85,7 +85,6 @@ public class Todo_edit extends AppCompatActivity {
                     }
                 }, hour, minute, true);
                 mTimePicker.show();
-
             }
         });
         cal = Calendar.getInstance();

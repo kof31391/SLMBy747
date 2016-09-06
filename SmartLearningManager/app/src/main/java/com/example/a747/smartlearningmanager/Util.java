@@ -35,6 +35,7 @@ public class Util {
         dates.setYear(year);
         dates.setHours(hour);
         dates.setMinutes(min);
+        dates.setSeconds(0);
         return dates;
     }
 

@@ -30,5 +30,6 @@
         <activity android:name=".Profile"/>
         <activity android:name=".Video_elearning">
         </activity>
+        <receiver android:name="com.example.a747.smartlearningmanager.NotificationPublisher" />
     </application>
 </manifest>

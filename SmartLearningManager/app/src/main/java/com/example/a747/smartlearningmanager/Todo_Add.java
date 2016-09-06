@@ -1,11 +1,18 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -18,6 +25,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -163,11 +173,62 @@ public class Todo_Add extends AppCompatActivity {
             Collections.sort(items);
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
             ois.writeObject(items);
+
+            /*Setup Notification*/
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date dateFuture = temp.getDate();
+            dateFuture.setYear(dateFuture.getYear()-1900);
+            String future = dateFormat.format(dateFuture);
+            String title = temp.getTopic();
+            String content = temp.getDesc();
+            scheduleNotification(getNotification(title,content), getSchedule(getTimeCurrent(), future));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    private String getTimeCurrent() {
+        Calendar calendar = Calendar.getInstance();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = calendar.getTime();
+        String sDate = dateFormat.format(date);
+        return sDate;
+    }
 
+    private long getSchedule(String now, String future) {
+        long TimeDifference = 0;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date dNow = df.parse(future);
+            Date dFuture = df.parse(now);
+            TimeDifference = (dNow.getTime() - dFuture.getTime());
+            System.out.println("Different: "+TimeDifference);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return TimeDifference;
+    }
+    private void scheduleNotification(Notification notification, long delay) {
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
 
+    }
+
+    private Notification getNotification(String title,String content) {
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Notification notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setAutoCancel(true)
+                .setSound(alarmSound)
+                .build();
+        return notification;
+    }
 }
