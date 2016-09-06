@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.os.SystemClock;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,6 +53,8 @@ public class Todo_Add extends AppCompatActivity {
     private int year;
     private Spinner spin;
     String category;
+    private todoObj temp;
+    private Calendar mcurrentTime = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,20 +68,26 @@ public class Todo_Add extends AppCompatActivity {
         desc = (EditText)findViewById(R.id.todoDesc);
         todoTime =(EditText) findViewById(R.id.timePicker);
         todoDate = (EditText) findViewById(R.id.datePicker);
+        todoTime.setText(mcurrentTime.get(Calendar.HOUR_OF_DAY)+":"+Calendar.MINUTE);
+        todoDate.setText(mcurrentTime.get(Calendar.DAY_OF_MONTH)+"/"+Calendar.MONTH+"/"+(Calendar.YEAR));
             topic.setHint("Enter Topic Here");
             topic.requestFocus();
         todoTime.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
+
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(Todo_Add.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        todoTime.setText( selectedHour + ":" + selectedMinute);
+                        if(selectedMinute<=9) {
+                            todoTime.setText(selectedHour + ":0" + selectedMinute);
+                        }else{
+                            todoTime.setText(selectedHour + ":" + selectedMinute);
+                        }
                     }
                 }, hour, minute, true);
                 mTimePicker.show();
@@ -140,6 +150,8 @@ public class Todo_Add extends AppCompatActivity {
 
 
     public void onClickBack(View v) {
+        todoTime.setText("");
+        todoDate.setText("");
         Intent intent = new Intent(this,Todo_List.class);
         startActivity(intent);
     }
@@ -164,7 +176,7 @@ public class Todo_Add extends AppCompatActivity {
         File todoFile = new File(filesDir, fileName);
         try {
             readItems();
-            todoObj temp = new todoObj();
+            temp = new todoObj();
             temp.setTopic(topic.getText().toString());
             temp.setDesc(desc.getText().toString());
             temp.setCategory(category);
@@ -201,7 +213,7 @@ public class Todo_Add extends AppCompatActivity {
         try {
             Date dNow = df.parse(future);
             Date dFuture = df.parse(now);
-            TimeDifference = (dNow.getTime() - dFuture.getTime());
+            TimeDifference = ((dNow.getTime() - dFuture.getTime())+500);
             System.out.println("Different: "+TimeDifference);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -217,6 +229,13 @@ public class Todo_Add extends AppCompatActivity {
         long futureInMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+    /*    Intent intent = new Intent(this, Todo_View.class);
+        intent.putExtra("message", (Parcelable) temp);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(Todo_View.class);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent pending =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);*/
 
     }
 

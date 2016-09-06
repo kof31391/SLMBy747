@@ -45,16 +45,28 @@ public class Todo_View extends AppCompatActivity {
         hour = (TextView)findViewById(R.id.Hour);
         minute = (TextView)findViewById(R.id.Minute);
         readItems();
-        pos=intent.getIntExtra("todo",0);
-        recObj = items.get(pos);
+        try {
+            pos = intent.getIntExtra("todo", 0);
+            recObj = items.get(pos);
+        }catch(Exception e){
+            recObj = intent.getParcelableExtra("messsage");
+        }
         topic.setText(recObj.getTopic());
         category.setText(recObj.getCategory());
         desc.setText(recObj.getDesc());
-        date.setText(""+recObj.getDate().getDate());
-        month.setText(""+recObj.getDate().getMonth());
-        year.setText(""+recObj.getDate().getYear());
-        hour.setText(""+recObj.getDate().getHours());
-        minute.setText(""+recObj.getDate().getMinutes());
+        date.setText("" + recObj.getDate().getDate());
+        month.setText("" + recObj.getDate().getMonth());
+        year.setText("" + recObj.getDate().getYear());
+        if(recObj.getDate().getHours()<10) {
+            hour.setText("0" + recObj.getDate().getHours());
+        }else{
+            hour.setText("" + recObj.getDate().getHours());
+        }
+        if(recObj.getDate().getMinutes()<10){
+            minute.setText("0" + recObj.getDate().getMinutes());
+        }else{
+            minute.setText("" + recObj.getDate().getMinutes());
+        }
     }
 
     public void onClickBack(View v) {

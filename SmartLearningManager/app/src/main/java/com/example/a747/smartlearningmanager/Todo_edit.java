@@ -46,6 +46,7 @@ public class Todo_edit extends AppCompatActivity {
     private Date date;
     private Spinner spinner;
     private String category;
+    private Calendar mcurrentTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,15 +74,18 @@ public class Todo_edit extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Calendar mcurrentTime = Calendar.getInstance();
+                mcurrentTime = Calendar.getInstance();
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(Todo_edit.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        todoTime.setText( selectedHour + ":" + selectedMinute);
+                        if(selectedMinute<=9) {
+                            todoTime.setText(selectedHour + ":0" + selectedMinute);
+                        }else{
+                            todoTime.setText(selectedHour + ":" + selectedMinute);
+                        }
                     }
                 }, hour, minute, true);
                 mTimePicker.show();
