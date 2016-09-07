@@ -70,7 +70,7 @@ public class Todo_edit extends AppCompatActivity {
         date = recObj.getDate();
         category = recObj.getCategory();
         spinner.setSelection(recObj.getPosition());
-        todoDate.setText(date.getDate()+"/"+date.getMonth()+"/"+date.getYear());
+        todoDate.setText(date.getDate()+"/"+(date.getMonth())+"/"+(date.getYear()));
         todoTime.setText(date.getHours()+":"+date.getMinutes());
             topic.setText(recObj.getTopic());
             desc.setText(recObj.getDesc());

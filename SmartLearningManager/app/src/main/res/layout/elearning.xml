@@ -32,7 +32,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Smart Learning Manager"
                         android:id="@+id/textView5"
                         android:textColor="#ffffff"
@@ -173,7 +173,7 @@
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="#cecece"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"

@@ -34,7 +34,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Smart Learning Manager"
                         android:id="@+id/textView4"
                         android:textColor="#ffffff"
@@ -160,7 +160,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Schedule"
                         android:id="@+id/textView6"
                         android:layout_marginLeft="20dp"
@@ -294,7 +294,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="News"
                         android:id="@+id/textView7"
                         android:layout_marginStart="20dp"

@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="Add todo list"
                     android:id="@+id/textView13"
                     android:textColor="#000000"
