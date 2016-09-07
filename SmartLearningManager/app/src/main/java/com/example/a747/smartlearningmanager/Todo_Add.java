@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.os.SystemClock;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -74,8 +76,9 @@ public class Todo_Add extends AppCompatActivity {
             desc.setHint(" Please Enter Detail ");
         todoTime =(EditText) findViewById(R.id.timePicker);
         todoDate = (EditText) findViewById(R.id.datePicker);
-        todoTime.setText(mcurrentTime.get(Calendar.HOUR_OF_DAY)+":"+Calendar.MINUTE);
-        todoDate.setText(mcurrentTime.get(Calendar.DAY_OF_MONTH)+"/"+Calendar.MONTH+"/"+(Calendar.YEAR+2015));
+        todoTime.setText(mcurrentTime.get(Calendar.HOUR_OF_DAY)+":"+mcurrentTime.get(Calendar.MINUTE));
+        todoDate.setText(mcurrentTime.get(Calendar.DAY_OF_MONTH)+"/"+mcurrentTime.get(Calendar.MONTH)+"/"+
+                mcurrentTime.get(Calendar.YEAR));
             topic.setHint("Enter Topic Here");
             topic.requestFocus();
         todoTime.setOnClickListener(new View.OnClickListener() {
@@ -277,14 +280,6 @@ public class Todo_Add extends AppCompatActivity {
     }
 
     private Notification getNotification(String title,String content) {
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Notification notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(title)
-                .setContentText(content)
-                .setAutoCancel(true)
-                .setSound(alarmSound)
-                .build();
         temp = new todoObj();       //start
         temp.setTopic(topic.getText().toString());
         temp.setDesc(desc.getText().toString());
@@ -292,6 +287,22 @@ public class Todo_Add extends AppCompatActivity {
         temp.setDate(Util.getDateFromEditText(todoDate,todoTime));
         NotificationObj noti = new NotificationObj(temp);
         writeNoti(noti);        //stop
+        Intent intent = new Intent(this, Todo_View.class);
+        intent.putExtra("message", (Parcelable) temp);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(Todo_View.class);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent pendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Notification notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setSound(alarmSound)
+                .build();
         return notification;
     }
 

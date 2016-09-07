@@ -24,7 +24,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Todo_List extends AppCompatActivity {
     private ArrayList<todoObj> items;
@@ -124,11 +126,14 @@ public class Todo_List extends AppCompatActivity {
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
-
+            Date date;
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat time = new SimpleDateFormat("HH:mm");
                 items = (ArrayList<todoObj>)ois.readObject();
-            System.out.println(items.size());
             for(int j = 0 ;j<items.size();j++) {
-                show.add(items.get(j).getTopic());
+                date = items.get(j).getDate();
+                date.setYear(date.getYear()-1900);
+                show.add(items.get(j).getTopic()+"\n"+"Deadline: "+sdf.format(date)+" at "+time.format(date));
             }
 
 
