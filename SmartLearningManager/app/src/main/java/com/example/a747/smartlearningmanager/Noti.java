@@ -36,7 +36,7 @@ public class Noti extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.noti);
-        lvitems = (ListView)findViewById(R.id.noti);
+        lvitems = (MyListView)findViewById(R.id.noti);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         stdid = pref.getString("std_id", null);
         show = new ArrayList<>();
@@ -115,8 +115,6 @@ public class Noti extends AppCompatActivity {
             System.out.println(items.size());
             for(int j = 0 ;j<items.size();j++) {
                 show.add(items.get(j).getTopic()+"\n"+items.get(j).getDesc());
-                System.out.println(show.toString());
-                System.out.println("EEEE");
             }
 
 

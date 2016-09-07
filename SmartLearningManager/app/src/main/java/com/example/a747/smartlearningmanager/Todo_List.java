@@ -41,7 +41,7 @@ public class Todo_List extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         stdid = pref.getString("std_id", null);
         try {
-            lvItems = (ListView) findViewById(R.id.lvItems);
+            lvItems = (MyListView) findViewById(R.id.lvItems);
             show = new ArrayList<>();
             items = new ArrayList<>();
             readItems();
@@ -51,7 +51,7 @@ public class Todo_List extends AppCompatActivity {
             registerForContextMenu(lvItems);
         }catch(Exception e){
             new File(stdid+".txt");
-            lvItems = (ListView) findViewById(R.id.lvItems);
+            lvItems = (MyListView) findViewById(R.id.lvItems);
             show = new ArrayList<>();
             items = new ArrayList<>();
             readItems();
