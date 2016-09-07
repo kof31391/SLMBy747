@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -474,5 +475,9 @@ public class Profile extends AppCompatActivity {
             }
         }
         new GetDataJSON().execute(std_id);
+    }
+    public void onClickBack(View v) {
+        Intent intent = new Intent(this,more_setting.class);
+        startActivity(intent);
     }
 }
