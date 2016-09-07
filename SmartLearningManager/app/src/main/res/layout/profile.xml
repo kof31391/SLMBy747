@@ -8,278 +8,401 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.a747.smartlearningmanager.Profile"
-    android:background="#2238c4">
+    android:background="#FFFFFF">
 
-    <ScrollView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scrollView6"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" >
+        android:layout_height="match_parent">
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-            <TableRow
-                android:layout_width="380dp"
-                android:layout_height="match_parent"
-                android:background="#c1c7ff">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/backtohome"
+            android:src="@drawable/backb"
+            android:layout_gravity="center_horizontal"
+            android:background="#ffffff"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:onClick="onClickBack"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton25"
+                    android:src="@drawable/contacts40"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#ffffff"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="Profile"
-                    android:id="@+id/textView19"
-                    android:textAlignment="center" />
-            </TableRow>
+                    android:id="@+id/textView12"
+                    android:textColor="#000000"
+                    android:paddingTop="5dp"
+                    android:textSize="25dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/imageButton25" />
 
-            <TableRow
+            </LinearLayout>
+    </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/gust"
+                android:id="@+id/tv_pf_image" />
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/tv_pf_image">
 
                 <LinearLayout
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#c7c7c7">
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/linearLayout2">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:id="@+id/tv_pf_std_id"
-                        android:layout_row="0"
-                        android:layout_column="0" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Medium Text"
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/tv_pf_fristname" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:id="@+id/tv_pf_fristname"
-                        android:layout_row="1"
-                        android:layout_column="0" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Medium Text"
+                        android:id="@+id/tv_pf_lastname"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:id="@+id/tv_pf_lastname"
-                        android:layout_row="2"
-                        android:layout_column="0" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:id="@+id/tv_pf_grade"
-                        android:layout_row="3"
-                        android:layout_column="0" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:id="@+id/tv_pf_email"
-                        android:layout_row="4"
-                        android:layout_column="0" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:id="@+id/tv_pf_teleno"
-                        android:layout_row="5"
-                        android:layout_column="0" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:id="@+id/tv_pf_image"
-                        android:layout_row="6"
-                        android:layout_column="0" />
                 </LinearLayout>
-            </TableRow>
 
-            <TableRow
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="244dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linearLayout2"
+                    android:id="@+id/linearLayout3">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Medium Text"
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/tv_pf_std_id"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Grade : " />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Medium Text"
+                        android:id="@+id/tv_pf_grade"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="244dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linearLayout3"
+                    android:id="@+id/linearLayout4">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Email : " />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Medium Text"
+                        android:id="@+id/tv_pf_email" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="244dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linearLayout4">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Tel. " />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Medium Text"
+                        android:id="@+id/tv_pf_teleno" />
+                </LinearLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <ExpandableListView
+            android:id="@+id/expandableListView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="0.5dp" />
+
+        <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#c1c7ff">
+                android:id="@+id/scrollView6">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="Schedule of week"
-                    android:id="@+id/textView21"
-                    android:textAlignment="center" />
-            </TableRow>
 
-            <TableRow
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="380dp"
+                <TableLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:orientation="vertical"
+                    <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="#f65f5f">
+                        android:layout_height="match_parent">
 
-                        <TextView
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Monday"
-                            android:id="@+id/textView20"
-                            android:textSize="30dp"
-                            android:textAlignment="center"
-                            android:autoText="true" />
-                    </LinearLayout>
+                            android:background="#c7c7c7">
 
-                    <TableLayout
-                        android:orientation="vertical"
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tl_pf_sc_mon">
-
-                    </TableLayout>
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#f65f5f">
+                        android:layout_height="match_parent"
+                        android:background="#c1c7ff">
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Tueday"
-                            android:textSize="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="Schedule of week"
+                            android:id="@+id/textView21"
                             android:textAlignment="center" />
-                    </LinearLayout>
+                    </TableRow>
 
-                    <TableLayout
-                        android:orientation="vertical"
+                    <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tl_pf_sc_tue">
+                        android:layout_height="match_parent">
 
-                    </TableLayout>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="380dp"
+                            android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="#f65f5f">
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="#f65f5f">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Wednesday"
-                            android:id="@+id/textView29"
-                            android:textSize="30dp"
-                            android:textAlignment="center" />
-                    </LinearLayout>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Monday"
+                                    android:id="@+id/textView20"
+                                    android:textSize="30dp"
+                                    android:textAlignment="center"
+                                    android:autoText="true" />
+                            </LinearLayout>
 
-                    <TableLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tl_pf_sc_wed">
+                            <TableLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tl_pf_sc_mon">
 
-                    </TableLayout>
+                            </TableLayout>
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="#f65f5f">
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#f65f5f">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Thursday"
-                            android:id="@+id/textView30"
-                            android:textSize="30dp"
-                            android:textAlignment="center" />
-                    </LinearLayout>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tueday"
+                                    android:textSize="30dp"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
 
-                    <TableLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tl_pf_sc_thu">
+                            <TableLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tl_pf_sc_tue">
 
-                    </TableLayout>
+                            </TableLayout>
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="#f65f5f">
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="#f65f5f">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Friday"
-                            android:id="@+id/textView31"
-                            android:textSize="30dp"
-                            android:textAlignment="center" />
-                    </LinearLayout>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Wednesday"
+                                    android:id="@+id/textView29"
+                                    android:textSize="30dp"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
 
-                    <TableLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tl_pf_sc_fri">
+                            <TableLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tl_pf_sc_wed">
 
-                    </TableLayout>
+                            </TableLayout>
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="#f65f5f">
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="#f65f5f">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Saturday"
-                            android:id="@+id/textView32"
-                            android:textSize="30dp"
-                            android:textAlignment="center" />
-                    </LinearLayout>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Thursday"
+                                    android:id="@+id/textView30"
+                                    android:textSize="30dp"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
 
-                    <TableLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tl_pf_sc_sat">
+                            <TableLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tl_pf_sc_thu">
 
-                    </TableLayout>
+                            </TableLayout>
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="#f65f5f">
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="#f65f5f">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Sunday"
-                            android:id="@+id/textView33"
-                            android:textSize="30dp"
-                            android:textAlignment="center" />
-                    </LinearLayout>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Friday"
+                                    android:id="@+id/textView31"
+                                    android:textSize="30dp"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
 
-                    <TableLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tl_pf_sc_sun">
+                            <TableLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tl_pf_sc_fri">
 
-                    </TableLayout>
+                            </TableLayout>
 
-                </LinearLayout>
-            </TableRow>
-        </TableLayout>
-    </ScrollView>
-</RelativeLayout>
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="#f65f5f">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Saturday"
+                                    android:id="@+id/textView32"
+                                    android:textSize="30dp"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
+
+                            <TableLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tl_pf_sc_sat">
+
+                            </TableLayout>
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="#f65f5f">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Sunday"
+                                    android:id="@+id/textView33"
+                                    android:textSize="30dp"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
+
+                            <TableLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tl_pf_sc_sun">
+
+                            </TableLayout>
+
+                        </LinearLayout>
+                    </TableRow>
+                </TableLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+    </RelativeLayout>
+
