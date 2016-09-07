@@ -6,11 +6,10 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Parcelable;
 import android.os.SystemClock;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +22,7 @@ import android.widget.TimePicker;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -55,11 +55,16 @@ public class Todo_Add extends AppCompatActivity {
     String category;
     private todoObj temp;
     private Calendar mcurrentTime = Calendar.getInstance();
+    private String stdid;
+    private ArrayList<NotificationObj> NotiItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_add);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        stdid = pref.getString("std_id", null)+"Notification.txt";
+        System.out.println(stdid);
         Intent intent = getIntent();
         fileName = intent.getStringExtra("fileName");
         items = new ArrayList<>();
@@ -69,7 +74,7 @@ public class Todo_Add extends AppCompatActivity {
         todoTime =(EditText) findViewById(R.id.timePicker);
         todoDate = (EditText) findViewById(R.id.datePicker);
         todoTime.setText(mcurrentTime.get(Calendar.HOUR_OF_DAY)+":"+Calendar.MINUTE);
-        todoDate.setText(mcurrentTime.get(Calendar.DAY_OF_MONTH)+"/"+Calendar.MONTH+"/"+(Calendar.YEAR));
+        todoDate.setText(mcurrentTime.get(Calendar.DAY_OF_MONTH)+"/"+Calendar.MONTH+"/"+(Calendar.YEAR+2015));
             topic.setHint("Enter Topic Here");
             topic.requestFocus();
         todoTime.setOnClickListener(new View.OnClickListener() {
@@ -207,6 +212,37 @@ public class Todo_Add extends AppCompatActivity {
         return sDate;
     }
 
+    private void readNoti(){
+        File filesDir = getFilesDir();
+        File todoFile = new File(filesDir, stdid);
+        NotiItems = new ArrayList<>();
+        try {
+            FileInputStream fis = new FileInputStream(todoFile);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            NotiItems = (ArrayList<NotificationObj>)ois.readObject();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeNoti(NotificationObj obj){
+        File filesDir = getFilesDir();
+        File notiFile = new File(filesDir, stdid);
+        try{
+            readNoti();
+            NotiItems.add(obj);
+            Collections.sort(NotiItems);
+            ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(notiFile));
+            ois.writeObject(NotiItems);
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private long getSchedule(String now, String future) {
         long TimeDifference = 0;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -214,7 +250,6 @@ public class Todo_Add extends AppCompatActivity {
             Date dNow = df.parse(future);
             Date dFuture = df.parse(now);
             TimeDifference = ((dNow.getTime() - dFuture.getTime())+500);
-            System.out.println("Different: "+TimeDifference);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -229,6 +264,7 @@ public class Todo_Add extends AppCompatActivity {
         long futureInMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+
     /*    Intent intent = new Intent(this, Todo_View.class);
         intent.putExtra("message", (Parcelable) temp);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -248,6 +284,13 @@ public class Todo_Add extends AppCompatActivity {
                 .setAutoCancel(true)
                 .setSound(alarmSound)
                 .build();
+        temp = new todoObj();       //start
+        temp.setTopic(topic.getText().toString());
+        temp.setDesc(desc.getText().toString());
+        temp.setCategory(category);
+        temp.setDate(Util.getDateFromEditText(todoDate,todoTime));
+        NotificationObj noti = new NotificationObj(temp);
+        writeNoti(noti);        //stop
         return notification;
     }
 }

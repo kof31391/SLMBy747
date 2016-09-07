@@ -27,9 +27,12 @@
         <activity android:name=".Noti" />
         <activity android:name=".More_News" />
         <activity android:name=".Todo_edit" />
-        <activity android:name=".Profile"/>
-        <activity android:name=".Video_elearning">
-        </activity>
-        <receiver android:name="com.example.a747.smartlearningmanager.NotificationPublisher" />
+        <activity android:name=".Profile" />
+        <activity android:name=".Video_elearning"></activity>
+
+        <receiver android:name=".NotificationPublisher" />
+
+        <activity android:name=".NotificationDetail"></activity>
     </application>
+
 </manifest>

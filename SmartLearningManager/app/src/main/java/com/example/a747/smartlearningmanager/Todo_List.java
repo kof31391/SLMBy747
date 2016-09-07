@@ -32,14 +32,14 @@ public class Todo_List extends AppCompatActivity {
     private int pos;
     private ArrayAdapter<String> adapter;
     private ArrayList<String> show;
-    private String temp;
+    private String stdid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_list);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-        temp = pref.getString("std_id", null);
+        stdid = pref.getString("std_id", null);
         try {
             lvItems = (ListView) findViewById(R.id.lvItems);
             show = new ArrayList<>();
@@ -50,7 +50,7 @@ public class Todo_List extends AppCompatActivity {
             setupListViewListener();
             registerForContextMenu(lvItems);
         }catch(Exception e){
-            new File(temp+".txt");
+            new File(stdid+".txt");
             lvItems = (ListView) findViewById(R.id.lvItems);
             show = new ArrayList<>();
             items = new ArrayList<>();
@@ -111,16 +111,15 @@ public class Todo_List extends AppCompatActivity {
 
     public void gotoEditor(View v){
     Intent intent = new Intent(this,Todo_Add.class);
-        intent.putExtra("fileName",temp+".txt");
+        intent.putExtra("fileName",stdid+".txt");
     startActivity(intent);
     }
 
 
 
     private void readItems() {
-        int i = 1;
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, temp+".txt");
+        File todoFile = new File(filesDir, stdid+".txt");
         items = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream(todoFile);
@@ -150,7 +149,7 @@ public class Todo_List extends AppCompatActivity {
 
     private void writeItems() {
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, temp+".txt");
+        File todoFile = new File(filesDir, stdid+".txt");
         try {
             ObjectOutputStream fis = new ObjectOutputStream(new FileOutputStream(todoFile));
             fis.writeObject(items);

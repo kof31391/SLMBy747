@@ -1,16 +1,138 @@
 package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OptionalDataException;
+import java.io.StreamCorruptedException;
+import java.util.ArrayList;
 
 public class Noti extends AppCompatActivity {
+
+    private ArrayList<NotificationObj> items;
+    private ArrayAdapter<String> adapter;
+    private ListView lvitems;
+    private String stdid;
+    private ArrayList<String> show;
+    private int pos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.noti);
+        lvitems = (ListView)findViewById(R.id.noti);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        stdid = pref.getString("std_id", null);
+        show = new ArrayList<>();
+        items = new ArrayList<>();
+        try {
+            readItems();
+        }catch(Exception e){
+            new File(stdid+"Notification.txt");
+            readItems();
+        }
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, show);
+        lvitems.setAdapter(adapter);
+        setupListViewListener();
+        registerForContextMenu(lvitems);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add("Delete");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        super.onContextItemSelected(item);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int index = info.position;
+        if (item.getTitle().equals("Delete")) {
+            items.remove(index);
+            items.trimToSize();
+            show.remove(index);
+            adapter.notifyDataSetChanged();
+            writeItems();
+        }
+        return true;
+    }
+
+    private void writeItems() {
+        File filesDir = getFilesDir();
+        File todoFile = new File(filesDir, stdid+"Notification.txt");
+        try {
+            ObjectOutputStream fis = new ObjectOutputStream(new FileOutputStream(todoFile));
+            fis.writeObject(items);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setupListViewListener(){
+        lvitems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                pos = position;
+                sendToDetail(pos);
+            }
+        });
+    }
+
+    private void sendToDetail(int pos){
+        Intent intent = new Intent(this,NotificationDetail.class);
+        intent.putExtra("pos", pos);
+        startActivity(intent);
+    }
+
+    private void readItems() {
+        File filesDir = getFilesDir();
+        File todoFile = new File(filesDir, stdid+"Notification.txt");
+        items = new ArrayList<>();
+        try {
+            FileInputStream fis = new FileInputStream(todoFile);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            items = (ArrayList<NotificationObj>)ois.readObject();
+            System.out.println(items.size());
+            for(int j = 0 ;j<items.size();j++) {
+                show.add(items.get(j).getTopic()+"\n"+items.get(j).getDesc());
+                System.out.println(show.toString());
+                System.out.println("EEEE");
+            }
+
+
+        } catch (EOFException e) {
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (OptionalDataException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void gotoTodo(View v){
