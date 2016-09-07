@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Todo_Add">
+    tools:context=".Todo_Add"
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:orientation="vertical"
@@ -95,34 +96,53 @@
                         android:paddingBottom="10dp"/>
 
                     <Spinner
-                        android:layout_width="match_parent"
+                        android:layout_width="320dp"
                         android:layout_height="wrap_content"
                         android:entries="@array/categories"
-                        android:id="@+id/spinner" />
+                        android:id="@+id/spinner"
+                        android:background="#cecece"
+                        android:layout_marginTop="20dp"/>
 
                     <EditText
                         android:layout_width="320dp"
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine"
                         android:ems="10"
+                        android:background="#cecece"
+                        android:textSize="20dp"
                         android:id="@+id/todoDesc"
                         android:layout_alignParentStart="true"
                         android:layout_marginTop="20dp" />
 
-                    <EditText
+                    <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="date"
-                        android:ems="10"
-                        android:id="@+id/datePicker" />
+                        android:layout_marginTop="20dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal">
 
+                        <EditText
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:inputType="date"
+                            android:background="#cecece"
+                            android:drawableEnd="@drawable/sortdown"
+                            android:ems="10"
+                            android:clickable="false"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/datePicker" />
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="time"
-                        android:ems="10"
-                        android:id="@+id/timePicker" />
+                        <EditText
+                            android:layout_width="95dp"
+                            android:layout_height="wrap_content"
+                            android:inputType="time"
+                            android:background="#cecece"
+                            android:drawableEnd="@drawable/sortdown"
+                            android:ems="10"
+
+                            android:id="@+id/timePicker" />
+                    </LinearLayout>
+
 
                 </LinearLayout>
             </ScrollView>

@@ -71,6 +71,7 @@ public class Todo_Add extends AppCompatActivity {
         spin = (Spinner)findViewById(R.id.spinner);
         topic = (TextView)findViewById(R.id.topic);
         desc = (EditText)findViewById(R.id.todoDesc);
+            desc.setHint(" Please Enter Detail ");
         todoTime =(EditText) findViewById(R.id.timePicker);
         todoDate = (EditText) findViewById(R.id.datePicker);
         todoTime.setText(mcurrentTime.get(Calendar.HOUR_OF_DAY)+":"+Calendar.MINUTE);
@@ -144,7 +145,7 @@ public class Todo_Add extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth)
             {
 
-                todoDate.setText(dayOfMonth+"/"+monthOfYear+"/"+year);
+                todoDate.setText(dayOfMonth+" / "+monthOfYear+" / "+year);
 
             }};
 
