@@ -19,6 +19,7 @@ import android.widget.TimePicker;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -47,12 +48,15 @@ public class Todo_edit extends AppCompatActivity {
     private Spinner spinner;
     private String category;
     private Calendar mcurrentTime;
+    private String stdid;
+    private ArrayList<NotificationObj> NotiItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_edit);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         temp = pref.getString("std_id", null);
+        stdid = pref.getString("std_id", null)+"Notification.txt";
         Intent intent = getIntent();
         readItems();
         pos=intent.getIntExtra("todo",0);
@@ -177,7 +181,39 @@ public class Todo_edit extends AppCompatActivity {
             Collections.sort(items);
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
             ois.writeObject(items);
+            NotificationObj noti = new NotificationObj(temp);
+            writeNoti(noti);        //stop
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void readNoti(){
+        File filesDir = getFilesDir();
+        File todoFile = new File(filesDir, stdid);
+        NotiItems = new ArrayList<>();
+        try {
+            FileInputStream fis = new FileInputStream(todoFile);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            NotiItems = (ArrayList<NotificationObj>)ois.readObject();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeNoti(NotificationObj obj){
+        File filesDir = getFilesDir();
+        File notiFile = new File(filesDir, stdid);
+        try{
+            readNoti();
+            NotiItems.add(obj);
+            Collections.sort(NotiItems);
+            ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(notiFile));
+            ois.writeObject(NotiItems);
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
