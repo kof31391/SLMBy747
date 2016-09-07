@@ -25,11 +25,11 @@ public class Util {
         Date dates = new Date();
         String dateArr[] = d.getText().toString().split("/");
         String time[] = t.getText().toString().split(":");
-        int day = Integer.parseInt(dateArr[0]);
-        int month = Integer.parseInt(dateArr[1]);
-        int year = Integer.parseInt(dateArr[2]);
-        int hour = Integer.parseInt(time[0]);
-        int min = Integer.parseInt(time[1]);
+        int day = Integer.parseInt(dateArr[0].trim());
+        int month = Integer.parseInt(dateArr[1].trim());
+        int year = Integer.parseInt(dateArr[2].trim());
+        int hour = Integer.parseInt(time[0].trim());
+        int min = Integer.parseInt(time[1].trim());
         dates.setDate(day);
         dates.setMonth(month);
         dates.setYear(year);
