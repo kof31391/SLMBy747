@@ -186,8 +186,4 @@ public class Todo_List extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-
-
-
 }

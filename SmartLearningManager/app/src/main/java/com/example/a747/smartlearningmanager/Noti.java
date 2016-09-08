@@ -98,7 +98,7 @@ public class Noti extends AppCompatActivity {
     }
 
     private void sendToDetail(int pos){
-        Intent intent = new Intent(this,NotificationDetail.class);
+        Intent intent = new Intent(this,Todo_View.class);
         intent.putExtra("pos", pos);
         startActivity(intent);
     }

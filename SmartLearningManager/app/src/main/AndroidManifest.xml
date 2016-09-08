@@ -32,7 +32,6 @@
 
         <receiver android:name=".NotificationPublisher" />
 
-        <activity android:name=".NotificationDetail"></activity>
     </application>
 
 </manifest>
