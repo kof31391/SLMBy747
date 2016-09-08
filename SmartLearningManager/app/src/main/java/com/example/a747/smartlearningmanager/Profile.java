@@ -8,11 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
-<<<<<<< HEAD
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-=======
->>>>>>> origin/master
+
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
