@@ -14,4 +14,11 @@
         <item>Appointment</item>
         <item>Others</item>
     </string-array>
+    <string-array name="categoriesSearch">
+        <item>Homework</item>
+        <item>Payment</item>
+        <item>Meeting</item>
+        <item>Appointment</item>
+        <item>Others</item>
+    </string-array>
 </resources>
