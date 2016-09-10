@@ -11,7 +11,10 @@ import android.view.View;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 
 import java.io.EOFException;
@@ -35,6 +38,10 @@ public class Todo_List extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private ArrayList<String> show;
     private String stdid;
+    private Spinner spinner;
+    private EditText query;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private SimpleDateFormat time = new SimpleDateFormat("HH:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,8 @@ public class Todo_List extends AppCompatActivity {
         setContentView(R.layout.todo_list);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         stdid = pref.getString("std_id", null);
+        spinner = (Spinner)findViewById(R.id.spinner2);
+        query = (EditText)findViewById(R.id.searchBox);
         try {
             lvItems = (MyListView) findViewById(R.id.lvItems);
             show = new ArrayList<>();
@@ -127,8 +136,6 @@ public class Todo_List extends AppCompatActivity {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
             Date date;
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat time = new SimpleDateFormat("HH:mm");
                 items = (ArrayList<todoObj>)ois.readObject();
             for(int j = 0 ;j<items.size();j++) {
                 date = items.get(j).getDate();
@@ -186,4 +193,24 @@ public class Todo_List extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void Query(View v){
+        String temp ;
+        String catTemp;
+        boolean isEmpty = false;
+        Date date;
+        String category = String.valueOf(spinner.getSelectedItem());
+        show.clear();
+        for(int i = 0;i<items.size();i++){
+            temp = items.get(i).getTopic();
+            catTemp = items.get(i).getCategory();
+            if(temp.contains(query.getText().toString())&&category.equals(catTemp)){
+                date = items.get(i).getDate();
+                show.add(items.get(i).getTopic()+"\n"+"Deadline: "+sdf.format(date)+" at "+time.format(date));
+            }else if(temp.contains(query.getText().toString())&&category.equals("Any")){
+                date = items.get(i).getDate();
+                show.add(items.get(i).getTopic()+"\n"+"Deadline: "+sdf.format(date)+" at "+time.format(date));
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
 }
