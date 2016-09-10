@@ -167,6 +167,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/scrollView3" >
 
+
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
@@ -175,6 +176,32 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
                         android:weightSum="1">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal">
+
+                            <EditText
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/editText" />
+
+                            <Spinner
+                                android:layout_width="100dp"
+                                android:layout_height="35dp"
+                                android:id="@+id/spinner2" />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:src="@drawable/search"
+                                android:background="#cecece"
+                                android:id="@+id/imageButton27" />
+
+
+                        </LinearLayout>
 
                         <com.example.a747.smartlearningmanager.MyListView
                             android:layout_width="match_parent"
