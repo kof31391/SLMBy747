@@ -2,14 +2,23 @@ package com.example.a747.smartlearningmanager;
 
 
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Parcelable;
+import android.os.SystemClock;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,6 +33,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -49,6 +61,7 @@ public class Todo_edit extends AppCompatActivity {
     private String category;
     private Calendar mcurrentTime;
     private String stdid;
+    private todoObj temps;
     private ArrayList<NotificationObj> NotiItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,41 +194,85 @@ public class Todo_edit extends AppCompatActivity {
             Collections.sort(items);
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
             ois.writeObject(items);
-            NotificationObj noti = new NotificationObj(temp);
-            writeNoti(noti);        //stop
-
+             /*Setup Notification*/
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date dateFuture = temp.getDate();
+            dateFuture.setYear(dateFuture.getYear()-1900);
+            String future = dateFormat.format(dateFuture);
+            String title = temp.getTopic();
+            String content = temp.getDesc();
+            scheduleNotification(getNotification(title,content), getSchedule(getTimeCurrent(), future));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    private void readNoti(){
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, stdid);
-        NotiItems = new ArrayList<>();
+
+    private Notification getNotification(String title, String content) {
+        temps = new todoObj();       //start
+        temps.setTopic(topic.getText().toString());
+        temps.setDesc(desc.getText().toString());
+        temps.setCategory(category);
+        temps.setDate(Util.getDateFromEditText(todoDate,todoTime));
+        NotificationObj noti = new NotificationObj(temps);
+        Intent intent = new Intent(this, Todo_View.class);
+        intent.putExtra("message", (Parcelable) temps);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(Todo_View.class);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent pendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Notification notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setSound(alarmSound)
+                .build();
+        return notification;
+    }
+
+
+    private long getSchedule(String now, String future) {
+        long TimeDifference = 0;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            FileInputStream fis = new FileInputStream(todoFile);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            NotiItems = (ArrayList<NotificationObj>)ois.readObject();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        } catch (ClassNotFoundException e) {
+            Date dNow = df.parse(future);
+            Date dFuture = df.parse(now);
+            TimeDifference = ((dNow.getTime() - dFuture.getTime())+500);
+        } catch (ParseException e) {
             e.printStackTrace();
         }
+        return TimeDifference;
+    }
+    private void scheduleNotification(Notification notification, long delay) {
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+
+    /*    Intent intent = new Intent(this, Todo_View.class);
+        intent.putExtra("message", (Parcelable) temp);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(Todo_View.class);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent pending =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);*/
+
+    }
+    private String getTimeCurrent() {
+        Calendar calendar = Calendar.getInstance();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = calendar.getTime();
+        String sDate = dateFormat.format(date);
+        return sDate;
     }
 
-    private void writeNoti(NotificationObj obj){
-        File filesDir = getFilesDir();
-        File notiFile = new File(filesDir, stdid);
-        try{
-            readNoti();
-            NotiItems.add(obj);
-            Collections.sort(NotiItems);
-            ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(notiFile));
-            ois.writeObject(NotiItems);
-        }catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
+
 }

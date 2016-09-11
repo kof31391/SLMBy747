@@ -45,13 +45,13 @@ public class Todo_View extends AppCompatActivity {
         hour = (TextView)findViewById(R.id.Hour);
         minute = (TextView)findViewById(R.id.Minute);
         readItems();
+            recObj = intent.getParcelableExtra("message");
         try {
+            topic.setText(recObj.getTopic());
+        }catch(Exception e){
             pos = intent.getIntExtra("todo", 0);
             recObj = items.get(pos);
-        }catch(Exception e){
-            recObj = intent.getParcelableExtra("messsage");
         }
-        topic.setText(recObj.getTopic());
         category.setText(recObj.getCategory());
         desc.setText(recObj.getDesc());
         date.setText("" + recObj.getDate().getDate());

@@ -74,6 +74,8 @@ public class todoObj implements Parcelable,Serializable,Comparable<todoObj>{
     public todoObj(Parcel in) {
         this.topic = in.readString();
         this.desc = in.readString();
+        this.category = in.readString();
+        this.date = (Date)in.readSerializable();
     }
 
     @Override
@@ -85,11 +87,23 @@ public class todoObj implements Parcelable,Serializable,Comparable<todoObj>{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(topic);
         dest.writeString(desc);
+        dest.writeString(category);
+        dest.writeSerializable(date);
     }
 
     public int getPosition(){
         String[] categories = {"Homework","Payment","Meeting","Appointment","Others"};
         int pos =  Arrays.asList(categories).indexOf(this.category);
         return pos;
+    }
+
+    @Override
+    public String toString() {
+        return "todoObj{" +
+                "topic='" + topic + '\'' +
+                ", desc='" + desc + '\'' +
+                ", date=" + date +
+                ", category='" + category + '\'' +
+                '}';
     }
 }

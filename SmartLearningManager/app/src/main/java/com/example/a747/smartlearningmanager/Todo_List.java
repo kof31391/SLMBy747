@@ -151,6 +151,7 @@ public class Todo_List extends AppCompatActivity {
                 items = (ArrayList<todoObj>)ois.readObject();
             for(int j = 0 ;j<items.size();j++) {
                 date = items.get(j).getDate();
+                date.setYear(date.getYear()-1900);
                 show.add(items.get(j).getTopic()+"\n"+"Deadline: "+sdf.format(date)+" at "+time.format(date));
             }
 
