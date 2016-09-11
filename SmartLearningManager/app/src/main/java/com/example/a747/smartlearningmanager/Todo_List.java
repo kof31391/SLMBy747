@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -42,6 +41,7 @@ public class Todo_List extends AppCompatActivity {
     private EditText query;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+    private ArrayList<Integer> posTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,15 +86,29 @@ public class Todo_List extends AppCompatActivity {
         super.onContextItemSelected(item);
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                int index = info.position;
-               if (item.getTitle().equals("Delete")) {
-                       items.remove(index);
-                       items.trimToSize();
-                       show.remove(index);
-                       adapter.notifyDataSetChanged();
-                       writeItems();
-                    }else if(item.getTitle().equals("Edit")){
-                   sendToEditor(index);
-               }
+                if(posTemp==null) {
+                    if (item.getTitle().equals("Delete")) {
+                        items.remove(index);
+                        items.trimToSize();
+                        show.remove(index);
+                        adapter.notifyDataSetChanged();
+                        writeItems();
+                    } else if (item.getTitle().equals("Edit")) {
+                        sendToEditor(index);
+                    }
+                }else{
+                    int pos = posTemp.get(index);
+                    if (item.getTitle().equals("Delete")) {
+                        items.remove(pos);
+                        items.trimToSize();
+                        adapter.notifyDataSetChanged();
+                        writeItems();
+                        Intent intent = new Intent(this,Todo_List.class);
+                        startActivity(intent);
+                    } else if (item.getTitle().equals("Edit")) {
+                        sendToEditor(pos);
+                    }
+                }
                 return true;
     }
 
@@ -127,11 +141,9 @@ public class Todo_List extends AppCompatActivity {
     }
 
 
-
     private void readItems() {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, stdid+".txt");
-        items = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -196,9 +208,9 @@ public class Todo_List extends AppCompatActivity {
     public void Query(View v){
         String temp ;
         String catTemp;
-        boolean isEmpty = false;
         Date date;
         String category = String.valueOf(spinner.getSelectedItem());
+        posTemp = new ArrayList<>();
         show.clear();
         for(int i = 0;i<items.size();i++){
             temp = items.get(i).getTopic();
@@ -206,9 +218,11 @@ public class Todo_List extends AppCompatActivity {
             if(temp.contains(query.getText().toString())&&category.equals(catTemp)){
                 date = items.get(i).getDate();
                 show.add(items.get(i).getTopic()+"\n"+"Deadline: "+sdf.format(date)+" at "+time.format(date));
+                posTemp.add(i);
             }else if(temp.contains(query.getText().toString())&&category.equals("Any")){
                 date = items.get(i).getDate();
                 show.add(items.get(i).getTopic()+"\n"+"Deadline: "+sdf.format(date)+" at "+time.format(date));
+                posTemp.add(i);
             }
         }
         adapter.notifyDataSetChanged();

@@ -15,6 +15,7 @@
         <item>Others</item>
     </string-array>
     <string-array name="categoriesSearch">
+		<item>Any</item>
         <item>Homework</item>
         <item>Payment</item>
         <item>Meeting</item>
