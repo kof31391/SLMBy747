@@ -29,7 +29,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -167,66 +171,66 @@ public class Profile extends AppCompatActivity {
         while(!resultSet.isAfterLast()){
             switch (resultSet.getString(resultSet.getColumnIndex("subject_date"))){
                 case "1" :
-                    monday.add(resultSet.getString(resultSet.getColumnIndex("subject_code")));
-                    monday.add(resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    monday.add(resultSet.getString(resultSet.getColumnIndex("subject_date")));
-                    monday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_start")));
-                    monday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    monday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
+                    monday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    monday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    monday.add("ATTEND / TOTAL CLASS:      /      ");
+                    monday.add("---------------------------------");
                     break;
                 case "2" :
-                    tuesday.add(resultSet.getString(resultSet.getColumnIndex("subject_code")));
-                    tuesday.add(resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    tuesday.add(resultSet.getString(resultSet.getColumnIndex("subject_date")));
-                    tuesday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_start")));
-                    tuesday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    tuesday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
+                    tuesday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    tuesday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    tuesday.add("ATTEND / TOTAL CLASS:      /      ");
+                    tuesday.add("---------------------------------");
                     break;
                 case "3" :
-                    wednesday.add(resultSet.getString(resultSet.getColumnIndex("subject_code")));
-                    wednesday.add(resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    wednesday.add(resultSet.getString(resultSet.getColumnIndex("subject_date")));
-                    wednesday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_start")));
-                    wednesday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    wednesday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
+                    wednesday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    wednesday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    wednesday.add("ATTEND / TOTAL CLASS:      /      ");
+                    wednesday.add("---------------------------------");
                     break;
                 case "4" :
-                    thursday.add(resultSet.getString(resultSet.getColumnIndex("subject_code")));
-                    thursday.add(resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    thursday.add(resultSet.getString(resultSet.getColumnIndex("subject_date")));
-                    thursday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_start")));
-                    thursday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    thursday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
+                    thursday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    thursday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    thursday.add("ATTEND / TOTAL CLASS:      /      ");
+                    thursday.add("---------------------------------");
                     break;
                 case "5" :
-                    friday.add(resultSet.getString(resultSet.getColumnIndex("subject_code")));
-                    friday.add(resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    friday.add(resultSet.getString(resultSet.getColumnIndex("subject_date")));
-                    friday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_start")));
-                    friday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    friday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
+                    friday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    friday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    friday.add("ATTEND / TOTAL CLASS:      /      ");
+                    friday.add("---------------------------------");
                     break;
                 case "6" :
-                    saturday.add(resultSet.getString(resultSet.getColumnIndex("subject_code")));
-                    saturday.add(resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    saturday.add(resultSet.getString(resultSet.getColumnIndex("subject_date")));
-                    saturday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_start")));
-                    saturday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    saturday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
+                    saturday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    saturday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    saturday.add("ATTEND / TOTAL CLASS:      /      ");
+                    saturday.add("---------------------------------");
                     break;
                 case "7" :
-                    sunday.add(resultSet.getString(resultSet.getColumnIndex("subject_code")));
-                    sunday.add(resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    sunday.add(resultSet.getString(resultSet.getColumnIndex("subject_date")));
-                    sunday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_start")));
-                    sunday.add(resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    sunday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
+                    sunday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    sunday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    sunday.add("ATTEND / TOTAL CLASS:      /      ");
+                    sunday.add("---------------------------------");
                     break;
             }
             resultSet.moveToNext();
         }
         mydatabase.close();
         expandableListDetail  = new HashMap<String, List<String>>();
-        expandableListDetail.put("Sunday", sunday);
-        expandableListDetail.put("Saturday", saturday);
-        expandableListDetail.put("Friday", friday);
-        expandableListDetail.put("Thursday", thursday);
-        expandableListDetail.put("Wednesday", wednesday);
-        expandableListDetail.put("Tuesday", tuesday);
         expandableListDetail.put("Monday", monday);
+        expandableListDetail.put("Tuesday", tuesday);
+        expandableListDetail.put("Wednesday", wednesday);
+        expandableListDetail.put("Thursday", thursday);
+        expandableListDetail.put("Friday", friday);
+        expandableListDetail.put("Saturday", saturday);
+        expandableListDetail.put("Sunday", sunday);
     }
 
     public void onClickBack(View v) {
