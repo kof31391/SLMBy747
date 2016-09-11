@@ -280,12 +280,19 @@ public class Main extends AppCompatActivity {
             protected void onPostExecute(String strJSON) {
                 try {
                     Log.i("Initial","Initial set notification for schedule...");
+                    SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+                    mydatabase.execSQL("DROP TABLE IF EXISTS Schedule");
+                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Schedule(subject_code VARCHAR, subject_name VARCHAR, lecturer VARCHAR, subject_room VARCHAR, subject_date VARCHAR, subject_time_start VARCHAR, subject_time_ended VARCHAR);");
+
                     JSONArray data = new JSONArray(strJSON);
                     Calendar calendar = Calendar.getInstance();
                     Date nDate;
                     int nowDayfoweek = calendar.get(calendar.DAY_OF_WEEK)-1;
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
+
+                        mydatabase.execSQL("INSERT INTO Schedule VALUES('"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("lecturer")+"','"+c.getString("subject_room")+"','"+c.getString("subject_date")+"','"+c.getString("subject_time_start")+"','"+c.getString("subject_time_ended")+"');");
+
                         nDate = calendar.getTime();
                         Date sDate = calendar.getTime();
                         int scheDayofweek = c.getInt("subject_date");
