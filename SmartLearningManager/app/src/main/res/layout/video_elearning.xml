@@ -60,7 +60,7 @@
 
             <VideoView
                 android:id="@+id/video_display"
-                android:layout_width="wrap_content"
+                android:layout_width="415dp"
                 android:layout_height="wrap_content" />
 
             <LinearLayout
@@ -70,11 +70,14 @@
                 android:layout_gravity="center_horizontal|bottom"
                 android:weightSum="1">
                 <ImageButton
-                    style="@android:style/MediaButton.Play"
                     android:layout_width="60dip"
                     android:layout_height="45dip"
                     android:id="@+id/btnPlay"
-                    android:layout_gravity="left|bottom" />
+                    android:layout_gravity="left|bottom"
+                    android:nestedScrollingEnabled="false"
+                    android:onClick="pause"
+                    android:src="@drawable/pause"
+                    android:background="#000000" />
 
                 <SeekBar
                     android:layout_width="160dp"
@@ -85,10 +88,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="00:00"
+                    android:text="00:00:00"
                     android:id="@+id/timing"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#ffffff" />
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -109,7 +113,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/subjectcode"
+            android:id="@+id/video_subcode"
             android:text="test"
             android:layout_toStartOf="@+id/addTodoBtn"
             android:textSize="30dp"
@@ -131,7 +135,7 @@
             android:paddingTop="5dp"
             android:paddingRight="10dp"
             android:paddingBottom="5dp"
-            android:id="@+id/todoDesc"
+            android:id="@+id/video_room"
             />
         <LinearLayout
             android:orientation="horizontal"
@@ -152,39 +156,8 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="30"
                 android:textSize="20dp"
-                android:id="@+id/Date" />
+                android:id="@+id/video_date" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="/"
-                android:textSize="20dp"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="08"
-                android:textSize="20dp"
-                android:id="@+id/Month" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="/"
-                android:textSize="20dp"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="2016"
-                android:textSize="20dp"
-                android:id="@+id/Year" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -206,23 +179,8 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="10"
                 android:textSize="20dp"
-                android:id="@+id/Hour" />
+                android:id="@+id/video_time" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text=":"
-                android:textSize="20dp"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="04"
-                android:textSize="20dp"
-                android:id="@+id/Minute" />
         </LinearLayout>
     </LinearLayout>
 

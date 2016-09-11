@@ -309,8 +309,8 @@ public class Main extends AppCompatActivity {
                                     c.getString("subject_room")+" เริ่มเรียนเวลา "+c.getString("subject_time_start")+" จนถึง "+c.getString("subject_time_ended"))
                                     ,diffSec);
                         }
-                        Log.i("Initial","Initial set notification for schedule success");
                     }
+                    Log.i("Initial","Initial set notification for schedule success");
                 }catch (Exception e){
                     e.printStackTrace();
                 }

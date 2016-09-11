@@ -1,5 +1,6 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.MediaRouteButton;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -10,9 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,10 +30,10 @@ public class Video_elearning extends AppCompatActivity {
     TextView timing;
     int total_time;
     boolean isFullScreen = false;
-    String subject;
-    String room;
-    String date;
-    String time;
+    String elearning_subject = "";
+    String elearning_room = "";
+    String elearning_date = "";
+    String elearning_time = "";
 
     private Runnable onEverySecond=new Runnable() {
 
@@ -55,10 +59,10 @@ public class Video_elearning extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            subject = extras.getString("subject");
-            room = extras.getString("room");
-            date = extras.getString("date");
-            time = extras.getString("time");
+            elearning_subject = extras.getString("subject");
+            elearning_room = extras.getString("room");
+            elearning_date = extras.getString("date");
+            elearning_time = extras.getString("time");
         }
 
         /*Start preload*/
@@ -85,39 +89,46 @@ public class Video_elearning extends AppCompatActivity {
             }
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser) {
-
-
-                SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
-                Date time = new Date();
+            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+                int hour = 0;
+                int timecur;
                 int stepSize = 1000;
-                int temp;
                 if(fromUser) {
                     // this is when actually seekbar has been seeked to a new position
                     video_display.seekTo(progress);
                 }
-                progress = ((int)Math.round(progress/stepSize))*stepSize;
+                progress = (Math.round(progress/stepSize))*stepSize;
                 seekBar.setProgress(progress);
-                temp = progress;
-                time.setSeconds(temp);
-                timing.setText(sdf.format(time));
+                timecur = video_display.getCurrentPosition();
+                SimpleDateFormat sdf =  new SimpleDateFormat("mm:ss");
+                if(video_display.getCurrentPosition()>=3600000){
+                    hour ++;
+                    sdf = new SimpleDateFormat(hour+":"+"mm:ss");
+                }
+                timing.setText(sdf.format(timecur));
             }
         });
+        /*Setup detail*/
+        TextView e_subject = (TextView) findViewById(R.id.video_subcode);
+        e_subject.setText(elearning_subject);
+        TextView e_room = (TextView) findViewById(R.id.video_room);
+        e_room.setText(elearning_room);
+        TextView e_date = (TextView) findViewById(R.id.video_date);
+        e_date.setText(elearning_date);
+        TextView e_time = (TextView) findViewById(R.id.video_time);
+        e_time.setText(elearning_time);
 
         /*Setup Timing*/
         timing = (TextView) findViewById(R.id.timing);
 
         /*Setup video*/
         video_display = (VideoView) findViewById(R.id.video_display);
-        video_display.setVideoURI(Uri.parse("http://54.169.58.93/video_elearning/"+date+"_"+time+"_"+subject+"-"+room+".mp4"));
+        video_display.setVideoURI(Uri.parse("http://54.169.58.93/video_elearning/"+elearning_date+"_"+elearning_time+"_"+elearning_subject+"-"+elearning_room+".mp4"));
 
         /*Setup layout video*/
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT) ;
         video_display.setLayoutParams(params);
-
         video_display.requestFocus();
-
         video_display.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
@@ -133,22 +144,35 @@ public class Video_elearning extends AppCompatActivity {
         });
     }
 
+    public void pause(View v){
+        if(video_display.isPlaying()){
+            video_display.pause();
+            ImageButton btn_play = (ImageButton) findViewById(R.id.btnPlay);
+            btn_play.setImageResource(R.drawable.play);
+        }else{
+            video_display.start();
+            ImageButton btn_play = (ImageButton) findViewById(R.id.btnPlay);
+            btn_play.setImageResource(R.drawable.pause);
+        }
+    }
+
     public void videoFullscreen(View v){
-        if(isFullScreen==false) {
+        FrameLayout f_layout = (FrameLayout) findViewById(R.id.VideoSurfaceView);
+        android.widget.FrameLayout.LayoutParams params = (android.widget.FrameLayout.LayoutParams) f_layout.getLayoutParams();
+        if(isFullScreen == false) {
             DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            android.widget.FrameLayout.LayoutParams params = (android.widget.FrameLayout.LayoutParams) video_display.getLayoutParams();
             params.width = metrics.widthPixels;
             params.height = metrics.heightPixels;
             params.leftMargin = 0;
             video_display.setLayoutParams(params);
         }else{
             DisplayMetrics metrics = new DisplayMetrics(); getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            android.widget.FrameLayout.LayoutParams params = (android.widget.FrameLayout.LayoutParams) video_display.getLayoutParams();
             params.width =  (int) (300*metrics.density);
             params.height = (int) (250*metrics.density);
             params.leftMargin = 30;
             video_display.setLayoutParams(params);
+            isFullScreen = false;
         }
     }
 
