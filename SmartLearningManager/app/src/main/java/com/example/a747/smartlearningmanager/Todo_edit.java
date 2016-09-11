@@ -179,6 +179,37 @@ public class Todo_edit extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void readNoti(){
+        File filesDir = getFilesDir();
+        File todoFile = new File(filesDir, stdid);
+        NotiItems = new ArrayList<>();
+        try {
+            FileInputStream fis = new FileInputStream(todoFile);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            NotiItems = (ArrayList<NotificationObj>)ois.readObject();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeNoti(NotificationObj obj){
+        File filesDir = getFilesDir();
+        File notiFile = new File(filesDir, stdid);
+        try{
+            readNoti();
+            NotiItems.add(obj);
+            Collections.sort(NotiItems);
+            ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(notiFile));
+            ois.writeObject(NotiItems);
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void writeItems() {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, temp+".txt");
@@ -194,6 +225,8 @@ public class Todo_edit extends AppCompatActivity {
             Collections.sort(items);
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
             ois.writeObject(items);
+            NotificationObj noti = new NotificationObj(temp);
+            writeNoti(noti);
              /*Setup Notification*/
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date dateFuture = temp.getDate();

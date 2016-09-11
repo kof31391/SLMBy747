@@ -118,6 +118,8 @@ public class Todo_Add extends AppCompatActivity {
 
 
 
+
+
     public void onClickAddTodo(View view) {
         category = String.valueOf(spin.getSelectedItem());
         if(topic.length()>0) {
