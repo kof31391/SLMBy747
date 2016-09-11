@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -24,6 +26,11 @@ public class Video_elearning extends AppCompatActivity {
     TextView timing;
     int total_time;
     boolean isFullScreen = false;
+    String subject;
+    String room;
+    String date;
+    String time;
+
     private Runnable onEverySecond=new Runnable() {
 
         @Override
@@ -45,6 +52,14 @@ public class Video_elearning extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.video_elearning);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            subject = extras.getString("subject");
+            room = extras.getString("room");
+            date = extras.getString("date");
+            time = extras.getString("time");
+        }
 
         /*Start preload*/
         preload_dialog = new ProgressDialog(this);
@@ -90,14 +105,12 @@ public class Video_elearning extends AppCompatActivity {
             }
         });
 
-
-
         /*Setup Timing*/
         timing = (TextView) findViewById(R.id.timing);
 
         /*Setup video*/
         video_display = (VideoView) findViewById(R.id.video_display);
-        video_display.setVideoURI(Uri.parse("http://techslides.com/demos/sample-videos/small.mp4"));
+        video_display.setVideoURI(Uri.parse("http://54.169.58.93/video_elearning/"+date+"_"+time+"_"+subject+"-"+room+".mp4"));
 
         /*Setup layout video*/
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT) ;
@@ -119,6 +132,7 @@ public class Video_elearning extends AppCompatActivity {
             }
         });
     }
+
     public void videoFullscreen(View v){
         if(isFullScreen==false) {
             DisplayMetrics metrics = new DisplayMetrics();
@@ -137,6 +151,7 @@ public class Video_elearning extends AppCompatActivity {
             video_display.setLayoutParams(params);
         }
     }
+
     public void gotoElearning(View v) {
         Intent intent = new Intent(this, Elearning.class);
         startActivity(intent);

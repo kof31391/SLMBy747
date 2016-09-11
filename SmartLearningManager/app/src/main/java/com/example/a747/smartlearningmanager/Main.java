@@ -46,7 +46,7 @@ public class Main extends AppCompatActivity {
     ArrayList<String> al_desc;
     ArrayList<String> al_title;
 
-    private String finalUrl;
+    private String finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_it_feed";
     private HandleXML obj;
     private String std_id;
 
@@ -153,12 +153,10 @@ public class Main extends AppCompatActivity {
                     JSONObject c = data.getJSONObject(0);
                     SQLiteDatabase mydatabase = openOrCreateDatabase("Profile",MODE_PRIVATE,null);
                     mydatabase.execSQL("DROP TABLE IF EXISTS Profile");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Profile(fristname VARCHAR, lastname VARCHAR, department VARCHAR, grade VARCHAR, email VARCHAR, phonenum VARCHAR, image VARCHAR);");
-                    mydatabase.execSQL("INSERT INTO Profile VALUES('"+c.getString("fristname")+"','"+c.getString("lastname")+"','"+c.getString("department")+"','"+c.getString("grade")+"','"+c.getString("email")+"','"+c.getString("phonenum")+"','"+c.getString("image")+"');");
+                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Profile(firstname VARCHAR, lastname VARCHAR, department VARCHAR, grade VARCHAR, email VARCHAR, phonenum VARCHAR, image VARCHAR);");
+                    mydatabase.execSQL("INSERT INTO Profile VALUES('"+c.getString("firstname")+"','"+c.getString("lastname")+"','"+c.getString("department")+"','"+c.getString("grade")+"','"+c.getString("email")+"','"+c.getString("phonenum")+"','"+c.getString("image")+"');");
                     mydatabase.close();
-                    if (c.getString("department") == "IT") {
-                        finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_it_feed";
-                    }else{
+                    if (c.getString("department") == "CS") {
                         finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_cs_feed";
                     }
                     Log.i("Initial","Initial Profile success");

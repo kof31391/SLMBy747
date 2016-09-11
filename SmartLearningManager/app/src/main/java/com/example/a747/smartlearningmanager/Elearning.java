@@ -35,6 +35,10 @@ public class Elearning extends AppCompatActivity {
     }
     public void gotoVideo(View v){
         Intent intent = new Intent(this, Video_elearning.class);
+        intent.putExtra("subject","INT201");
+        intent.putExtra("room","CB2312");
+        intent.putExtra("date","2014-08-05");
+        intent.putExtra("time","10-30-00");
         startActivity(intent);
     }
 }

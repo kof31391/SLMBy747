@@ -57,6 +57,12 @@ public class more_setting extends AppCompatActivity {
         SharedPreferences.Editor editor = pref.edit();
         editor.clear();
         editor.commit();
+
+        SharedPreferences pref2 = getApplicationContext().getSharedPreferences("Initial", 0);
+        SharedPreferences.Editor editor2 = pref2.edit();
+        editor2.clear();
+        editor2.commit();
+
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
