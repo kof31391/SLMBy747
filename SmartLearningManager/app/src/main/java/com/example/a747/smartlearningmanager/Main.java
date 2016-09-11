@@ -12,7 +12,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.SystemClock;
-import android.provider.CalendarContract;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,7 +36,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,7 +46,7 @@ public class Main extends AppCompatActivity {
     ArrayList<String> al_desc;
     ArrayList<String> al_title;
 
-    private String finalUrl="http://www4.sit.kmutt.ac.th/student/bsc_it_feed";
+    private String finalUrl;
     private HandleXML obj;
     private String std_id;
 
@@ -74,8 +72,9 @@ public class Main extends AppCompatActivity {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         iniDate = prefInitial.getString("Initial",null);
         if(iniDate == null){
-            setSQLLite();
-            getNews();
+            setProfile();
+            setRSS();
+            getRSS();
             setNotiSchedule();
             Calendar calendar = Calendar.getInstance();
             Date now = calendar.getTime();
@@ -91,11 +90,12 @@ public class Main extends AppCompatActivity {
                     editorInitial.clear();
                     editorInitial.putString("Initial",df.format(now));
                     editorInitial.commit();
-                    setSQLLite();
-                    getNews();
+                    setProfile();
+                    setRSS();
+                    getRSS();
                     setNotiSchedule();
                 }else{
-                    getNews();
+                    getRSS();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -119,8 +119,76 @@ public class Main extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    public void getNews(){
-        /*List RSS from SQLLIte*/
+    private void setProfile(){
+        class GetDataJSON extends AsyncTask<String,Void,String> {
+            HttpURLConnection urlConnection = null;
+            public String strJSON;
+            protected String doInBackground(String... params) {
+                try {
+                    URL url = new URL("http://54.169.58.93/Profile.php?std_id="+params[0]);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    int code = urlConnection.getResponseCode();
+                    if(code==200){
+                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                        if (in != null) {
+                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+                            String line;
+                            while ((line = bufferedReader.readLine()) != null)
+                                strJSON = line;
+                        }
+                        in.close();
+                    }
+                    return strJSON;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    urlConnection.disconnect();
+                }
+                return strJSON;
+            }
+            protected void onPostExecute(String strJSON) {
+                Log.i("Initial","Initial Profile...");
+                try {
+                    JSONArray data = new JSONArray(strJSON);
+                    JSONObject c = data.getJSONObject(0);
+                    SQLiteDatabase mydatabase = openOrCreateDatabase("Profile",MODE_PRIVATE,null);
+                    mydatabase.execSQL("DROP TABLE IF EXISTS Profile");
+                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Profile(fristname VARCHAR, lastname VARCHAR, department VARCHAR, grade VARCHAR, email VARCHAR, phonenum VARCHAR, image VARCHAR);");
+                    mydatabase.execSQL("INSERT INTO Profile VALUES('"+c.getString("fristname")+"','"+c.getString("lastname")+"','"+c.getString("department")+"','"+c.getString("grade")+"','"+c.getString("email")+"','"+c.getString("phonenum")+"','"+c.getString("image")+"');");
+                    mydatabase.close();
+                    if (c.getString("department") == "IT") {
+                        finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_it_feed";
+                    }else{
+                        finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_cs_feed";
+                    }
+                    Log.i("Initial","Initial Profile success");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        new GetDataJSON().execute(std_id);
+    }
+
+    private void setRSS (){
+        Log.i("Initial","Initial set RSS...");
+        obj = new HandleXML(finalUrl);
+        obj.fetchXML();
+        al_title = obj.getAl_title();
+        al_desc = obj.getAl_desc();
+        while(obj.parsingComplete);
+        SQLiteDatabase mydatabase = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
+        mydatabase.execSQL("DROP TABLE IF EXISTS RSS");
+        mydatabase.execSQL("CREATE TABLE IF NOT EXISTS RSS(title VARCHAR,description VARCHAR);");
+        for(int i=0;i<al_title.size();i++){
+            mydatabase.execSQL("INSERT INTO RSS VALUES('"+al_title.get(i).toString()+"','"+al_desc.get(i).toString()+"');");
+        }
+        mydatabase.close();
+        Log.i("Initial","Initial set RSS success");
+    }
+
+    private void getRSS(){
+        Log.i("Initial","Initial get RSS...");
         SQLiteDatabase mydatabase = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
         Cursor resultSet = mydatabase.rawQuery("SELECT title, description FROM RSS",null);
         resultSet.moveToFirst();
@@ -181,8 +249,79 @@ public class Main extends AppCompatActivity {
         row.addView(title);
         row.setLayoutParams(params2);
         tl_news.addView(row);
+        Log.i("Initial","Initial get RSS success");
     }
-    public void getSchedule(String std_id){
+
+    private void setNotiSchedule(){
+        class GetDataJSON extends AsyncTask<String,Void,String> {
+            HttpURLConnection urlConnection = null;
+            private String strJSON;
+            protected String doInBackground(String... params) {
+                try {
+                    URL url = new URL("http://54.169.58.93/SchOfWeek.php?std_id="+params[0]);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    int code = urlConnection.getResponseCode();
+                    if(code==200){
+                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                        if (in != null) {
+                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+                            String line;
+                            while ((line = bufferedReader.readLine()) != null)
+                                strJSON = line;
+                        }
+                        in.close();
+                    }
+                    return strJSON;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    urlConnection.disconnect();
+                }
+                return strJSON;
+            }
+            protected void onPostExecute(String strJSON) {
+                try {
+                    Log.i("Initial","Initial set notification for schedule...");
+                    JSONArray data = new JSONArray(strJSON);
+                    Calendar calendar = Calendar.getInstance();
+                    Date nDate;
+                    int nowDayfoweek = calendar.get(calendar.DAY_OF_WEEK)-1;
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject c = data.getJSONObject(i);
+                        nDate = calendar.getTime();
+                        Date sDate = calendar.getTime();
+                        int scheDayofweek = c.getInt("subject_date");
+                        int diffDayofweek = scheDayofweek - nowDayfoweek;
+                        if(diffDayofweek < 0){
+                            sDate.setDate(sDate.getDate()+(diffDayofweek+7));
+                            String hmstart = c.getString("subject_time_start");
+                            sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
+                            sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
+                            long diffSec = sDate.getTime() - nDate.getTime();
+                            scheduleNotification(getNotification(c.getString("subject_code")+" : "+c.getString("subject_name"),
+                                    c.getString("subject_room")+" เริ่มเรียนเวลา "+c.getString("subject_time_start")+" จนถึง "+c.getString("subject_time_ended"))
+                                    ,diffSec);
+                        }else{
+                            sDate.setDate(sDate.getDate()+diffDayofweek);
+                            String hmstart = c.getString("subject_time_start");
+                            sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
+                            sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
+                            long diffSec = sDate.getTime() - nDate.getTime();
+                            scheduleNotification(getNotification(c.getString("subject_code")+" : "+c.getString("subject_name"),
+                                    c.getString("subject_room")+" เริ่มเรียนเวลา "+c.getString("subject_time_start")+" จนถึง "+c.getString("subject_time_ended"))
+                                    ,diffSec);
+                        }
+                        Log.i("Initial","Initial set notification for schedule success");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        new GetDataJSON().execute(std_id);
+    }
+
+    private void getSchedule(String std_id){
         class GetDataJSON extends AsyncTask<String,Void,String> {
             HttpURLConnection urlConnection = null;
             public String strJSON;
@@ -210,6 +349,7 @@ public class Main extends AppCompatActivity {
                 return strJSON;
             }
             protected void onPostExecute(String strJSON) {
+                Log.i("Initial","Initial get schedule...");
                 TextView tv_scheduleToday;
                 try{
                     JSONArray data = new JSONArray(strJSON);
@@ -265,6 +405,7 @@ public class Main extends AppCompatActivity {
                             tv_scheduleToday.setText(c.getString("subject_time_ended"));
                         }
                     }
+                    Log.i("Initial","Initial get schedule success");
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -272,11 +413,12 @@ public class Main extends AppCompatActivity {
         }
         new GetDataJSON().execute(std_id);
     }
-    public void refreshSchedule(View v){
+
+    protected void refreshSchedule(View v){
         getSchedule(std_id);
     }
 
-    public void onClickNews(View v){
+    private void onClickNews(View v){
         int idv = v.getId();
         String title = al_title.get(idv).toString();
         String desc = android.text.Html.fromHtml(al_desc.get(idv).toString()).toString();
@@ -284,8 +426,10 @@ public class Main extends AppCompatActivity {
         intent.putExtra("title",title);
         intent.putExtra("desc", desc);
         startActivity(intent);
+        Log.i("OC","On click news");
     }
-    public void onClickMoreNews(View v){
+    private void onClickMoreNews(View v){
+        Log.i("OC","Load more news...");
         TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         TableRow.LayoutParams params2 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         TableLayout tl_news = (TableLayout) findViewById(R.id.tl_news);
@@ -339,91 +483,7 @@ public class Main extends AppCompatActivity {
             row.setLayoutParams(params2);
             tl_news.addView(row);
         }
-    }
-
-    protected void setSQLLite (){
-        obj = new HandleXML(finalUrl);
-        obj.fetchXML();
-        al_title = obj.getAl_title();
-        al_desc = obj.getAl_desc();
-        while(obj.parsingComplete);
-        SQLiteDatabase mydatabase = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
-        mydatabase.execSQL("DROP TABLE IF EXISTS RSS");
-        mydatabase.execSQL("CREATE TABLE IF NOT EXISTS RSS(title VARCHAR,description VARCHAR);");
-        for(int i=0;i<al_title.size();i++){
-            mydatabase.execSQL("INSERT INTO RSS VALUES('"+al_title.get(i).toString()+"','"+al_desc.get(i).toString()+"');");
-        }
-        System.out.println("Initial al_title = "+al_title.size());
-        mydatabase.close();
-    }
-
-    protected void setNotiSchedule(){
-        class GetDataJSON extends AsyncTask<String,Void,String> {
-            HttpURLConnection urlConnection = null;
-            private String strJSON;
-            protected String doInBackground(String... params) {
-                try {
-                    URL url = new URL("http://54.169.58.93/SchOfWeek.php?std_id="+params[0]);
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                    int code = urlConnection.getResponseCode();
-                    if(code==200){
-                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                        if (in != null) {
-                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
-                            String line;
-                            while ((line = bufferedReader.readLine()) != null)
-                                strJSON = line;
-                        }
-                        in.close();
-                    }
-                    return strJSON;
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    urlConnection.disconnect();
-                }
-                return strJSON;
-            }
-            protected void onPostExecute(String strJSON) {
-                try {
-                    JSONArray data = new JSONArray(strJSON);
-                    Calendar calendar = Calendar.getInstance();
-                    Date nDate;
-                    int nowDayfoweek = calendar.get(calendar.DAY_OF_WEEK)-1;
-                    for (int i = 0; i < data.length(); i++) {
-                        JSONObject c = data.getJSONObject(i);
-                        nDate = calendar.getTime();
-                        Date sDate = calendar.getTime();
-                        int scheDayofweek = c.getInt("subject_date");
-                        int diffDayofweek = scheDayofweek - nowDayfoweek;
-                        if(diffDayofweek < 0){
-                            sDate.setDate(sDate.getDate()+(diffDayofweek+7));
-                            String hmstart = c.getString("subject_time_start");
-                            sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
-                            sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
-                            long diffSec = sDate.getTime() - nDate.getTime();
-                            scheduleNotification(getNotification(c.getString("subject_code")+" : "+c.getString("subject_name"),
-                                    c.getString("subject_room")+" เริ่มเรียนเวลา "+c.getString("subject_time_start")+" จนถึง "+c.getString("subject_time_ended"))
-                                    ,diffSec);
-                            System.out.println("initial "+i);
-                        }else{
-                            sDate.setDate(sDate.getDate()+diffDayofweek);
-                            String hmstart = c.getString("subject_time_start");
-                            sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
-                            sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
-                            long diffSec = sDate.getTime() - nDate.getTime();
-                            scheduleNotification(getNotification(c.getString("subject_code")+" : "+c.getString("subject_name"),
-                                    c.getString("subject_room")+" เริ่มเรียนเวลา "+c.getString("subject_time_start")+" จนถึง "+c.getString("subject_time_ended"))
-                                    ,diffSec);
-                            System.out.println("initial "+i);
-                        }
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }
-        new GetDataJSON().execute(std_id);
+        Log.i("OC","Load more news success");
     }
 
     private void scheduleNotification(Notification notification, long delay) {
@@ -458,26 +518,31 @@ public class Main extends AppCompatActivity {
     public void gotoTodo(View v){
         Intent intent = new Intent(this, Todo_List.class);
         startActivity(intent);
+        Log.i("GT","Go to Todo");
     }
 
     public void gotoSetting(View v){
         Intent intent = new Intent(this, more_setting.class);
         startActivity(intent);
+        Log.i("GT","Go to Setting");
     }
 
     public void gotoHome(View v){
         Intent intent = new Intent(this, Main.class);
         startActivity(intent);
+        Log.i("GT","Go to Home");
     }
 
     public void gotoNoti(View v){
         Intent intent = new Intent(this, Noti.class);
         startActivity(intent);
+        Log.i("GT","Go to Notification");
     }
 
     public void gotoElean(View v){
         Intent intent = new Intent(this, Elearning.class);
         startActivity(intent);
+        Log.i("GT","Go to Elearning");
     }
 
 }
@@ -489,14 +554,13 @@ class HandleXML {
 
     ArrayList al_title = new ArrayList();
     ArrayList al_desc = new ArrayList();
-    int count = 0;
 
-    public ArrayList getAl_desc(){
+    protected ArrayList getAl_desc(){
         return al_desc;
     }
-    public ArrayList getAl_title(){ return al_title; }
+    protected ArrayList getAl_title(){ return al_title; }
 
-    public void parseXMLAndStoreIt(XmlPullParser myParser) {
+    private void parseXMLAndStoreIt(XmlPullParser myParser) {
 
         int event;
         String text = null;
@@ -530,10 +594,10 @@ class HandleXML {
         }
     }
 
-    public HandleXML(String url){
+    protected HandleXML(String url){
         this.urlString = url;
     }
-    public void fetchXML(){
+    protected void fetchXML(){
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
@@ -566,5 +630,4 @@ class HandleXML {
         });
         thread.start();
     }
-
 }
