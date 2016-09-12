@@ -1,6 +1,8 @@
 package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Elearning extends AppCompatActivity {
+    List<String> thisyear = new ArrayList<>();
+    List<String> all = new ArrayList<>();
+
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
@@ -23,9 +28,10 @@ public class Elearning extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.elearning);
 
+        getSchedule();
+
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
-        expandableListDetail = Itemelearning.getData();
-        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -51,8 +57,17 @@ public class Elearning extends AppCompatActivity {
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                final String subject = (String) expandableListAdapter.getChild(groupPosition, childPosition);
+
+                Intent intent = new Intent(Elearning.this, Video_elearning.class);
+                intent.putExtra("subject",subject);
+                intent.putExtra("room","CB2312");
+                intent.putExtra("date","2014-08-05");
+                intent.putExtra("time","10-30-00");
+                Elearning.this.startActivity(intent);
+
                 Toast.makeText(
                         getApplicationContext(),
                         expandableListTitle.get(groupPosition)
@@ -66,6 +81,19 @@ public class Elearning extends AppCompatActivity {
         });
     }
 
+    public void getSchedule(){
+        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule;",null);
+        resultSet.moveToFirst();
+        while(!resultSet.isAfterLast()){
+            thisyear.add(resultSet.getString(resultSet.getColumnIndex("subject_code")));
+            resultSet.moveToNext();
+        }
+        mydatabase.close();
+        expandableListDetail  = new HashMap<>();
+        expandableListDetail.put("All", all);
+        expandableListDetail.put("This Year", thisyear);
+    }
 
     public void gotoTodo(View v){
         Intent intent = new Intent(this, Todo_List.class);
@@ -85,14 +113,6 @@ public class Elearning extends AppCompatActivity {
     }
     public void gotoElean(View v){
         Intent intent = new Intent(this, Elearning.class);
-        startActivity(intent);
-    }
-    public void gotoVideo(View v){
-        Intent intent = new Intent(this, Video_elearning.class);
-        intent.putExtra("subject","INT201");
-        intent.putExtra("room","CB2312");
-        intent.putExtra("date","2014-08-05");
-        intent.putExtra("time","10-30-00");
         startActivity(intent);
     }
 }

@@ -193,41 +193,35 @@
                         android:layout_marginTop="10dp"
                         android:background="#cecece" >
 
-                        <LinearLayout
-                            android:orientation="horizontal"
+                        <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="40dp"
+                            android:id="@+id/tv_scheduleToday_code1"
+                            android:layout_gravity="center_horizontal" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:id="@+id/tv_scheduleToday_code1"
-                                android:layout_gravity="center_horizontal" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:id="@+id/tv_scheduleToday_name1"
+                            android:layout_gravity="center_horizontal" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:id="@+id/tv_scheduleToday_name1"
-                                android:layout_gravity="center_horizontal" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:id="@+id/tv_scheduleToday_room1"
+                            android:layout_gravity="center_horizontal" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:id="@+id/tv_scheduleToday_room1"
-                                android:layout_gravity="center_horizontal" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:id="@+id/tv_scheduleToday_ts1"
+                            android:layout_gravity="center_horizontal" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:id="@+id/tv_scheduleToday_ts1"
-                                android:layout_gravity="center_horizontal" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:id="@+id/tv_scheduleToday_te1"
-                                android:layout_gravity="center_horizontal" />
-                        </LinearLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:id="@+id/tv_scheduleToday_te1"
+                            android:layout_gravity="center_horizontal" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -263,6 +257,7 @@
                             android:id="@+id/tv_scheduleToday_te2"
                             android:layout_gravity="center_horizontal"
                             android:background="#dedede" />
+
                     </TableLayout>
                 </ScrollView>
 

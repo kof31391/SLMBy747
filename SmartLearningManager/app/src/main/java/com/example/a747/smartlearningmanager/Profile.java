@@ -39,13 +39,13 @@ import java.util.List;
 
 public class Profile extends AppCompatActivity {
 
-    List<String> monday = new ArrayList<String>();
-    List<String> tuesday = new ArrayList<String>();
-    List<String> wednesday = new ArrayList<String>();
-    List<String> thursday = new ArrayList<String>();
-    List<String> friday = new ArrayList<String>();
-    List<String> saturday = new ArrayList<String>();
-    List<String> sunday = new ArrayList<String>();
+    List<String> monday = new ArrayList<>();
+    List<String> tuesday = new ArrayList<>();
+    List<String> wednesday = new ArrayList<>();
+    List<String> thursday = new ArrayList<>();
+    List<String> friday = new ArrayList<>();
+    List<String> saturday = new ArrayList<>();
+    List<String> sunday = new ArrayList<>();
 
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
@@ -68,7 +68,7 @@ public class Profile extends AppCompatActivity {
         getSchedule();
 
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
-        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -118,7 +118,7 @@ public class Profile extends AppCompatActivity {
                         InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                         if (in != null) {
                             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
-                            String line = "";
+                            String line;
                             while ((line = bufferedReader.readLine()) != null)
                                 strJSON = line;
                         }
@@ -219,7 +219,7 @@ public class Profile extends AppCompatActivity {
             resultSet.moveToNext();
         }
         mydatabase.close();
-        expandableListDetail  = new HashMap<String, List<String>>();
+        expandableListDetail  = new HashMap<>();
         expandableListDetail.put("Monday", monday);
         expandableListDetail.put("Tuesday", tuesday);
         expandableListDetail.put("Wednesday", wednesday);
