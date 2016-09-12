@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -18,6 +19,7 @@ import android.widget.VideoView;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,7 +125,7 @@ public class Video_elearning extends AppCompatActivity {
 
         /*Setup video*/
         video_display = (VideoView) findViewById(R.id.video_display);
-        video_display.setVideoURI(Uri.parse("http://54.169.58.93/video_elearning/"+elearning_date+"_"+elearning_time+"_"+elearning_subject+"-"+elearning_room+".mp4"));
+        video_display.setVideoURI(Uri.parse("http://54.169.58.93:80/video_elearning/" + elearning_date + "_" + elearning_time + "_" + elearning_subject + "-" + elearning_room + ".mp4"));
 
         /*Setup layout video*/
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT) ;

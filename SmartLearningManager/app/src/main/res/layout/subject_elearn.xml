@@ -220,6 +220,74 @@
             </LinearLayout>
         </ScrollView>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView9"
+            android:layout_gravity="center_horizontal"
+            android:fillViewport="false">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/editText"
+                    android:text="2014-08-05 10:30"
+                    android:gravity="center_vertical"
+                    android:background="#fd1619"
+                    android:textColor="#ffffff"
+                    android:onClick="gotoVideo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/editText2"
+                    android:text="2014-08-06 10:30"
+                    android:gravity="center_vertical" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/editText3"
+                    android:text="2014-08-07 10:30"
+                    android:gravity="center_vertical"
+                    android:background="#dcdcdc" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/editText4"
+                    android:text="2014-08-08 10:30"
+                    android:gravity="center_vertical" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/editText5"
+                    android:text="2014-08-09 10:30"
+                    android:gravity="center_vertical"
+                    android:background="#dcdcdc" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/editText6"
+                    android:text="2014-08-10 10:30"
+                    android:gravity="center_vertical" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/editText7"
+                    android:text="2014-08-11 10:30"
+                    android:gravity="center_vertical"
+                    android:background="#dcdcdc" />
+            </TableLayout>
+        </ScrollView>
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -61,12 +61,16 @@ public class Elearning extends AppCompatActivity {
 
                 final String subject = (String) expandableListAdapter.getChild(groupPosition, childPosition);
 
-                Intent intent = new Intent(Elearning.this, Video_elearning.class);
+                Intent intent = new Intent(Elearning.this, Subject_elearn.class);
+                intent.putExtra("subject",subject);
+                Elearning.this.startActivity(intent);
+
+                /*Intent intent = new Intent(Elearning.this, Video_elearning.class);
                 intent.putExtra("subject",subject);
                 intent.putExtra("room","CB2312");
                 intent.putExtra("date","2014-08-05");
                 intent.putExtra("time","10-30-00");
-                Elearning.this.startActivity(intent);
+                Elearning.this.startActivity(intent);*/
 
                 Toast.makeText(
                         getApplicationContext(),
