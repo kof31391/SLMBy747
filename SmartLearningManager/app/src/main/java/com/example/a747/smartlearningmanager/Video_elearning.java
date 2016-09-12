@@ -32,10 +32,12 @@ public class Video_elearning extends AppCompatActivity {
     TextView timing;
     int total_time;
     boolean isFullScreen = false;
-    String elearning_subject = "";
+    String elearning_code = "";
+    String elearning_name = "";
     String elearning_room = "";
     String elearning_date = "";
     String elearning_time = "";
+    String elearning_link = "";
 
     private Runnable onEverySecond=new Runnable() {
 
@@ -61,10 +63,12 @@ public class Video_elearning extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            elearning_subject = extras.getString("subject");
+            elearning_code = extras.getString("code");
+            elearning_name = extras.getString("name");
             elearning_room = extras.getString("room");
             elearning_date = extras.getString("date");
             elearning_time = extras.getString("time");
+            elearning_link = extras.getString("link");
         }
 
         /*Start preload*/
@@ -112,7 +116,7 @@ public class Video_elearning extends AppCompatActivity {
         });
         /*Setup detail*/
         TextView e_subject = (TextView) findViewById(R.id.video_subcode);
-        e_subject.setText(elearning_subject);
+        e_subject.setText(elearning_code+" - "+elearning_name);
         TextView e_room = (TextView) findViewById(R.id.video_room);
         e_room.setText(elearning_room);
         TextView e_date = (TextView) findViewById(R.id.video_date);
@@ -125,7 +129,7 @@ public class Video_elearning extends AppCompatActivity {
 
         /*Setup video*/
         video_display = (VideoView) findViewById(R.id.video_display);
-        video_display.setVideoURI(Uri.parse("http://54.169.58.93:80/video_elearning/" + elearning_date + "_" + elearning_time + "_" + elearning_subject + "-" + elearning_room + ".mp4"));
+        video_display.setVideoURI(Uri.parse("http://54.169.58.93:80/video_elearning/"+elearning_link));
 
         /*Setup layout video*/
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT) ;
@@ -178,8 +182,9 @@ public class Video_elearning extends AppCompatActivity {
         }
     }
 
-    public void gotoElearning(View v) {
-        Intent intent = new Intent(this, Elearning.class);
+    public void gotoSubject_elearn(View v) {
+        Intent intent = new Intent(this, Subject_elearn.class);
+        intent.putExtra("subject",elearning_code);
         startActivity(intent);
     }
 }

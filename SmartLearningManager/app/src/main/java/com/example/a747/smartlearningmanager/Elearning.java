@@ -65,13 +65,6 @@ public class Elearning extends AppCompatActivity {
                 intent.putExtra("subject",subject);
                 Elearning.this.startActivity(intent);
 
-                /*Intent intent = new Intent(Elearning.this, Video_elearning.class);
-                intent.putExtra("subject",subject);
-                intent.putExtra("room","CB2312");
-                intent.putExtra("date","2014-08-05");
-                intent.putExtra("time","10-30-00");
-                Elearning.this.startActivity(intent);*/
-
                 Toast.makeText(
                         getApplicationContext(),
                         expandableListTitle.get(groupPosition)
@@ -90,7 +83,7 @@ public class Elearning extends AppCompatActivity {
         Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule;",null);
         resultSet.moveToFirst();
         while(!resultSet.isAfterLast()){
-            thisyear.add(resultSet.getString(resultSet.getColumnIndex("subject_code")));
+            thisyear.add(resultSet.getString(resultSet.getColumnIndex("subject_code"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
             resultSet.moveToNext();
         }
         mydatabase.close();
