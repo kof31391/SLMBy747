@@ -28,10 +28,11 @@
         <activity android:name=".More_News" />
         <activity android:name=".Todo_edit" />
         <activity android:name=".Profile" />
-        <activity android:name=".Video_elearning"></activity>
+        <activity android:name=".Video_elearning" />
 
         <receiver android:name=".NotificationPublisher" />
 
+        <activity android:name=".Subject_elearn"></activity>
     </application>
 
 </manifest>
