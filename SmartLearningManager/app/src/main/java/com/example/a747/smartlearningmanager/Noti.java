@@ -99,7 +99,7 @@ public class Noti extends AppCompatActivity {
 
     private void sendToDetail(int pos){
         Intent intent = new Intent(this,Todo_View.class);
-        intent.putExtra("pos", pos);
+        intent.putExtra("todo", pos);
         startActivity(intent);
     }
 
