@@ -191,7 +191,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
-                        android:background="#cecece" >
+                        android:background="#e8c200" >
 
                         <TextView
                             android:layout_width="match_parent"
@@ -313,7 +313,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_below="@+id/tv_ms_std_id"
-                        android:background="#cecece"
+                        android:background="#e8c200"
                         android:id="@+id/tl_news">
 
                     </TableLayout>

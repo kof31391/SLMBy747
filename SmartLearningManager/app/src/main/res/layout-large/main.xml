@@ -183,7 +183,7 @@
                 <ScrollView
                     android:id="@+id/scrollView4"
                     android:layout_width="match_parent"
-                    android:layout_height="210dp"
+                    android:layout_height="270dp"
                     android:fillViewport="true"
                     android:layout_below="@+id/imageButton6">
 
@@ -191,7 +191,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
-                        android:background="#cecece" >
+                        android:background="#6bc4ff" >
 
                         <TextView
                             android:layout_width="match_parent"
@@ -313,7 +313,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_below="@+id/tv_ms_std_id"
-                        android:background="#cecece"
+                        android:background="#6bc4ff"
                         android:id="@+id/tl_news">
 
                     </TableLayout>
