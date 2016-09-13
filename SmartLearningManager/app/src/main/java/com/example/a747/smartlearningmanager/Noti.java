@@ -22,6 +22,8 @@ import java.io.ObjectOutputStream;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Noti extends AppCompatActivity {
 
@@ -112,9 +114,14 @@ public class Noti extends AppCompatActivity {
             ObjectInputStream ois = new ObjectInputStream(fis);
 
             items = (ArrayList<NotificationObj>)ois.readObject();
-            System.out.println(items.size());
             for(int j = 0 ;j<items.size();j++) {
-                show.add(items.get(j).getTopic()+"\n"+items.get(j).getDesc());
+                Date now = Calendar.getInstance().getTime();
+                Date that = items.get(j).getDate();
+                int tempYear =items.get(j).getDate().getYear()-1900;
+                that.setYear(tempYear);
+                if(now.compareTo(that)>-1) {
+                    show.add(items.get(j).getTopic() + "\n" + items.get(j).getDesc());
+                }
             }
 
 
