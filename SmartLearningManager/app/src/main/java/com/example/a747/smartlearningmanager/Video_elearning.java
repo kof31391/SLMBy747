@@ -3,6 +3,7 @@ package com.example.a747.smartlearningmanager;
 import android.app.MediaRouteButton;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -13,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -132,7 +135,7 @@ public class Video_elearning extends AppCompatActivity {
         video_display.setVideoURI(Uri.parse("http://54.169.58.93:80/video_elearning/"+elearning_link));
 
         /*Setup layout video*/
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT) ;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT) ;
         video_display.setLayoutParams(params);
         video_display.requestFocus();
         video_display.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -163,21 +166,24 @@ public class Video_elearning extends AppCompatActivity {
     }
 
     public void videoFullscreen(View v){
-        FrameLayout f_layout = (FrameLayout) findViewById(R.id.VideoSurfaceView);
-        android.widget.FrameLayout.LayoutParams params = (android.widget.FrameLayout.LayoutParams) f_layout.getLayoutParams();
+        /*LinearLayout f_layout = (LinearLayout) findViewById(R.id.VideoSurfaceView);
+        android.widget.LinearLayout.LayoutParams params = (android.widget.LinearLayout.LayoutParams) f_layout.getLayoutParams();*/
         if(isFullScreen == false) {
-            DisplayMetrics metrics = new DisplayMetrics();
+          /*  DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
             params.width = metrics.widthPixels;
             params.height = metrics.heightPixels;
             params.leftMargin = 0;
-            video_display.setLayoutParams(params);
+            video_display.setLayoutParams(params);*/
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            isFullScreen = true;
         }else{
-            DisplayMetrics metrics = new DisplayMetrics(); getWindowManager().getDefaultDisplay().getMetrics(metrics);
+          /*  DisplayMetrics metrics = new DisplayMetrics(); getWindowManager().getDefaultDisplay().getMetrics(metrics);
             params.width =  (int) (300*metrics.density);
             params.height = (int) (250*metrics.density);
             params.leftMargin = 30;
-            video_display.setLayoutParams(params);
+            video_display.setLayoutParams(params);*/
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             isFullScreen = false;
         }
     }
