@@ -2,6 +2,7 @@ package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
@@ -9,11 +10,13 @@ import android.view.MenuItem;
 
 import android.view.View;
 
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 
 import java.io.EOFException;
@@ -28,6 +31,7 @@ import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Todo_List extends AppCompatActivity {
@@ -56,7 +60,16 @@ public class Todo_List extends AppCompatActivity {
             show = new ArrayList<>();
             items = new ArrayList<>();
             readItems();
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, show);
+            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, show){
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent){
+                    int[] colors = new int[] { 0x30FF0000, 0x300000FF };
+                    View view = super.getView(position, convertView, parent);
+                        int colorPos = new Util().getColors(items,position);
+                    view.setBackgroundColor(colors[colorPos]);
+                    return view;
+                }
+            };
             lvItems.setAdapter(adapter);
             setupListViewListener();
             registerForContextMenu(lvItems);
@@ -72,6 +85,7 @@ public class Todo_List extends AppCompatActivity {
             registerForContextMenu(lvItems);
         }
         }
+
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
@@ -139,6 +153,8 @@ public class Todo_List extends AppCompatActivity {
         intent.putExtra("fileName",stdid+".txt");
     startActivity(intent);
     }
+
+
 
 
     private void readItems() {

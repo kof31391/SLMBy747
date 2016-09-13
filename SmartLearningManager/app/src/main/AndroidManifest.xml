@@ -32,7 +32,8 @@
 
         <receiver android:name=".NotificationPublisher" />
 
-        <activity android:name=".Subject_elearn"></activity>
+        <activity android:name=".Subject_elearn" />
+        <activity android:name=".About"></activity>
     </application>
 
 </manifest>

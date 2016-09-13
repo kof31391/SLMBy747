@@ -13,6 +13,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -37,6 +38,15 @@ public class Util {
         dates.setMinutes(min);
         dates.setSeconds(0);
         return dates;
+    }
+
+    public int getColors(ArrayList<todoObj> items, int pos) {
+        Date now = Calendar.getInstance().getTime();
+        if (items.get(pos).getDate().compareTo(now)>0) {
+            return 1;
+        }else{
+            return 0;
+        }
     }
 
 
