@@ -182,32 +182,53 @@
 
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:paddingTop="5dp"
+                    android:layout_height="40dp"
+                    android:background="#1b3c8f"
+                    >
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text=" Today "
+                        android:textColor="#ffffff"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:id="@+id/textView29"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Next day"
+                        android:textColor="#ffffff"
+                        android:textStyle="italic"
+                        android:id="@+id/textView30"
+                        android:layout_marginRight="10dp"
+                        android:layout_alignBottom="@+id/textView29"
+                        android:layout_alignParentEnd="true" />
+
+                </RelativeLayout>
+
                 <ScrollView
                     android:id="@+id/scrollView4"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="105dp"
                     android:fillViewport="true"
                     android:layout_below="@+id/imageButton6">
 
                     <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
                         android:background="#c0d4e0" >
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:paddingTop="5dp"
-                            android:layout_height="40dp"
-                            android:gravity="center_horizontal"
-                            android:text=" Today "
-                            android:layout_marginBottom="5dp"
-                            android:textColor="#ffffff"
-                            android:textStyle="bold"
-                            android:textSize="25dp"
-                            android:layout_gravity="center_horizontal"
-                            android:background="#1b3c8f"/>
 
                         <TextView
                             android:layout_width="match_parent"
