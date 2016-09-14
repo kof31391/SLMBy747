@@ -71,8 +71,8 @@
                     android:layout_gravity="center_horizontal">
 
                     <ImageButton
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:id="@+id/imageButton9"
                         android:src="@drawable/home"
                         android:background="#091534"
@@ -80,8 +80,8 @@
                         />
 
                     <ImageButton
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:id="@+id/imageButton10"
                         android:src="@drawable/pencilw"
                         android:background="#091534"
@@ -91,8 +91,8 @@
                         android:onClick="gotoTodo"/>
 
                     <ImageButton
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:id="@+id/imageButton0"
                         android:src="@drawable/videow"
                         android:background="#091534"
@@ -102,8 +102,8 @@
                         android:layout_toEndOf="@+id/imageButton" />
 
                     <ImageButton
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:id="@+id/imageButton11"
                         android:src="@drawable/notiw"
                         android:background="#091534"
@@ -114,8 +114,8 @@
                         />
 
                     <ImageButton
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:id="@+id/imageButton12"
                         android:src="@drawable/morew"
                         android:background="#091534"
@@ -183,7 +183,7 @@
                 <ScrollView
                     android:id="@+id/scrollView4"
                     android:layout_width="match_parent"
-                    android:layout_height="270dp"
+                    android:layout_height="210dp"
                     android:fillViewport="true"
                     android:layout_below="@+id/imageButton6">
 
@@ -191,7 +191,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
-                        android:background="#6bc4ff" >
+                        android:background="#e8c200" >
 
                         <TextView
                             android:layout_width="match_parent"
@@ -199,29 +199,6 @@
                             android:id="@+id/tv_scheduleToday_code1"
                             android:layout_gravity="center_horizontal" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:id="@+id/tv_scheduleToday_name1"
-                            android:layout_gravity="center_horizontal" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:id="@+id/tv_scheduleToday_room1"
-                            android:layout_gravity="center_horizontal" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:id="@+id/tv_scheduleToday_ts1"
-                            android:layout_gravity="center_horizontal" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:id="@+id/tv_scheduleToday_te1"
-                            android:layout_gravity="center_horizontal" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -230,33 +207,6 @@
                             android:id="@+id/tv_scheduleToday_code2"
                             android:background="#dedede" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:id="@+id/tv_scheduleToday_name2"
-                            android:layout_gravity="center_horizontal"
-                            android:background="#dedede" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:id="@+id/tv_scheduleToday_room2"
-                            android:layout_gravity="center_horizontal"
-                            android:background="#dedede" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:id="@+id/tv_scheduleToday_ts2"
-                            android:layout_gravity="center_horizontal"
-                            android:background="#dedede" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:id="@+id/tv_scheduleToday_te2"
-                            android:layout_gravity="center_horizontal"
-                            android:background="#dedede" />
 
                     </TableLayout>
                 </ScrollView>
@@ -313,7 +263,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_below="@+id/tv_ms_std_id"
-                        android:background="#6bc4ff"
+                        android:background="#e8c200"
                         android:id="@+id/tl_news">
 
                     </TableLayout>

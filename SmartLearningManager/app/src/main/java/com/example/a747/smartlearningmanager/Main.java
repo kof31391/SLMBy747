@@ -365,52 +365,32 @@ public class Main extends AppCompatActivity {
                         JSONObject c = data.getJSONObject(i);
                         int findViewId = i+1;
                         TextView tv_scheduleToday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
-                        TextView tv_scheduleToday_name2 = (TextView) findViewById(R.id.tv_scheduleToday_name2);
-                        TextView tv_scheduleToday_room2 = (TextView) findViewById(R.id.tv_scheduleToday_room2);
-                        TextView tv_scheduleToday_ts2 = (TextView) findViewById(R.id.tv_scheduleToday_ts2);
-                        TextView tv_scheduleToday_te2 = (TextView) findViewById(R.id.tv_scheduleToday_te2);
                         if(findViewId == 1){
                             tv_scheduleToday_code2.setVisibility(View.GONE);
-                            tv_scheduleToday_name2.setVisibility(View.GONE);
-                            tv_scheduleToday_room2.setVisibility(View.GONE);
-                            tv_scheduleToday_ts2.setVisibility(View.GONE);
-                            tv_scheduleToday_te2.setVisibility(View.GONE);
                         }else{
                             tv_scheduleToday_code2.setVisibility(View.VISIBLE);
-                            tv_scheduleToday_name2.setVisibility(View.VISIBLE);
-                            tv_scheduleToday_room2.setVisibility(View.VISIBLE);
-                            tv_scheduleToday_ts2.setVisibility(View.VISIBLE);
-                            tv_scheduleToday_te2.setVisibility(View.VISIBLE);
                         }
+                        String mix = "";
                         String name = "tv_scheduleToday_code"+findViewId;
                         int id = getResources().getIdentifier(name, "id", getPackageName());
                         if (id != 0) {
-                            tv_scheduleToday = (TextView) findViewById(id);
-                            tv_scheduleToday.setText(c.getString("subject_code"));
+                            mix+="  ";
+                            mix+=c.getString("subject_code");
+                            mix+=" ";
                         }
-                        name = "tv_scheduleToday_name"+findViewId;
+                            mix+=c.getString("subject_name");
+                            mix+="\t";
+                            mix+="Room:  ";
+                            mix+=c.getString("subject_room");
+                            mix+="\n  Time:  ";
+                            mix+=c.getString("subject_time_start");
+                            mix+="\t - ";
+                        name = "tv_scheduleToday_code"+findViewId;
                         id = getResources().getIdentifier(name, "id", getPackageName());
                         if(id != 0){
                             tv_scheduleToday = (TextView) findViewById(id);
-                            tv_scheduleToday.setText(c.getString("subject_name"));
-                        }
-                        name = "tv_scheduleToday_room"+findViewId;
-                        id = getResources().getIdentifier(name, "id", getPackageName());
-                        if(id != 0){
-                            tv_scheduleToday = (TextView) findViewById(id);
-                            tv_scheduleToday.setText(c.getString("subject_room"));
-                        }
-                        name = "tv_scheduleToday_ts"+findViewId;
-                        id = getResources().getIdentifier(name, "id", getPackageName());
-                        if(id != 0){
-                            tv_scheduleToday = (TextView) findViewById(id);
-                            tv_scheduleToday.setText(c.getString("subject_time_start"));
-                        }
-                        name = "tv_scheduleToday_te"+findViewId;
-                        id = getResources().getIdentifier(name, "id", getPackageName());
-                        if(id != 0){
-                            tv_scheduleToday = (TextView) findViewById(id);
-                            tv_scheduleToday.setText(c.getString("subject_time_ended"));
+                            mix+=c.getString("subject_time_ended");
+                            tv_scheduleToday.setText(mix);
                         }
                     }
                     Log.i("Initial","Initial get schedule success");

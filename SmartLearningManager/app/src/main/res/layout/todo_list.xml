@@ -187,7 +187,9 @@
 
                             <LinearLayout
                                 android:orientation="horizontal"
-                                android:layout_width="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_horizontal"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                >
 
@@ -200,8 +202,8 @@
                                 <Spinner
                                     android:layout_width="100dp"
                                     android:layout_height="35dp"
-                                    android:background="#0072bc"
-
+                                    android:layout_marginTop="3dp"
+                                    android:background="#f6ee00"
                                     android:entries="@array/categoriesSearch"
                                     android:id="@+id/spinner2" />
 
@@ -211,7 +213,7 @@
                                     android:src="@drawable/search"
                                     android:onClick="Query"
                                     android:background="#ffffff"
-                                    android:layout_marginTop="15dp"
+                                    android:layout_marginTop="10dp"
                                     android:layout_marginLeft="10dp"
                                     android:id="@+id/imageButton27" />
 
