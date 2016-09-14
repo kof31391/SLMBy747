@@ -202,6 +202,7 @@
                         android:textColor="#ffffff"
                         android:textStyle="bold"
                         android:textSize="25dp"
+
                         android:id="@+id/title_day"
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true" />
@@ -217,7 +218,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_alignBottom="@+id/textView29"
                         android:layout_alignParentEnd="true"
-                        android:onClick="nextSchedule" />
+                        android:onClick="nextSchedule"/>
 
                 </RelativeLayout>
 

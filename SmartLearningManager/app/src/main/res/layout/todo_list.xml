@@ -188,22 +188,19 @@
 
                             <LinearLayout
                                 android:orientation="horizontal"
-                                android:layout_marginTop="10dp"
-                                android:gravity="center_horizontal"
-                                android:layout_width="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                >
 
                                 <EditText
                                     android:layout_width="200dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
                                     android:id="@+id/searchBox" />
 
                                 <Spinner
                                     android:layout_width="100dp"
                                     android:layout_height="35dp"
-                                    android:layout_marginTop="3dp"
                                     android:background="#f6ee00"
                                     android:entries="@array/categoriesSearch"
                                     android:id="@+id/spinner2" />
@@ -214,7 +211,6 @@
                                     android:src="@drawable/search"
                                     android:onClick="Query"
                                     android:background="#ffffff"
-                                    android:layout_marginTop="10dp"
                                     android:layout_marginLeft="10dp"
                                     android:id="@+id/imageButton27" />
 
