@@ -135,7 +135,7 @@ public class Video_elearning extends AppCompatActivity {
         video_display.setVideoURI(Uri.parse("http://54.169.58.93:80/video_elearning/"+elearning_link));
 
         /*Setup layout video*/
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT) ;
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT) ;
         video_display.setLayoutParams(params);
         video_display.requestFocus();
         video_display.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
