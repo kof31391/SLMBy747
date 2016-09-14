@@ -148,6 +148,13 @@
                         android:gravity="center_horizontal"
                         android:layout_height="match_parent">
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Todo Status : "
+                            android:id="@+id/finishStatus" />
+
                         <LinearLayout
                             android:orientation="horizontal"
                             android:layout_width="wrap_content"
@@ -261,20 +268,8 @@
                 </LinearLayout>
             </ScrollView>
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Finish"
-                android:id="@+id/checkBox"
-                android:layout_gravity="center_horizontal" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Confirm"
-                android:id="@+id/button3"
-                android:onClick="save"
-                android:layout_gravity="center_horizontal" />
+
         </LinearLayout>
 
     </LinearLayout>

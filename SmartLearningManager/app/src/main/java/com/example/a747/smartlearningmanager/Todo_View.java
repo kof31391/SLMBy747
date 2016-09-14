@@ -29,8 +29,8 @@ public class Todo_View extends AppCompatActivity {
     private TextView hour;
     private TextView minute;
     private TextView category;
+    private TextView status;
     private String temp;
-    private CheckBox finish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,8 @@ public class Todo_View extends AppCompatActivity {
         temp = pref.getString("std_id", null);
         Intent intent = getIntent();
         items = new ArrayList<>();
-        finish = (CheckBox)findViewById(R.id.checkBox);
         topic = (TextView)findViewById(R.id.topic);
+        status = (TextView)findViewById(R.id.finishStatus);
         category = (TextView)findViewById(R.id.category);
         desc = (TextView) findViewById(R.id.todoDesc);
         date = (TextView)findViewById(R.id.Date);
@@ -61,12 +61,14 @@ public class Todo_View extends AppCompatActivity {
         topic.setText(recObj.getTopic());
         category.setText(recObj.getCategory());
         desc.setText(recObj.getDesc());
+        if(recObj.isFinish()==true){
+            status.setText(status.getText()+"Finish");
+        }else{
+            status.setText(status.getText()+"Not Finish");
+        }
         date.setText("" + recObj.getDate().getDate());
         month.setText("" + recObj.getDate().getMonth());
         year.setText("" + recObj.getDate().getYear());
-        if(recObj.isFinish()==true){
-            finish.setChecked(true);
-        }
         if(recObj.getDate().getHours()<10) {
             hour.setText("0" + recObj.getDate().getHours());
         }else{
@@ -96,28 +98,6 @@ public class Todo_View extends AppCompatActivity {
         } catch (IOException e) {
             items = new ArrayList<>();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void save(View v){
-        if(finish.isChecked()==true){
-            items.get(pos).setFinish(true);
-        }else{
-            items.get(pos).setFinish(false);
-        }
-        writeItems();
-        Intent intent = new Intent(this,Todo_List.class);
-        startActivity(intent);
-    }
-
-    private void writeItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, temp+".txt");
-        try {
-            ObjectOutputStream fis = new ObjectOutputStream(new FileOutputStream(todoFile));
-            fis.writeObject(items);
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
