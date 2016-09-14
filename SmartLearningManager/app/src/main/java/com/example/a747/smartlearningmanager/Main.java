@@ -189,6 +189,11 @@ public class Main extends AppCompatActivity {
         Log.i("Initial","Initial set RSS success");
     }
 
+    public void gotoAbout(View v){
+        Intent intent = new Intent(this,About.class);
+        startActivity(intent);
+    }
+
     private void getRSS(){
         Log.i("Initial","Initial get RSS...");
         SQLiteDatabase mydatabase = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
