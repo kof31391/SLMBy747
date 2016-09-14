@@ -392,72 +392,88 @@ public class Main extends AppCompatActivity {
         getSchedule();
     }
 
-    protected void nextSchedule(View v){
-        Log.i("Initial","Initial get next schedule...");
+    protected void nextSchedule(View v) {
+        Log.i("Initial", "Initial get next schedule...");
         Calendar calendar = Calendar.getInstance();
-        if(nextday ==0) {
+        if (nextday == 0) {
             nextday = (calendar.get(calendar.DAY_OF_WEEK) - 1);
         }
         nextday++;
-        if(nextday > 7){
+        if (nextday > 7) {
             nextday = 1;
         }
-        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nextday+"' ORDER BY subject_date ASC LIMIT 2;",null);
+        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule", MODE_PRIVATE, null);
+        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='" + nextday + "' ORDER BY subject_date ASC LIMIT 2;", null);
         resultSet.moveToFirst();
         TextView tv_scheduleNextday;
         TextView title_day = (TextView) findViewById(R.id.title_day);
-        switch (nextday){
-            case 1 : title_day.setText("Monday");
+        switch (nextday) {
+            case 1:
+                title_day.setText("Monday");
                 break;
-            case 2 : title_day.setText("Tuesday");
+            case 2:
+                title_day.setText("Tuesday");
                 break;
-            case 3 : title_day.setText("Wednesday");
+            case 3:
+                title_day.setText("Wednesday");
                 break;
-            case 4 : title_day.setText("Thursday");
+            case 4:
+                title_day.setText("Thursday");
                 break;
-            case 5 : title_day.setText("Friday");
+            case 5:
+                title_day.setText("Friday");
                 break;
-            case 6 : title_day.setText("Saturday");
+            case 6:
+                title_day.setText("Saturday");
                 break;
-            case 7 : title_day.setText("Sunday");
+            case 7:
+                title_day.setText("Sunday");
                 break;
         }
+        System.out.println("Get count: "+resultSet.getCount());
+        if (resultSet.getCount() != 0) {
+            TextView tv_scheduleToday_code1 = (TextView) findViewById(R.id.tv_scheduleToday_code1);
+            tv_scheduleToday_code1.setVisibility(View.VISIBLE);
+            for (int i = 0; i < resultSet.getCount(); i++) {
+                int findViewId = i + 1;
+                TextView tv_scheduleToday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
+                if (findViewId == 1) {
+                    tv_scheduleToday_code2.setVisibility(View.GONE);
+                } else {
+                    tv_scheduleToday_code2.setVisibility(View.VISIBLE);
+                }
+                String result = "";
+                String name = "tv_scheduleToday_code" + findViewId;
+                int id = getResources().getIdentifier(name, "id", getPackageName());
 
-        for(int i=0;i<resultSet.getCount();i++){
-            int findViewId = i+1;
+                if (id != 0) {
+                    result += "  ";
+                    result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
+                    result += " ";
+                }
+                result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
+                result += "\t";
+                result += "Room:  ";
+                result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
+                result += "\n  Time:  ";
+                result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
+                result += "\t - ";
+                name = "tv_scheduleToday_code" + findViewId;
+                id = getResources().getIdentifier(name, "id", getPackageName());
+                if (id != 0) {
+                    tv_scheduleNextday = (TextView) findViewById(id);
+                    result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
+                    tv_scheduleNextday.setText(result);
+                }
+                resultSet.moveToNext();
+            }
+            Log.i("Initial", "Initial get next schedule success");
+        }else{
+            TextView tv_scheduleToday_code1 = (TextView) findViewById(R.id.tv_scheduleToday_code1);
+            tv_scheduleToday_code1.setText("No Class Today");
             TextView tv_scheduleToday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
-            if(findViewId == 1){
-                tv_scheduleToday_code2.setVisibility(View.GONE);
-            }else{
-                tv_scheduleToday_code2.setVisibility(View.VISIBLE);
-            }
-            String result = "";
-            String name = "tv_scheduleToday_code"+findViewId;
-            int id = getResources().getIdentifier(name, "id", getPackageName());
-
-            if (id != 0) {
-                result += "  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
-                result += " ";
-            }
-            result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-            result += "\t";
-            result += "Room:  ";
-            result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
-            result += "\n  Time:  ";
-            result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
-            result += "\t - ";
-            name = "tv_scheduleToday_code"+findViewId;
-            id = getResources().getIdentifier(name, "id", getPackageName());
-            if(id != 0){
-                tv_scheduleNextday = (TextView) findViewById(id);
-                result+=resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
-                tv_scheduleNextday.setText(result);
-            }
-            resultSet.moveToNext();
+            tv_scheduleToday_code2.setVisibility(View.GONE);
         }
-        Log.i("Initial","Initial get next schedule success");
     }
 
     private void onClickNews(View v){
