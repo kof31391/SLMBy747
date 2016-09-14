@@ -204,8 +204,9 @@ public class Todo_Add extends AppCompatActivity {
             String future = dateFormat.format(dateFuture);
             String title = temp.getTopic();
             String content = temp.getDesc();
-            scheduleNotification(getNotification(title,content), getSchedule(getTimeCurrent(), future));
-
+            if(temp.isFinish()==false) {
+                scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

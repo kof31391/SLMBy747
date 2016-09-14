@@ -46,6 +46,7 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="gotoAbout"
                         android:id="@+id/imageButton18"
                         android:src="@drawable/infow"
                         android:background="#091534"

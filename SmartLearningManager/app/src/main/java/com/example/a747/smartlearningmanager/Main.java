@@ -121,6 +121,11 @@ public class Main extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    public void gotoAbout(View v){
+        Intent intent = new Intent(this,About.class);
+        startActivity(intent);
+    }
+
     private void setProfile(){
         class GetDataJSON extends AsyncTask<String,Void,String> {
             HttpURLConnection urlConnection = null;

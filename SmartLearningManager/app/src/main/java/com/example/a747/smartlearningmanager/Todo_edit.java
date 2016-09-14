@@ -227,9 +227,9 @@ public class Todo_edit extends AppCompatActivity {
             temp.setDesc(desc.getText().toString());
             temp.setCategory(category);
             if(finish.isChecked()==true){
-                finish.setChecked(true);
+                temp.setFinish(true);
             }else{
-                finish.setChecked(false);
+                temp.setFinish(false);
             }
             temp.setDate(Util.getDateFromEditText(todoDate,todoTime));
             items.remove(pos);
@@ -246,7 +246,9 @@ public class Todo_edit extends AppCompatActivity {
             String future = dateFormat.format(dateFuture);
             String title = temp.getTopic();
             String content = temp.getDesc();
-            scheduleNotification(getNotification(title,content), getSchedule(getTimeCurrent(), future));
+            if(temp.isFinish()==false) {
+                scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -55,6 +55,7 @@
                             android:id="@+id/imageButton4"
                             android:src="@drawable/infow"
                             android:background="#091534"
+                            android:onClick="gotoAbout"
                             android:layout_alignTop="@+id/textView"
                             android:layout_gravity="right" />
                     </LinearLayout>

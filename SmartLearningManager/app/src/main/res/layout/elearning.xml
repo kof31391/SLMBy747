@@ -54,6 +54,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/imageButton4"
                             android:src="@drawable/infow"
+                            android:onClick="gotoAbout"
                             android:background="#091534"
                             android:layout_alignTop="@+id/textView"
                             android:layout_gravity="right" />

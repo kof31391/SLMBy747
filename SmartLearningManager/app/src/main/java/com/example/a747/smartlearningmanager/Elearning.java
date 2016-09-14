@@ -92,6 +92,11 @@ public class Elearning extends AppCompatActivity {
         expandableListDetail.put("This Year", thisyear);
     }
 
+    public void gotoAbout(View v){
+        Intent intent = new Intent(this,About.class);
+        startActivity(intent);
+    }
+
     public void gotoTodo(View v){
         Intent intent = new Intent(this, Todo_List.class);
         startActivity(intent);

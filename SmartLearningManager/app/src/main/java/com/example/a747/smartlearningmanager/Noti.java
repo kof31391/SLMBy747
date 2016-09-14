@@ -88,6 +88,11 @@ public class Noti extends AppCompatActivity {
         }
     }
 
+    public void gotoAbout(View v){
+        Intent intent = new Intent(this,About.class);
+        startActivity(intent);
+    }
+
     private void setupListViewListener(){
         lvitems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
