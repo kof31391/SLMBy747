@@ -5,13 +5,16 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class Todo_View extends AppCompatActivity {
@@ -27,6 +30,7 @@ public class Todo_View extends AppCompatActivity {
     private TextView minute;
     private TextView category;
     private String temp;
+    private CheckBox finish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class Todo_View extends AppCompatActivity {
         temp = pref.getString("std_id", null);
         Intent intent = getIntent();
         items = new ArrayList<>();
+        finish = (CheckBox)findViewById(R.id.checkBox);
         topic = (TextView)findViewById(R.id.topic);
         category = (TextView)findViewById(R.id.category);
         desc = (TextView) findViewById(R.id.todoDesc);
@@ -52,7 +57,6 @@ public class Todo_View extends AppCompatActivity {
         }catch(Exception e) {
             pos = intent.getIntExtra("todo",0);
             recObj = items.get(pos);
-            System.out.println("view : "+pos);
         }
         topic.setText(recObj.getTopic());
         category.setText(recObj.getCategory());
@@ -60,6 +64,9 @@ public class Todo_View extends AppCompatActivity {
         date.setText("" + recObj.getDate().getDate());
         month.setText("" + recObj.getDate().getMonth());
         year.setText("" + recObj.getDate().getYear());
+        if(recObj.isFinish()==true){
+            finish.setChecked(true);
+        }
         if(recObj.getDate().getHours()<10) {
             hour.setText("0" + recObj.getDate().getHours());
         }else{
@@ -89,6 +96,28 @@ public class Todo_View extends AppCompatActivity {
         } catch (IOException e) {
             items = new ArrayList<>();
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void save(View v){
+        if(finish.isChecked()==true){
+            items.get(pos).setFinish(true);
+        }else{
+            items.get(pos).setFinish(false);
+        }
+        writeItems();
+        Intent intent = new Intent(this,Todo_List.class);
+        startActivity(intent);
+    }
+
+    private void writeItems() {
+        File filesDir = getFilesDir();
+        File todoFile = new File(filesDir, temp+".txt");
+        try {
+            ObjectOutputStream fis = new ObjectOutputStream(new FileOutputStream(todoFile));
+            fis.writeObject(items);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

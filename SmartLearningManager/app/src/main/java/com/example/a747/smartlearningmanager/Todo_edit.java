@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -63,6 +64,8 @@ public class Todo_edit extends AppCompatActivity {
     private String stdid;
     private todoObj temps;
     private ArrayList<NotificationObj> NotiItems;
+    private CheckBox finish;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,12 +79,16 @@ public class Todo_edit extends AppCompatActivity {
         recObj = items.get(pos);
         items = new ArrayList<>();
         spinner = (Spinner)findViewById(R.id.spinner);
+        finish = (CheckBox)findViewById(R.id.checkBox2);
         topic = (TextView)findViewById(R.id.topic);
         desc = (TextView) findViewById(R.id.todoDesc);
         todoDate =(EditText) findViewById(R.id.datePicker);
         todoTime = (EditText) findViewById(R.id.timePicker);
         date = recObj.getDate();
         category = recObj.getCategory();
+        if(recObj.isFinish()==true){
+            finish.setChecked(true);
+        }
         spinner.setSelection(recObj.getPosition());
         todoDate.setText(date.getDate()+"/"+(date.getMonth())+"/"+(date.getYear()));
         todoTime.setText(date.getHours()+":"+date.getMinutes());
@@ -219,6 +226,11 @@ public class Todo_edit extends AppCompatActivity {
             temp.setTopic(topic.getText().toString());
             temp.setDesc(desc.getText().toString());
             temp.setCategory(category);
+            if(finish.isChecked()==true){
+                finish.setChecked(true);
+            }else{
+                finish.setChecked(false);
+            }
             temp.setDate(Util.getDateFromEditText(todoDate,todoTime));
             items.remove(pos);
             items.add(temp);

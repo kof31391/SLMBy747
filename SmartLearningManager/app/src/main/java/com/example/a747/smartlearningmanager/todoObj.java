@@ -17,6 +17,7 @@ public class todoObj implements Parcelable,Serializable,Comparable<todoObj>{
     private String desc;
     private Date date;
     private String category;
+    private boolean isFinish;
 
     public String getCategory() {
         return category;
@@ -27,6 +28,15 @@ public class todoObj implements Parcelable,Serializable,Comparable<todoObj>{
     }
 
     public todoObj() {
+        isFinish = false;
+    }
+
+    public boolean isFinish() {
+        return isFinish;
+    }
+
+    public void setFinish(boolean finish) {
+        isFinish = finish;
     }
 
     @Override

@@ -41,8 +41,7 @@ public class Util {
     }
 
     public int getColors(ArrayList<todoObj> items, int pos) {
-        Date now = Calendar.getInstance().getTime();
-        if (items.get(pos).getDate().compareTo(now)>0) {
+        if (items.get(pos).isFinish()==true) {
             return 1;
         }else{
             return 0;

@@ -145,6 +145,12 @@
                             android:id="@+id/timePicker" />
                     </LinearLayout>
 
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Finish"
+                        android:id="@+id/checkBox2" />
+
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
