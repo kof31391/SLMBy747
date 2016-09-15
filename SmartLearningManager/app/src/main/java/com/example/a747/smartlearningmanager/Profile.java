@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Profile extends AppCompatActivity {
@@ -219,7 +220,7 @@ public class Profile extends AppCompatActivity {
             resultSet.moveToNext();
         }
         mydatabase.close();
-        expandableListDetail  = new HashMap<>();
+        expandableListDetail  = new LinkedHashMap<>();
         expandableListDetail.put("Monday", monday);
         expandableListDetail.put("Tuesday", tuesday);
         expandableListDetail.put("Wednesday", wednesday);

@@ -243,11 +243,15 @@ public class Todo_edit extends AppCompatActivity {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date dateFuture = temp.getDate();
             dateFuture.setYear(dateFuture.getYear()-1900);
-            String future = dateFormat.format(dateFuture);
-            String title = temp.getTopic();
-            String content = temp.getDesc();
-            if(temp.isFinish()==false) {
-                scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future));
+            Calendar c = Calendar.getInstance();
+            Date dateNow = c.getTime();
+            if(dateFuture.getTime()>dateNow.getTime()) {
+                String future = dateFormat.format(dateFuture);
+                String title = temp.getTopic();
+                String content = temp.getDesc();
+                if (temp.isFinish() == false) {
+                    scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

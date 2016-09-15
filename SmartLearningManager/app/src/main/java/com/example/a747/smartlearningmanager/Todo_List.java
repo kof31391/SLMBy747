@@ -54,6 +54,7 @@ public class Todo_List extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         stdid = pref.getString("std_id", null);
         spinner = (Spinner)findViewById(R.id.spinner2);
+
         query = (EditText)findViewById(R.id.searchBox);
         try {
             lvItems = (MyListView) findViewById(R.id.lvItems);

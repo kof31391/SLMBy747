@@ -87,6 +87,12 @@ public class Elearning extends AppCompatActivity {
             resultSet.moveToNext();
         }
         mydatabase.close();
+        all.add("B.Sc.IT");
+        all.add("B.Sc.CS");
+        all.add("M.Sc.IT");
+        all.add("M.Sc.EM/M.Sc.BIS");
+        all.add("M.Sc.SE");
+        all.add("Event");
         expandableListDetail  = new HashMap<>();
         expandableListDetail.put("All", all);
         expandableListDetail.put("This Year", thisyear);

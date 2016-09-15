@@ -372,12 +372,12 @@ public class Main extends AppCompatActivity {
                 result += " ";
             }
             result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-            result += "\t";
+            result += "  ";
             result += "Room:  ";
             result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
             result += "\n  Time:  ";
             result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
-            result += "\t - ";
+            result += " - ";
             name = "tv_scheduleToday_code"+findViewId;
             id = getResources().getIdentifier(name, "id", getPackageName());
             if(id != 0){

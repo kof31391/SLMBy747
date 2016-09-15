@@ -76,7 +76,11 @@ public class Todo_Add extends AppCompatActivity {
             desc.setHint(" Please Enter Detail ");
         todoTime =(EditText) findViewById(R.id.timePicker);
         todoDate = (EditText) findViewById(R.id.datePicker);
-        todoTime.setText(mcurrentTime.get(Calendar.HOUR_OF_DAY)+":"+mcurrentTime.get(Calendar.MINUTE));
+        DateFormat df = new SimpleDateFormat("hh:mm");
+        Date todo_time = new Date();
+        todo_time.setHours(mcurrentTime.get(Calendar.HOUR_OF_DAY));
+        todo_time.setMinutes(mcurrentTime.get(Calendar.MINUTE));
+        todoTime.setText(df.format(todo_time));
         todoDate.setText(mcurrentTime.get(Calendar.DAY_OF_MONTH)+"/"+mcurrentTime.get(Calendar.MONTH)+"/"+
                 mcurrentTime.get(Calendar.YEAR));
             topic.setHint("Enter Topic Here");
@@ -201,16 +205,21 @@ public class Todo_Add extends AppCompatActivity {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date dateFuture = temp.getDate();
             dateFuture.setYear(dateFuture.getYear()-1900);
-            String future = dateFormat.format(dateFuture);
-            String title = temp.getTopic();
-            String content = temp.getDesc();
-            if(temp.isFinish()==false) {
-                scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future));
+            Calendar c = Calendar.getInstance();
+            Date dateNow = c.getTime();
+            if(dateFuture.getTime()>dateNow.getTime()){
+                String future = dateFormat.format(dateFuture);
+                String title = temp.getTopic();
+                String content = temp.getDesc();
+                if(temp.isFinish()==false) {
+                    scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     private String getTimeCurrent() {
         Calendar calendar = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -267,19 +276,9 @@ public class Todo_Add extends AppCompatActivity {
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         long futureInMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
-
-    /*    Intent intent = new Intent(this, Todo_View.class);
-        intent.putExtra("message", (Parcelable) temp);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(Todo_View.class);
-        stackBuilder.addNextIntent(intent);
-        PendingIntent pending =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);*/
-
     }
 
     private Notification getNotification(String title,String content) {
