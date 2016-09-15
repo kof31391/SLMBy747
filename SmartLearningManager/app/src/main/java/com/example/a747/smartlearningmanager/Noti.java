@@ -29,7 +29,7 @@ public class Noti extends AppCompatActivity {
 
     private ArrayList<NotificationObj> items;
     private ArrayAdapter<String> adapter;
-    private ListView lvitems;
+    private MyListView lvitems;
     private String stdid;
     private ArrayList<String> show;
     private int pos;
@@ -125,7 +125,10 @@ public class Noti extends AppCompatActivity {
                 int tempYear =items.get(j).getDate().getYear()-1900;
                 that.setYear(tempYear);
                 if(now.compareTo(that)>-1) {
-                    show.add(items.get(j).getTopic() + "\n" + items.get(j).getDesc());
+                    if(items.get(j).isFinish()==true)
+                    show.add(items.get(j).getTopic() + "\n" + items.get(j).getCategory()+"\tStatus: Finish");
+                    else
+                        show.add(items.get(j).getTopic() + "\n" + items.get(j).getCategory()+"\tStatus: Not Finish");
                 }
             }
 

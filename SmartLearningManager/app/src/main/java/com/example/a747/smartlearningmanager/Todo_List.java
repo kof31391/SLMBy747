@@ -154,7 +154,10 @@ public class Todo_List extends AppCompatActivity {
     startActivity(intent);
     }
 
-
+    public void gotoAbout(View v){
+        Intent intent = new Intent(this,About.class);
+        startActivity(intent);
+    }
 
 
     private void readItems() {

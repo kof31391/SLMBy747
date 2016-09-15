@@ -10,6 +10,24 @@ public class NotificationObj implements Comparable<NotificationObj>,Serializable
     private String topic;
     private String desc;
     private Date date;
+    private boolean isFinish;
+    private String category;
+
+    public boolean isFinish() {
+        return isFinish;
+    }
+
+    public void setFinish(boolean finish) {
+        isFinish = finish;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public Date getDate() {
         return date;

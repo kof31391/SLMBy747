@@ -676,6 +676,11 @@ public class Main extends AppCompatActivity {
         Log.i("GT","Go to Setting");
     }
 
+    public void gotoAbout(View v){
+        Intent intent = new Intent(this,About.class);
+        startActivity(intent);
+    }
+
     public void gotoHome(View v){
         Intent intent = new Intent(this, Main.class);
         startActivity(intent);
