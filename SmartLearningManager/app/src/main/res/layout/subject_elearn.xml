@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="SubjectName"
-                    android:id="@+id/textView3"
+                    android:id="@+id/subjname"
                     android:textColor="#ffffff"
                     android:paddingTop="5dp"
                     android:textSize="23dp"
@@ -88,9 +88,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="Subjectname"
+                        android:text=""
                         android:layout_marginRight="10dp"
-                        android:id="@+id/textView10" />
+                        android:id="@+id/subjCode" />
 
                 </LinearLayout>
 
@@ -105,16 +105,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="TearcherName"
+                        android:text="Lecturer: "
                         android:layout_marginRight="10dp"
-                        android:id="@+id/textView15" />
+                        android:id="@+id/lecturer" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Medium Text"
-                        android:id="@+id/textView16" />
+                        android:text=""
+                        android:id="@+id/LecturerName" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -134,29 +134,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Medium Text"
-                        android:id="@+id/textView17" />
+                        android:text=""
+                        android:id="@+id/leturerMail" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="244dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/linearLayout7" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Tel. " />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Medium Text"
-                        android:id="@+id/textView18" />
-                </LinearLayout>
 
             </RelativeLayout>
         </RelativeLayout>

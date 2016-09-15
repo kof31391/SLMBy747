@@ -30,11 +30,21 @@ public class Subject_elearn extends AppCompatActivity {
     String std_id;
     String subject;
     String path;
+    TextView subjCode;
+    TextView lecturer;
+    TextView lecturerMail;
+    TextView lecturerTel;
+    TextView subjName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subject_elearn);
+        subjCode = (TextView)findViewById(R.id.subjCode);
+        subjName = (TextView)findViewById(R.id.subjname);
+        lecturer = (TextView)findViewById(R.id.LecturerName);
+        lecturerMail = (TextView)findViewById(R.id.leturerMail);
 
         Intent intent = getIntent();
         subject = intent.getExtras().getString("subject");
@@ -109,6 +119,10 @@ public class Subject_elearn extends AppCompatActivity {
                                 title.setBackgroundColor(Color.parseColor("#FFFF99"));
                             }
                         }
+                        subjCode.setText(c.getString("subject_code"));
+                        subjName.setText(c.getString("subject_name"));
+                        lecturer.setText(c.getString("lecturer"));
+                        lecturerMail.setText(c.getString("email"));
                         title.setText(c.getString("e_date")+"  "+c.getString("e_time"));
                         title.setLayoutParams(params1);
                         row.addView(title);
@@ -144,17 +158,8 @@ public class Subject_elearn extends AppCompatActivity {
     }
 
     public void gotoElean(View v){
-        Intent temp = getIntent();
-        String from = temp.getExtras().getString("from");
-        System.out.println(from);
-        if(from.equals("Elearning")){
-            Intent intent = new Intent(this, Elearning.class);
-            startActivity(intent);
-            Log.i("GT","Go to Elearning");
-        }else{
-            Intent intent = new Intent(this, Main.class);
-            startActivity(intent);
-            Log.i("GT","Go to Main");
-        }
+        Intent intent = new Intent(this, Elearning.class);
+        startActivity(intent);
+        Log.i("GT","Go to Elearning");
     }
 }
