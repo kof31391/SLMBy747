@@ -261,7 +261,7 @@ public class Main extends AppCompatActivity {
             private String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/SchOfWeek.php?std_id="+params[0]);
+                    URL url = new URL("http://54.169.58.93/Schedule.php?std_id="+params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -287,14 +287,20 @@ public class Main extends AppCompatActivity {
                     Log.i("Initial","Initial set notification for schedule...");
                     SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
                     mydatabase.execSQL("DROP TABLE IF EXISTS Schedule");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Schedule(subject_code VARCHAR, subject_name VARCHAR, lecturer VARCHAR, subject_room VARCHAR, subject_date VARCHAR, subject_time_start VARCHAR, subject_time_ended VARCHAR);");
+                    mydatabase.execSQL("DROP TABLE IF EXISTS Lecturer");
+                    mydatabase.execSQL("DROP TABLE IF EXISTS Subject_Lecturer");
+                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Schedule(subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, subject_date VARCHAR, subject_time_start VARCHAR, subject_time_ended VARCHAR);");
+                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Lecturer(lecturer_id VARCHAR, lecturer_name VARCHAR, lecturer_lastname VARCHAR, lecturer_email VARCHAR, lecturer_tel VARCHAR, lecturer_image VARCHAR);");
+                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Subject_Lecturer(sl_id VARCHAR,subject_code VARCHAR, lecturer_id VARCHAR);");
                     JSONArray data = new JSONArray(strJSON);
                     Calendar calendar = Calendar.getInstance();
                     Date nDate;
                     int nowDayfoweek = calendar.get(calendar.DAY_OF_WEEK)-1;
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
-                        mydatabase.execSQL("INSERT INTO Schedule VALUES('"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("image/lecturer")+"','"+c.getString("subject_room")+"','"+c.getString("subject_date")+"','"+c.getString("subject_time_start")+"','"+c.getString("subject_time_ended")+"');");
+                        mydatabase.execSQL("INSERT INTO Schedule VALUES('"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("subject_room")+"','"+c.getString("subject_date")+"','"+c.getString("subject_time_start")+"','"+c.getString("subject_time_ended")+"');");
+                        mydatabase.execSQL("INSERT INTO Lecturer VALUES('"+c.getString("lecturer_id")+"','"+c.getString("lecturer_name")+"','"+c.getString("lecturer_lastname")+"','"+c.getString("lecturer_email")+"','"+c.getString("lecturer_tel")+"','"+c.getString("lecturer_image")+"');");
+                        mydatabase.execSQL("INSERT INTO Subject_Lecturer VALUES('"+c.getString("sl_id")+"','"+c.getString("subject_code")+"','"+c.getString("lecturer_id")+"');");
                         nDate = calendar.getTime();
                         Date sDate = calendar.getTime();
                         int scheDayofweek = c.getInt("subject_date");
@@ -353,49 +359,52 @@ public class Main extends AppCompatActivity {
             case 7 : title_day.setText("Sunday");
                 break;
         }
-        for(int i = 0; i<resultSet.getCount(); i++) {
-            int findViewId = i+1;
-            TextView tv_scheduleToday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
-            if(findViewId == 1){
-                tv_scheduleToday_code2.setVisibility(View.GONE);
-            }else{
-                tv_scheduleToday_code2.setVisibility(View.VISIBLE);
-            }
-            String name = "tv_scheduleToday_code"+findViewId;
-            String result = "";
-            int id = getResources().getIdentifier(name, "id", getPackageName());
-
-            if (id != 0) {
+        if (resultSet.getCount() != 0) {
+            for (int i = 0; i < resultSet.getCount(); i++) {
+                int findViewId = i + 1;
+                TextView tv_scheduleToday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
+                if (findViewId == 1) {
+                    tv_scheduleToday_code2.setVisibility(View.GONE);
+                } else {
+                    tv_scheduleToday_code2.setVisibility(View.VISIBLE);
+                }
+                String name = "tv_scheduleToday_code" + findViewId;
+                String result = "";
+                int id = getResources().getIdentifier(name, "id", getPackageName());
+                if (id != 0) {
+                    result += "  ";
+                    result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
+                    subj = resultSet.getString(resultSet.getColumnIndex("subject_code"));
+                    result += " ";
+                }
+                result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
                 result += "  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
-                subj =  resultSet.getString(resultSet.getColumnIndex("subject_code"));
-                result += " ";
+                result += "Room:  ";
+                result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
+                result += "\n  Time:  ";
+                result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
+                result += " - ";
+                name = "tv_scheduleToday_code" + findViewId;
+                id = getResources().getIdentifier(name, "id", getPackageName());
+                if (id != 0) {
+                    tv_scheduleToday = (TextView) findViewById(id);
+                    result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
+                    tv_scheduleToday.setText(result);
+                    tv_scheduleToday.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            gotoSubjectElarn(v);
+                        }
+                    });
+                }
+                resultSet.moveToNext();
             }
-            result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-            result += "  ";
-            result += "Room:  ";
-            result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
-            result += "\n  Time:  ";
-            result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
-            result += " - ";
-            name = "tv_scheduleToday_code"+findViewId;
-            id = getResources().getIdentifier(name, "id", getPackageName());
-            if(id != 0){
-                tv_scheduleToday = (TextView) findViewById(id);
-                result+=resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
-                tv_scheduleToday.setText(result);
-                tv_scheduleToday.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Main.this, Subject_elearn.class);
-                        intent.putExtra("subject", subj);
-                        intent.putExtra("from","Main");
-                        startActivity(intent);
-                        Log.i("GT","Go to subject elearning list");
-                    }
-                });
-            }
-            resultSet.moveToNext();
+        }else{
+            TextView tv_scheduleNextday_code1 = (TextView) findViewById(R.id.tv_scheduleToday_code1);
+            tv_scheduleNextday_code1.setText("No Class Today");
+            tv_scheduleNextday_code1.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+            TextView tv_scheduleNextday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
+            tv_scheduleNextday_code2.setVisibility(View.GONE);
         }
         Log.i("Initial","Initial get schedule success");
     }
@@ -442,7 +451,6 @@ public class Main extends AppCompatActivity {
                 title_day.setText("Sunday");
                 break;
         }
-        System.out.println("Get count: "+resultSet.getCount());
         if (resultSet.getCount() != 0) {
             TextView tv_scheduleNextday_code1 = (TextView) findViewById(R.id.tv_scheduleToday_code1);
             tv_scheduleNextday_code1.setVisibility(View.VISIBLE);
@@ -474,10 +482,16 @@ public class Main extends AppCompatActivity {
                 result += "\t - ";
                 name = "tv_scheduleToday_code" + findViewId;
                 id = getResources().getIdentifier(name, "id", getPackageName());
-                if (id != 0) {
+                if(id != 0){
                     tv_scheduleNextday = (TextView) findViewById(id);
                     result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
                     tv_scheduleNextday.setText(result);
+                    tv_scheduleNextday.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            gotoSubjectElarn(v);
+                        }
+                    });
                 }
                 resultSet.moveToNext();
             }
@@ -489,6 +503,15 @@ public class Main extends AppCompatActivity {
             TextView tv_scheduleNextday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
             tv_scheduleNextday_code2.setVisibility(View.GONE);
         }
+    }
+
+    private void gotoSubjectElarn(View v){
+        String subject = ((TextView)v).getText().toString().substring(2,8);
+        Intent intent = new Intent(Main.this, Subject_elearn.class);
+        intent.putExtra("subject", subject);
+        intent.putExtra("from","Main");
+        startActivity(intent);
+        Log.i("GT","Go to subject elearning list");
     }
 
     protected void prevSchedule(View v) {
@@ -504,7 +527,7 @@ public class Main extends AppCompatActivity {
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule", MODE_PRIVATE, null);
         Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='" + nextday + "' ORDER BY subject_date ASC LIMIT 2;", null);
         resultSet.moveToFirst();
-        TextView tv_scheduleNextday;
+        TextView tv_schedulePrevday;
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nextday) {
             case 1:
@@ -529,18 +552,17 @@ public class Main extends AppCompatActivity {
                 title_day.setText("Sunday");
                 break;
         }
-        System.out.println("Get count: "+resultSet.getCount());
         if (resultSet.getCount() != 0) {
-            TextView tv_scheduleNextday_code1 = (TextView) findViewById(R.id.tv_scheduleToday_code1);
-            tv_scheduleNextday_code1.setVisibility(View.VISIBLE);
-            tv_scheduleNextday_code1.setGravity(Gravity.LEFT | Gravity.LEFT);
+            TextView tv_schedulePrevday_code1 = (TextView) findViewById(R.id.tv_scheduleToday_code1);
+            tv_schedulePrevday_code1.setVisibility(View.VISIBLE);
+            tv_schedulePrevday_code1.setGravity(Gravity.LEFT | Gravity.LEFT);
             for (int i = 0; i < resultSet.getCount(); i++) {
                 int findViewId = i + 1;
-                TextView tv_scheduleNextday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
+                TextView tv_schedulePrevday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
                 if (findViewId == 1) {
-                    tv_scheduleNextday_code2.setVisibility(View.GONE);
+                    tv_schedulePrevday_code2.setVisibility(View.GONE);
                 } else {
-                    tv_scheduleNextday_code2.setVisibility(View.VISIBLE);
+                    tv_schedulePrevday_code2.setVisibility(View.VISIBLE);
                 }
                 String result = "";
                 String name = "tv_scheduleToday_code" + findViewId;
@@ -561,13 +583,19 @@ public class Main extends AppCompatActivity {
                 name = "tv_scheduleToday_code" + findViewId;
                 id = getResources().getIdentifier(name, "id", getPackageName());
                 if (id != 0) {
-                    tv_scheduleNextday = (TextView) findViewById(id);
+                    tv_schedulePrevday = (TextView) findViewById(id);
                     result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
-                    tv_scheduleNextday.setText(result);
+                    tv_schedulePrevday.setText(result);
+                    tv_schedulePrevday.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            gotoSubjectElarn(v);
+                        }
+                    });
                 }
                 resultSet.moveToNext();
             }
-            Log.i("Initial", "Initial get next schedule success");
+            Log.i("Initial", "Initial get prev schedule success");
         }else{
             TextView tv_scheduleNextday_code1 = (TextView) findViewById(R.id.tv_scheduleToday_code1);
             tv_scheduleNextday_code1.setText("No Class Today");

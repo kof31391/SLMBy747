@@ -109,7 +109,7 @@
                         android:layout_alignTop="@+id/imageButton2"
                         android:layout_toEndOf="@+id/imageButton2"
                         />
-    ใส่รายละเอียดนิดนึง
+                    ใส่รายละเอียดนิดนึง
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

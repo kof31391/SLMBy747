@@ -39,12 +39,14 @@ public class Subject_elearn extends AppCompatActivity {
     String subject;
     String path;
     String telno;
+    int c_absent = 0;
     TextView subjCode;
     TextView lecturer;
     TextView lecturerMail;
     TextView lecturerTel;
     ImageView lecturerImage;
     TextView subjName;
+    TextView absent;
 
 
     @Override
@@ -57,6 +59,7 @@ public class Subject_elearn extends AppCompatActivity {
         lecturerMail = (TextView)findViewById(R.id.leturerMail);
         lecturerTel = (TextView) findViewById(R.id.lecturerTel);
         lecturerImage = (ImageView) findViewById(R.id.lecturerImage) ;
+        absent = (TextView) findViewById(R.id.absent);
 
         Intent intent = getIntent();
         subject = intent.getExtras().getString("subject");
@@ -64,19 +67,47 @@ public class Subject_elearn extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         std_id = pref.getString("std_id", null);
 
-        getSubjectDetial(subject,std_id);
+        getSubjectDetial(subject);
+        getSubjectVideo(subject);
+
 
     }
 
-    private void getSubjectDetial(final String subject, final String std_id){
+    private void getSubjectDetial(final String subject){
+        String subj = subject.substring(0,6);
+        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Subject_Lecturer sl JOIN Schedule s ON sl.subject_code = s.subject_code JOIN Lecturer l ON sl.lecturer_id = l.lecturer_id WHERE s.subject_code='"+subj+"';",null);
+        resultSet.moveToFirst();
+        subjCode.setText(resultSet.getString(resultSet.getColumnIndex("subject_code")));
+        subjName.setText(resultSet.getString(resultSet.getColumnIndex("subject_name")));
+        lecturer.setText(resultSet.getString(resultSet.getColumnIndex("lecturer_name"))+" "+resultSet.getString(resultSet.getColumnIndex("lecturer_lastname")));
+        lecturerMail.setText(resultSet.getString(resultSet.getColumnIndex("lecturer_email")));
+        lecturerTel.setText(resultSet.getString(resultSet.getColumnIndex("lecturer_tel")));
+        telno = resultSet.getString(resultSet.getColumnIndex("lecturer_tel"));
+        lecturerTel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse("tel:"+telno));
+                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(callIntent);
+
+            }
+        });
+        String uri = "lecturer_"+resultSet.getString(resultSet.getColumnIndex("lecturer_name")).toLowerCase();
+        int imageResource = getResources().getIdentifier(uri, "drawable", getPackageName());
+        Drawable image = getResources().getDrawable(imageResource);
+        lecturerImage.setImageDrawable(image);
+    }
+
+    private void getSubjectVideo(final String subject){
         class GetDataJSON extends AsyncTask<String,Void,String> {
             HttpURLConnection urlConnection = null;
             private String strJSON;
             protected String doInBackground(String... params) {
                 try {
                     String subj = subject.substring(0,6);
-                    URL url = new URL("http://54.169.58.93/Elearning_datelist.php?subject="+subj+"&std_id="+std_id);
-                    System.out.println("Link------------------------: "+url.toString());
+                    URL url = new URL("http://54.169.58.93/Elearning_datelist.php?subject="+subj);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {
@@ -102,11 +133,9 @@ public class Subject_elearn extends AppCompatActivity {
                 try {
                     Log.i("Setup","Set video detail...");
                     JSONArray data = new JSONArray(strJSON);
-
                     SQLiteDatabase mydatabase = openOrCreateDatabase("Elearning",MODE_PRIVATE,null);
                     mydatabase.execSQL("DROP TABLE IF EXISTS Elearning");
                     mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_date VARCHAR, e_time VARCHAR, e_link VARCHAR);");
-
                     TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
                     TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
                     TableRow.LayoutParams params2=new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
@@ -131,25 +160,10 @@ public class Subject_elearn extends AppCompatActivity {
                                 title.setBackgroundColor(Color.parseColor("#FFFF99"));
                             }
                         }
-                        subjCode.setText(c.getString("subject_code"));
-                        subjName.setText(c.getString("subject_name"));
-                        String uri = "lecturer_"+c.getString("lecturer_name").toLowerCase();
-                        int imageResource = getResources().getIdentifier(uri, "drawable", getPackageName());
-                        Drawable image = getResources().getDrawable(imageResource);
-                        lecturerImage.setImageDrawable(image);
-                        lecturer.setText(c.getString("lecturer_name")+" "+c.getString("lecturer_lastname"));
-                        lecturerMail.setText(c.getString("lecturer_email"));
-                        lecturerTel.setText(telno = c.getString("lecturer_tel"));
-                        lecturerTel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                                callIntent.setData(Uri.parse("tel:"+telno));
-                                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(callIntent);
-
-                            }
-                        });
+                        if(c.getString("check_status").equalsIgnoreCase("N")){
+                            c_absent++;
+                        }
+                        absent.setText(String.valueOf(c_absent));
                         title.setText(c.getString("e_date")+"  "+c.getString("e_time"));
                         title.setLayoutParams(params1);
                         row.addView(title);

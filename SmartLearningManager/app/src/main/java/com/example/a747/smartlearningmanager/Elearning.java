@@ -58,14 +58,27 @@ public class Elearning extends AppCompatActivity {
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-
                 final String subject = (String) expandableListAdapter.getChild(groupPosition, childPosition);
-
-                Intent intent = new Intent(Elearning.this, Subject_elearn.class);
-                intent.putExtra("subject",subject);
-                intent.putExtra("from","Elearning");
-                Elearning.this.startActivity(intent);
-
+                switch (subject){
+                    case "B.Sc.IT" :
+                        break;
+                    case "B.Sc.CS" :
+                        break;
+                    case "M.Sc.IT" :
+                        break;
+                    case "M.Sc.EM/M.Sc.BIS" :
+                        break;
+                    case "M.Sc.SE" :
+                        break;
+                    case "Event" :
+                        break;
+                    default :
+                        Intent intent = new Intent(Elearning.this, Subject_elearn.class);
+                        intent.putExtra("subject",subject);
+                        intent.putExtra("from","Elearning");
+                        Elearning.this.startActivity(intent);
+                        break;
+                }
                 Toast.makeText(
                         getApplicationContext(),
                         expandableListTitle.get(groupPosition)
@@ -96,7 +109,7 @@ public class Elearning extends AppCompatActivity {
         all.add("Event");
         expandableListDetail  = new HashMap<>();
         expandableListDetail.put("All", all);
-        expandableListDetail.put("This Year", thisyear);
+        expandableListDetail.put("This semester", thisyear);
     }
 
     public void gotoAbout(View v){
