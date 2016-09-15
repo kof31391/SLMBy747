@@ -163,104 +163,121 @@
 
                 </LinearLayout>
 
-                <ScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/scrollView3" >
-
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#cecece"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:weightSum="1">
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#cecece"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentStart="true"
-                        android:weightSum="1">
+                        android:background="#ffffff"
+                        android:paddingTop="5dp"
 
-                        <LinearLayout
-                            android:orientation="vertical"
+                        android:layout_height="wrap_content">
+
+                        <TextView
                             android:layout_width="match_parent"
-                            android:background="#ffffff"
+                            android:layout_height="wrap_content"
+                            android:background="#1b3c8f"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="      Search / Category "
+                            android:id="@+id/textView31"
+                            android:textColor="#ffffff"
                             android:paddingTop="5dp"
-
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="#1b3c8f"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="      Search / Category "
-                                android:id="@+id/textView31"
-                                android:textColor="#ffffff"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:textStyle="bold"
-                                android:textSize="18dp"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:gravity="center_horizontal"
-                            android:background="#c3d7e3"
-                            android:layout_height="45dp">
-
-                            <LinearLayout
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                >
-
-                                <EditText
-                                    android:layout_width="200dp"
-                                    android:hint=" Search"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_height="30dp"
-                                    android:textSize="18dp"
-                                    android:background="#f4f4f4"
-                                    android:id="@+id/searchBox" />
-
-                                <Spinner
-                                    android:layout_width="90dp"
-                                    android:layout_height="30dp"
-                                    android:background="#f6ee00"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginTop="5dp"
-                                    android:entries="@array/categoriesSearch"
-                                    android:id="@+id/spinner2" />
-
-                                <ImageButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="35dp"
-                                    android:src="@drawable/search"
-                                    android:onClick="Query"
-                                    android:background="#c3d7e3"
-                                    android:paddingTop="10dp"
-                                    android:layout_marginLeft="5dp"
-                                    android:id="@+id/imageButton27" />
-
-
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <com.example.a747.smartlearningmanager.MyListView
-                            android:layout_width="match_parent"
-                            android:layout_height="500dp"
-                            android:background="#ffffff"
-                            android:id="@+id/lvItems"
-                            android:paddingTop="10dp"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_above="@+id/btnAddItem"
-                            android:paddingBottom="10dp" />
+                            android:paddingBottom="5dp"
+                            android:textStyle="bold"
+                            android:textSize="18dp"/>
 
                     </LinearLayout>
-                </ScrollView>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:gravity="center_horizontal"
+                        android:background="#c3d7e3"
+                        android:layout_height="45dp">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            >
+
+                            <EditText
+                                android:layout_width="200dp"
+                                android:hint=" Search"
+                                android:layout_marginTop="5dp"
+                                android:layout_height="30dp"
+                                android:textSize="18dp"
+                                android:background="#f4f4f4"
+                                android:id="@+id/searchBox" />
+
+                            <Spinner
+                                android:layout_width="90dp"
+                                android:layout_height="30dp"
+                                android:background="#f6ee00"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="5dp"
+                                android:entries="@array/categoriesSearch"
+                                android:id="@+id/spinner2" />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:src="@drawable/search"
+                                android:onClick="Query"
+                                android:background="#c3d7e3"
+                                android:paddingTop="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:id="@+id/imageButton27" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:background="#FFFFFF"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="List"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:layout_marginLeft="15dp"
+                            android:id="@+id/textView3" />
+
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/scrollView3" >
+
+
+                            <com.example.a747.smartlearningmanager.MyListView
+                                android:layout_width="match_parent"
+                                android:layout_height="500dp"
+                                android:background="#ffffff"
+                                android:id="@+id/lvItems"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_above="@+id/btnAddItem"
+                                 />
+                        </ScrollView>
+                    </LinearLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
 
 
