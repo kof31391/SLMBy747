@@ -65,6 +65,7 @@ public class Todo_edit extends AppCompatActivity {
     private todoObj temps;
     private ArrayList<NotificationObj> NotiItems;
     private CheckBox finish;
+    private boolean origin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,7 @@ public class Todo_edit extends AppCompatActivity {
         todoTime = (EditText) findViewById(R.id.timePicker);
         date = recObj.getDate();
         category = recObj.getCategory();
+        origin = recObj.isFinish();
         if(recObj.isFinish()==true){
             finish.setChecked(true);
         }
@@ -237,21 +239,19 @@ public class Todo_edit extends AppCompatActivity {
             Collections.sort(items);
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
             ois.writeObject(items);
-            NotificationObj noti = new NotificationObj(temp);
-            writeNoti(noti);
+            if(origin==false&&temp.isFinish()==true) {
+                NotificationObj noti = new NotificationObj(temp);
+                writeNoti(noti);
+            }
              /*Setup Notification*/
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date dateFuture = temp.getDate();
             dateFuture.setYear(dateFuture.getYear()-1900);
-            Calendar c = Calendar.getInstance();
-            Date dateNow = c.getTime();
-            if(dateFuture.getTime()>dateNow.getTime()) {
-                String future = dateFormat.format(dateFuture);
-                String title = temp.getTopic();
-                String content = temp.getDesc();
-                if (temp.isFinish() == false) {
-                    scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future));
-                }
+            String future = dateFormat.format(dateFuture);
+            String title = temp.getTopic();
+            String content = temp.getDesc();
+            if(temp.isFinish()==false) {
+                scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future));
             }
         } catch (IOException e) {
             e.printStackTrace();

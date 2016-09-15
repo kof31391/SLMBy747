@@ -57,6 +57,8 @@ public class NotificationObj implements Comparable<NotificationObj>,Serializable
         this.topic = obj.getTopic();
         this.desc = obj.getDesc();
         this.date = obj.getDate();
+        this.isFinish = obj.isFinish();
+        this.category = obj.getCategory();
     }
 
 
