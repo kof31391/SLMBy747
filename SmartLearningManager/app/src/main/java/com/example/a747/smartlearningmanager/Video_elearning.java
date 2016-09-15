@@ -40,6 +40,7 @@ public class Video_elearning extends AppCompatActivity {
     String elearning_room = "";
     String elearning_date = "";
     String elearning_time = "";
+    String origin = new Intent().getExtras().getString("from");
     String elearning_link = "";
 
     private Runnable onEverySecond=new Runnable() {
