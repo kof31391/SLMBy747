@@ -1,7 +1,9 @@
 package com.example.a747.smartlearningmanager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -105,9 +107,24 @@ public class Noti extends AppCompatActivity {
     }
 
     private void sendToDetail(int pos){
-        Intent intent = new Intent(this,Todo_View.class);
-        intent.putExtra("todo", pos);
-        startActivity(intent);
+            Intent intent = new Intent(this, Todo_View.class);
+            intent.putExtra("todo", pos);
+            startActivity(intent);
+
+    }
+
+    public void ClearNotification(View v){
+        File filesDir = getFilesDir();
+        File todoFile = new File(filesDir, stdid+"Notification.txt");
+        items = new ArrayList<>();
+        try {
+            ObjectOutputStream fis = new ObjectOutputStream(new FileOutputStream(todoFile));
+            fis.writeObject(items);
+            adapter.notifyDataSetChanged();
+            startActivity(new Intent(this,Noti.class));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void readItems() {

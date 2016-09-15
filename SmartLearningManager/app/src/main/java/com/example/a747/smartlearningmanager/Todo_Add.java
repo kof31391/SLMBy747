@@ -76,7 +76,7 @@ public class Todo_Add extends AppCompatActivity {
             desc.setHint(" Please Enter Detail ");
         todoTime =(EditText) findViewById(R.id.timePicker);
         todoDate = (EditText) findViewById(R.id.datePicker);
-        DateFormat df = new SimpleDateFormat("hh:mm");
+        DateFormat df = new SimpleDateFormat("HH:mm");
         Date todo_time = new Date();
         todo_time.setHours(mcurrentTime.get(Calendar.HOUR_OF_DAY));
         todo_time.setMinutes(mcurrentTime.get(Calendar.MINUTE));
@@ -117,6 +117,8 @@ public class Todo_Add extends AppCompatActivity {
                 DateDialog();
             }
         });
+        todoDate.setFocusable(false);
+        todoDate.setClickable(true);
     }
 
 
@@ -280,6 +282,7 @@ public class Todo_Add extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
+
 
     private Notification getNotification(String title,String content) {
         temp = new todoObj();       //start

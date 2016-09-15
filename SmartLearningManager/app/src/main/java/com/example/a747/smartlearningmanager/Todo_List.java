@@ -94,6 +94,7 @@ public class Todo_List extends AppCompatActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.add("Edit");
         menu.add("Delete");
+        menu.add("Mark as finish/not finish");
     }
 
     @Override
@@ -110,6 +111,10 @@ public class Todo_List extends AppCompatActivity {
                         writeItems();
                     } else if (item.getTitle().equals("Edit")) {
                         sendToEditor(index);
+                    }else{
+                        items.get(index).setFinish(!items.get(index).isFinish());
+                        adapter.notifyDataSetChanged();
+                        writeItems();
                     }
                 }else{
                     int pos = posTemp.get(index);
@@ -122,6 +127,10 @@ public class Todo_List extends AppCompatActivity {
                         startActivity(intent);
                     } else if (item.getTitle().equals("Edit")) {
                         sendToEditor(pos);
+                    }else{
+                        items.get(index).setFinish(!items.get(index).isFinish());
+                        adapter.notifyDataSetChanged();
+                        writeItems();
                     }
                 }
                 return true;

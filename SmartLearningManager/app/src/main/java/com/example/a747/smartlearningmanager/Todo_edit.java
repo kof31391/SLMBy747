@@ -252,6 +252,8 @@ public class Todo_edit extends AppCompatActivity {
             String content = temp.getDesc();
             if(temp.isFinish()==false) {
                 scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future));
+            }else{
+                cancelNotification(getNotification(title, content));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -283,6 +285,20 @@ public class Todo_edit extends AppCompatActivity {
                 .build();
         return notification;
     }
+
+
+
+    public void cancelNotification(Notification notification) {
+        System.out.println("Cancel");
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent.cancel();
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+    }
+
 
 
     private long getSchedule(String now, String future) {
