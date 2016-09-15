@@ -221,11 +221,12 @@
                             <Spinner
                                 android:layout_width="90dp"
                                 android:layout_height="30dp"
-                                android:background="#f6ee00"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginTop="5dp"
                                 android:entries="@array/categoriesSearch"
-                                android:id="@+id/spinner2" />
+                                android:id="@+id/spinner2"
+                                android:background="#8b97ff"
+                                style="@android:style/Widget.DeviceDefault.Spinner" />
 
                             <ImageButton
                                 android:layout_width="wrap_content"
@@ -290,11 +291,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnAddItem"
         android:src="@drawable/addw"
-        android:background="#ffffff"
         android:onClick="gotoEditor"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        style="@android:style/Widget.DeviceDefault.Light.ActionButton" />
 
 </RelativeLayout>

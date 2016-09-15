@@ -63,6 +63,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_margin="10dp"
+            android:gravity="center_horizontal"
             android:layout_height="wrap_content" >
 
             <ImageView
@@ -72,14 +73,14 @@
                 android:id="@+id/lecturerImage" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/lecturerImage">
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:id="@+id/linearLayout5" >
@@ -96,7 +97,7 @@
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="244dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/linearLayout5"
                     android:id="@+id/linearLayout6" >
@@ -119,7 +120,7 @@
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="244dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/linearLayout6"
                     android:id="@+id/linearLayout7" >
@@ -140,7 +141,7 @@
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="244dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/linearLayout9"
                     android:layout_below="@+id/linearLayout7"
@@ -207,6 +208,8 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:id="@+id/tl_datelist">
 
             </TableLayout>

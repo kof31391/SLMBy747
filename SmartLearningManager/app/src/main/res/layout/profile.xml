@@ -65,6 +65,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:padding="10dp"
+            android:gravity="center_horizontal"
             android:layout_height="wrap_content">
 
             <ImageView
@@ -74,14 +75,14 @@
                 android:id="@+id/tv_pf_image" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/tv_pf_image">
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:id="@+id/linearLayout2">
@@ -105,7 +106,7 @@
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="244dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/linearLayout2"
                     android:id="@+id/linearLayout3">
@@ -134,7 +135,7 @@
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="244dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/linearLayout3"
                     android:id="@+id/linearLayout4">
@@ -156,7 +157,7 @@
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="244dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/linearLayout4">
 
