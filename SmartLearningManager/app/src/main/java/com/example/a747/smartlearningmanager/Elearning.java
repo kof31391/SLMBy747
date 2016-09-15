@@ -63,6 +63,7 @@ public class Elearning extends AppCompatActivity {
 
                 Intent intent = new Intent(Elearning.this, Subject_elearn.class);
                 intent.putExtra("subject",subject);
+                intent.putExtra("from","Elearning");
                 Elearning.this.startActivity(intent);
 
                 Toast.makeText(

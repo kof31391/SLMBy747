@@ -51,7 +51,7 @@ public class Main extends AppCompatActivity {
     private String finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_it_feed";
     private HandleXML obj;
     private String std_id;
-
+    private  String subj;
     private String iniDate;
 
     private int lastest_news;
@@ -334,11 +334,11 @@ public class Main extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int nowDayfoweek = calendar.get(calendar.DAY_OF_WEEK)-1;
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nowDayfoweek+"' ORDER BY subject_date ASC LIMIT 2;",null);
+        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nowDayfoweek+"' ORDER BY subject_date ASC LIMIT 2;",null);
         resultSet.moveToFirst();
         TextView tv_scheduleToday;
         TextView title_day = (TextView) findViewById(R.id.title_day);
-        switch (nowDayfoweek){
+        switch (nowDayfoweek) {
             case 1 : title_day.setText("Monday");
                 break;
             case 2 : title_day.setText("Tuesday");
@@ -369,6 +369,7 @@ public class Main extends AppCompatActivity {
             if (id != 0) {
                 result += "  ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
+                subj =  resultSet.getString(resultSet.getColumnIndex("subject_code"));
                 result += " ";
             }
             result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
@@ -384,6 +385,16 @@ public class Main extends AppCompatActivity {
                 tv_scheduleToday = (TextView) findViewById(id);
                 result+=resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
                 tv_scheduleToday.setText(result);
+                tv_scheduleToday.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Main.this, Subject_elearn.class);
+                        intent.putExtra("subject", subj);
+                        intent.putExtra("from","Main");
+                        startActivity(intent);
+                        Log.i("GT","Go to subject elearning list");
+                    }
+                });
             }
             resultSet.moveToNext();
         }
@@ -452,6 +463,7 @@ public class Main extends AppCompatActivity {
                 if (id != 0) {
                     result += "  ";
                     result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
+                    subj =  resultSet.getString(resultSet.getColumnIndex("subject_code"));
                     result += " ";
                 }
                 result += resultSet.getString(resultSet.getColumnIndex("subject_name"));

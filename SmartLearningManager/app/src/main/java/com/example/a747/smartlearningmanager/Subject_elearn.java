@@ -144,8 +144,17 @@ public class Subject_elearn extends AppCompatActivity {
     }
 
     public void gotoElean(View v){
-        Intent intent = new Intent(this, Elearning.class);
-        startActivity(intent);
-        Log.i("GT","Go to Elearning");
+        Intent temp = getIntent();
+        String from = temp.getExtras().getString("from");
+        System.out.println(from);
+        if(from.equals("Elearning")){
+            Intent intent = new Intent(this, Elearning.class);
+            startActivity(intent);
+            Log.i("GT","Go to Elearning");
+        }else{
+            Intent intent = new Intent(this, Main.class);
+            startActivity(intent);
+            Log.i("GT","Go to Main");
+        }
     }
 }
