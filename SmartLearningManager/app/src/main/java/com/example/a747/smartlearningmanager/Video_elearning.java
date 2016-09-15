@@ -58,7 +58,6 @@ public class Video_elearning extends AppCompatActivity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -191,6 +190,9 @@ public class Video_elearning extends AppCompatActivity {
     public void gotoSubject_elearn(View v) {
         Intent intent = new Intent(this, Subject_elearn.class);
         intent.putExtra("subject",elearning_code);
+        Intent temp = getIntent();
+        String from = temp.getExtras().getString("from");
+        intent.putExtra("from",from);
         startActivity(intent);
     }
 }
