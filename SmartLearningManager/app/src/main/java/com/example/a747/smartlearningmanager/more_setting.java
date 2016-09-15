@@ -1,5 +1,6 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInstaller;
@@ -25,6 +26,12 @@ public class more_setting extends AppCompatActivity {
         TextView tv_ms_std_id = (TextView) findViewById(R.id.tv_ms_std_id);
         tv_ms_std_id.setText(std_id);
     }
+    protected void setMute(){
+        Notification notification = new Notification();
+        notification.defaults = 0;
+        notification.defaults |= Notification.DEFAULT_VIBRATE;
+    }
+
     public void gotoProfile(View v){
         Intent intent = new Intent(this, Profile.class);
         startActivity(intent);
