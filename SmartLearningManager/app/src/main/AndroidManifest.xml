@@ -25,7 +25,6 @@
         <activity android:name=".Todo_Add" />
         <activity android:name=".Elearning" />
         <activity android:name=".Noti" />
-        <activity android:name=".More_News" />
         <activity android:name=".Todo_edit" />
         <activity android:name=".Profile" />
         <activity android:name=".Video_elearning" />

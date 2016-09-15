@@ -4,13 +4,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -20,20 +26,24 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 
 public class Subject_elearn extends AppCompatActivity {
     String std_id;
     String subject;
     String path;
+    String telno;
     TextView subjCode;
     TextView lecturer;
     TextView lecturerMail;
     TextView lecturerTel;
+    ImageView lecturerImage;
     TextView subjName;
 
 
@@ -43,8 +53,10 @@ public class Subject_elearn extends AppCompatActivity {
         setContentView(R.layout.subject_elearn);
         subjCode = (TextView)findViewById(R.id.subjCode);
         subjName = (TextView)findViewById(R.id.subjname);
-        lecturer = (TextView)findViewById(R.id.LecturerName);
+        lecturer = (TextView)findViewById(R.id.lecturerName);
         lecturerMail = (TextView)findViewById(R.id.leturerMail);
+        lecturerTel = (TextView) findViewById(R.id.lecturerTel);
+        lecturerImage = (ImageView) findViewById(R.id.lecturerImage) ;
 
         Intent intent = getIntent();
         subject = intent.getExtras().getString("subject");
@@ -121,8 +133,23 @@ public class Subject_elearn extends AppCompatActivity {
                         }
                         subjCode.setText(c.getString("subject_code"));
                         subjName.setText(c.getString("subject_name"));
-                        lecturer.setText(c.getString("lecturer"));
-                        lecturerMail.setText(c.getString("email"));
+                        String uri = "lecturer_"+c.getString("lecturer_name").toLowerCase();
+                        int imageResource = getResources().getIdentifier(uri, "drawable", getPackageName());
+                        Drawable image = getResources().getDrawable(imageResource);
+                        lecturerImage.setImageDrawable(image);
+                        lecturer.setText(c.getString("lecturer_name")+" "+c.getString("lecturer_lastname"));
+                        lecturerMail.setText(c.getString("lecturer_email"));
+                        lecturerTel.setText(telno = c.getString("lecturer_tel"));
+                        lecturerTel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                                callIntent.setData(Uri.parse("tel:"+telno));
+                                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(callIntent);
+
+                            }
+                        });
                         title.setText(c.getString("e_date")+"  "+c.getString("e_time"));
                         title.setLayoutParams(params1);
                         row.addView(title);
