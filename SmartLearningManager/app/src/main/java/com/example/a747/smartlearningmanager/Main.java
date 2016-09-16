@@ -13,14 +13,18 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -339,9 +343,8 @@ public class Main extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int nowDayfoweek = calendar.get(calendar.DAY_OF_WEEK)-1;
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nowDayfoweek+"' ORDER BY subject_date ASC LIMIT 2;",null);
+        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nowDayfoweek+"' ORDER BY subject_date ASC;",null);
         resultSet.moveToFirst();
-        TextView tv_scheduleToday;
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nowDayfoweek) {
             case 1 : title_day.setText("Monday");
@@ -360,23 +363,27 @@ public class Main extends AppCompatActivity {
                 break;
         }
         if (resultSet.getCount() != 0) {
+            TableLayout tb_schedule = (TableLayout) findViewById(R.id.tb_schedule);
             for (int i = 0; i < resultSet.getCount(); i++) {
-                int findViewId = i + 1;
-                TextView tv_scheduleToday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
-                if (findViewId == 1) {
-                    tv_scheduleToday_code2.setVisibility(View.GONE);
-                } else {
-                    tv_scheduleToday_code2.setVisibility(View.VISIBLE);
+                TableRow row = new TableRow(this);
+                TextView cell = new TextView(this);
+                cell.setId(i);
+                cell.setClickable(true);
+                cell.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        gotoSubjectElarn(v);;
+                    }
+                });
+                cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                cell.setPadding(0, 8, 0, 8);
+                if ((i % 2) == 1) {
+                    cell.setBackgroundColor(Color.parseColor("#E6E6E6"));
                 }
-                String name = "tv_scheduleToday_code" + findViewId;
                 String result = "";
-                int id = getResources().getIdentifier(name, "id", getPackageName());
-                if (id != 0) {
-                    result += "  ";
-                    result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
-                    subj = resultSet.getString(resultSet.getColumnIndex("subject_code"));
-                    result += " ";
-                }
+                result += "  ";
+                result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
+                result += " ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
                 result += "  ";
                 result += "Room:  ";
@@ -384,36 +391,24 @@ public class Main extends AppCompatActivity {
                 result += "\n  Time:  ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
                 result += " - ";
-                name = "tv_scheduleToday_code" + findViewId;
-                id = getResources().getIdentifier(name, "id", getPackageName());
-                if (id != 0) {
-                    tv_scheduleToday = (TextView) findViewById(id);
-                    result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
-                    tv_scheduleToday.setText(result);
-                    tv_scheduleToday.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            gotoSubjectElarn(v);
-                        }
-                    });
-                }
+                result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
+                cell.setText(result);
+                cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
+                row.addView(cell);
+                row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT, 1f));
+                tb_schedule.addView(row);
                 resultSet.moveToNext();
             }
-        }else{
-            TextView tv_scheduleNextday_code1 = (TextView) findViewById(R.id.tv_scheduleToday_code1);
-            tv_scheduleNextday_code1.setText("No Class Today");
-            tv_scheduleNextday_code1.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-            TextView tv_scheduleNextday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
-            tv_scheduleNextday_code2.setVisibility(View.GONE);
+            mydatabase.close();
+            Log.i("Initial","Initial get schedule success");
         }
-        Log.i("Initial","Initial get schedule success");
     }
 
     protected void refreshSchedule(View v){
         getSchedule();
     }
 
-    protected void nextSchedule(View v) {
+    protected void nextSchedule(View v){
         Log.i("Initial", "Initial get next schedule...");
         Calendar calendar = Calendar.getInstance();
         if (nextday == 0) {
@@ -423,85 +418,68 @@ public class Main extends AppCompatActivity {
         if (nextday > 7) {
             nextday = 1;
         }
-        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule", MODE_PRIVATE, null);
-        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='" + nextday + "' ORDER BY subject_date ASC LIMIT 2;", null);
+        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nextday+"' ORDER BY subject_date ASC;",null);
         resultSet.moveToFirst();
-        TextView tv_scheduleNextday;
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nextday) {
-            case 1:
-                title_day.setText("Monday");
+            case 1 : title_day.setText("Monday");
                 break;
-            case 2:
-                title_day.setText("Tuesday");
+            case 2 : title_day.setText("Tuesday");
                 break;
-            case 3:
-                title_day.setText("Wednesday");
+            case 3 : title_day.setText("Wednesday");
                 break;
-            case 4:
-                title_day.setText("Thursday");
+            case 4 : title_day.setText("Thursday");
                 break;
-            case 5:
-                title_day.setText("Friday");
+            case 5 : title_day.setText("Friday");
                 break;
-            case 6:
-                title_day.setText("Saturday");
+            case 6 : title_day.setText("Saturday");
                 break;
-            case 7:
-                title_day.setText("Sunday");
+            case 7 : title_day.setText("Sunday");
                 break;
         }
+        TableLayout tb_schedule = (TableLayout) findViewById(R.id.tb_schedule);
         if (resultSet.getCount() != 0) {
-            TextView tv_scheduleNextday_code1 = (TextView) findViewById(R.id.tv_scheduleToday_code1);
-            tv_scheduleNextday_code1.setVisibility(View.VISIBLE);
-            tv_scheduleNextday_code1.setGravity(Gravity.LEFT | Gravity.LEFT);
+            tb_schedule.removeAllViews();
             for (int i = 0; i < resultSet.getCount(); i++) {
-                int findViewId = i + 1;
-                TextView tv_scheduleNextday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
-                if (findViewId == 1) {
-                    tv_scheduleNextday_code2.setVisibility(View.GONE);
-                } else {
-                    tv_scheduleNextday_code2.setVisibility(View.VISIBLE);
+                TableRow row = new TableRow(this);
+                TextView cell = new TextView(this);
+                cell.setId(i);
+                cell.setClickable(true);
+                cell.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        gotoSubjectElarn(v);;
+                    }
+                });
+                cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                cell.setPadding(0, 8, 0, 8);
+                if ((i % 2) == 1) {
+                    cell.setBackgroundColor(Color.parseColor("#E6E6E6"));
                 }
                 String result = "";
-                String name = "tv_scheduleToday_code" + findViewId;
-                int id = getResources().getIdentifier(name, "id", getPackageName());
-
-                if (id != 0) {
-                    result += "  ";
-                    result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
-                    subj =  resultSet.getString(resultSet.getColumnIndex("subject_code"));
-                    result += " ";
-                }
+                result += "  ";
+                result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
+                result += " ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-                result += "\t";
+                result += "  ";
                 result += "Room:  ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
                 result += "\n  Time:  ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
-                result += "\t - ";
-                name = "tv_scheduleToday_code" + findViewId;
-                id = getResources().getIdentifier(name, "id", getPackageName());
-                if(id != 0){
-                    tv_scheduleNextday = (TextView) findViewById(id);
-                    result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
-                    tv_scheduleNextday.setText(result);
-                    tv_scheduleNextday.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            gotoSubjectElarn(v);
-                        }
-                    });
-                }
+                result += " - ";
+                result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
+                cell.setText(result);
+                cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
+                row.addView(cell);
+                row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT, 1f));
+                tb_schedule.addView(row);
                 resultSet.moveToNext();
             }
-            Log.i("Initial", "Initial get next schedule success");
+            mydatabase.close();
+            Log.i("Initial","Initial get next schedule success");
         }else{
-            TextView tv_scheduleNextday_code1 = (TextView) findViewById(R.id.tv_scheduleToday_code1);
-            tv_scheduleNextday_code1.setText("No Class Today");
-            tv_scheduleNextday_code1.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-            TextView tv_scheduleNextday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
-            tv_scheduleNextday_code2.setVisibility(View.GONE);
+            tb_schedule.removeAllViews();
         }
     }
 
@@ -515,7 +493,7 @@ public class Main extends AppCompatActivity {
     }
 
     protected void prevSchedule(View v) {
-        Log.i("Initial", "Initial get next schedule...");
+        Log.i("Initial", "Initial get prev schedule...");
         Calendar calendar = Calendar.getInstance();
         if (nextday == 0) {
             nextday = (calendar.get(calendar.DAY_OF_WEEK) - 1);
@@ -524,84 +502,68 @@ public class Main extends AppCompatActivity {
         if (nextday < 1) {
             nextday = 7;
         }
-        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule", MODE_PRIVATE, null);
-        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='" + nextday + "' ORDER BY subject_date ASC LIMIT 2;", null);
+        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nextday+"' ORDER BY subject_date ASC;",null);
         resultSet.moveToFirst();
-        TextView tv_schedulePrevday;
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nextday) {
-            case 1:
-                title_day.setText("Monday");
+            case 1 : title_day.setText("Monday");
                 break;
-            case 2:
-                title_day.setText("Tuesday");
+            case 2 : title_day.setText("Tuesday");
                 break;
-            case 3:
-                title_day.setText("Wednesday");
+            case 3 : title_day.setText("Wednesday");
                 break;
-            case 4:
-                title_day.setText("Thursday");
+            case 4 : title_day.setText("Thursday");
                 break;
-            case 5:
-                title_day.setText("Friday");
+            case 5 : title_day.setText("Friday");
                 break;
-            case 6:
-                title_day.setText("Saturday");
+            case 6 : title_day.setText("Saturday");
                 break;
-            case 7:
-                title_day.setText("Sunday");
+            case 7 : title_day.setText("Sunday");
                 break;
         }
+        TableLayout tb_schedule = (TableLayout) findViewById(R.id.tb_schedule);
         if (resultSet.getCount() != 0) {
-            TextView tv_schedulePrevday_code1 = (TextView) findViewById(R.id.tv_scheduleToday_code1);
-            tv_schedulePrevday_code1.setVisibility(View.VISIBLE);
-            tv_schedulePrevday_code1.setGravity(Gravity.LEFT | Gravity.LEFT);
+            tb_schedule.removeAllViews();
             for (int i = 0; i < resultSet.getCount(); i++) {
-                int findViewId = i + 1;
-                TextView tv_schedulePrevday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
-                if (findViewId == 1) {
-                    tv_schedulePrevday_code2.setVisibility(View.GONE);
-                } else {
-                    tv_schedulePrevday_code2.setVisibility(View.VISIBLE);
+                TableRow row = new TableRow(this);
+                TextView cell = new TextView(this);
+                cell.setId(i);
+                cell.setClickable(true);
+                cell.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        gotoSubjectElarn(v);;
+                    }
+                });
+                cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                cell.setPadding(0, 8, 0, 8);
+                if ((i % 2) == 1) {
+                    cell.setBackgroundColor(Color.parseColor("#E6E6E6"));
                 }
                 String result = "";
-                String name = "tv_scheduleToday_code" + findViewId;
-                int id = getResources().getIdentifier(name, "id", getPackageName());
-
-                if (id != 0) {
-                    result += "  ";
-                    result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
-                    result += " ";
-                }
+                result += "  ";
+                result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
+                result += " ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-                result += "\t";
+                result += "  ";
                 result += "Room:  ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
                 result += "\n  Time:  ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
-                result += "\t - ";
-                name = "tv_scheduleToday_code" + findViewId;
-                id = getResources().getIdentifier(name, "id", getPackageName());
-                if (id != 0) {
-                    tv_schedulePrevday = (TextView) findViewById(id);
-                    result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
-                    tv_schedulePrevday.setText(result);
-                    tv_schedulePrevday.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            gotoSubjectElarn(v);
-                        }
-                    });
-                }
+                result += " - ";
+                result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
+                cell.setText(result);
+                cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
+                row.addView(cell);
+                row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT, 1f));
+                tb_schedule.addView(row);
                 resultSet.moveToNext();
             }
-            Log.i("Initial", "Initial get prev schedule success");
+            mydatabase.close();
+            Log.i("Initial","Initial get next schedule success");
         }else{
-            TextView tv_scheduleNextday_code1 = (TextView) findViewById(R.id.tv_scheduleToday_code1);
-            tv_scheduleNextday_code1.setText("No Class Today");
-            tv_scheduleNextday_code1.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-            TextView tv_scheduleNextday_code2 = (TextView) findViewById(R.id.tv_scheduleToday_code2);
-            tv_scheduleNextday_code2.setVisibility(View.GONE);
+            tb_schedule.removeAllViews();
         }
     }
 
