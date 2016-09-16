@@ -37,7 +37,6 @@ import java.util.HashMap;
 public class Subject_elearn extends AppCompatActivity {
     String std_id;
     String subject;
-    String path;
     String telno;
     int c_absent = 0;
     TextView subjCode;
