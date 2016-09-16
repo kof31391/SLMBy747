@@ -315,18 +315,22 @@ public class Main extends AppCompatActivity {
                             sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
                             sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
                             long diffSec = sDate.getTime() - nDate.getTime();
-                            scheduleNotification(getNotification(c.getString("subject_code")+" : "+c.getString("subject_name"),
-                                    c.getString("subject_room")+" เริ่มเรียนเวลา "+c.getString("subject_time_start")+" จนถึง "+c.getString("subject_time_ended"))
-                                    ,diffSec);
+                            if(diffSec>0) {
+                                scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
+                                        c.getString("subject_room") + " เริ่มเรียนเวลา " + c.getString("subject_time_start") + " จนถึง " + c.getString("subject_time_ended"))
+                                        , diffSec);
+                            }
                         }else{
                             sDate.setDate(sDate.getDate()+diffDayofweek);
                             String hmstart = c.getString("subject_time_start");
                             sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
                             sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
                             long diffSec = sDate.getTime() - nDate.getTime();
-                            scheduleNotification(getNotification(c.getString("subject_code")+" : "+c.getString("subject_name"),
-                                    c.getString("subject_room")+" เริ่มเรียนเวลา "+c.getString("subject_time_start")+" จนถึง "+c.getString("subject_time_ended"))
-                                    ,diffSec);
+                            if(diffSec>0) {
+                                scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
+                                        c.getString("subject_room") + " เริ่มเรียนเวลา " + c.getString("subject_time_start") + " จนถึง " + c.getString("subject_time_ended"))
+                                        , diffSec);
+                            }
                         }
                     }
                     Log.i("Initial","Initial set notification for schedule success");
