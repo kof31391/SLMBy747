@@ -137,37 +137,35 @@ public class Subject_elearn extends AppCompatActivity {
                     mydatabase.execSQL("DROP TABLE IF EXISTS Elearning");
                     mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_date VARCHAR, e_time VARCHAR, e_link VARCHAR);");
                     TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
-                    TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-                    TableRow.LayoutParams params2=new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
                     for(int i=0;i<data.length();i++){
                         JSONObject c = data.getJSONObject(i);
                         mydatabase.execSQL("INSERT INTO Elearning VALUES('"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("subject_room")+"','"+c.getString("e_date")+"','"+c.getString("e_time")+"','"+c.getString("e_link")+"');");
                         TableRow row = new TableRow(Subject_elearn.this);
-                        TextView title = new TextView(Subject_elearn.this);
-                        title.setId(i);
-                        title.setClickable(true);
-                        title.setOnClickListener(new View.OnClickListener() {
+                        TextView cell = new TextView(Subject_elearn.this);
+                        cell.setId(i);
+                        cell.setClickable(true);
+                        cell.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 gotoVideo(v);
                             }
                         });
-                        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-                        title.setPadding(20, 20, 0, 20);
+                        cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                        cell.setPadding(20, 20, 0, 20);
                         if ((i % 2) == 0) {
-                            title.setBackgroundColor(Color.parseColor("#E6E6E6"));
-                            if(c.getString("check_watch_e").equalsIgnoreCase("null")){
-                                title.setBackgroundColor(Color.parseColor("#FFFF99"));
+                            cell.setBackgroundColor(Color.parseColor("#E6E6E6"));
+                            if(c.getString("check_status").equalsIgnoreCase("N") && c.getString("check_watch_e").equalsIgnoreCase("null")){
+                                cell.setBackgroundColor(Color.parseColor("#FFFF99"));
                             }
                         }
                         if(c.getString("check_status").equalsIgnoreCase("N")){
                             c_absent++;
                         }
                         absent.setText(String.valueOf(c_absent));
-                        title.setText(c.getString("e_date")+"  "+c.getString("e_time"));
-                        title.setLayoutParams(params1);
-                        row.addView(title);
-                        row.setLayoutParams(params2);
+                        cell.setText(c.getString("e_date")+"  "+c.getString("e_time"));
+                        cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
+                        row.addView(cell);
+                        row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT, 1f));
                         tl_datelist.addView(row);
                     }
                     Log.i("Setup","Set video detail success");

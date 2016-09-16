@@ -94,7 +94,7 @@ public class Elearning extends AppCompatActivity {
 
     public void getSchedule(){
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule;",null);
+        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule ORDER BY subject_code;",null);
         resultSet.moveToFirst();
         while(!resultSet.isAfterLast()){
             thisyear.add(resultSet.getString(resultSet.getColumnIndex("subject_code"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_name")));

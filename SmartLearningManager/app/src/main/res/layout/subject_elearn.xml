@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/imageButton30"
                     android:src="@drawable/videob"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_gravity="center"
                     android:background="#091534"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true" />
@@ -54,9 +54,11 @@
                     android:id="@+id/subjname"
                     android:textColor="#ffffff"
                     android:paddingTop="5dp"
-                    android:textSize="23dp"
+                    android:textSize="18dp"
                     android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/imageButton30" />
+                    android:layout_toEndOf="@+id/imageButton30"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center" />
             </LinearLayout>
         </RelativeLayout>
 

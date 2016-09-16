@@ -385,8 +385,8 @@ public class Main extends AppCompatActivity {
                 result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
                 result += " ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-                result += "  ";
-                result += "Room:  ";
+                result += "  \n";
+                result += "  Room:  ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
                 result += "\n  Time:  ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
@@ -462,8 +462,8 @@ public class Main extends AppCompatActivity {
                 result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
                 result += " ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-                result += "  ";
-                result += "Room:  ";
+                result += "  \n";
+                result += "  Room:  ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
                 result += "\n  Time:  ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
@@ -546,8 +546,8 @@ public class Main extends AppCompatActivity {
                 result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
                 result += " ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-                result += "  ";
-                result += "Room:  ";
+                result += "  \n";
+                result += "  Room:  ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
                 result += "\n  Time:  ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
