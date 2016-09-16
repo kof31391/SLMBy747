@@ -1,10 +1,14 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,11 +24,17 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -54,7 +64,6 @@ public class Profile extends AppCompatActivity {
     HashMap<String, List<String>> expandableListDetail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         String std_id = pref.getString("std_id", null);
         if(std_id != null){
@@ -152,6 +161,7 @@ public class Profile extends AppCompatActivity {
                     tv_pf = (TextView) findViewById(R.id.tv_pf_teleno);
                     tv_pf.setText(c.getString("phonenum"));
                     tv_pfi = (ImageView) findViewById(R.id.tv_pf_image);
+                    new ImageLoadTask("http://54.169.58.93/student_image/56130500097.jpg",tv_pfi).execute();
                     //tv_pfi.setImageResource(c.getString("image"));
                 }catch(Exception e){
                     e.printStackTrace();
@@ -234,4 +244,40 @@ public class Profile extends AppCompatActivity {
         Intent intent = new Intent(this,more_setting.class);
         startActivity(intent);
     }
+
+}
+
+    class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
+
+    private String url;
+    private ImageView imageView;
+
+    public ImageLoadTask(String url, ImageView imageView) {
+        this.url = url;
+        this.imageView = imageView;
+    }
+
+    @Override
+    protected Bitmap doInBackground(Void... params) {
+        try {
+            URL urlConnection = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urlConnection
+                    .openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap result) {
+        super.onPostExecute(result);
+        imageView.setImageBitmap(result);
+    }
+
 }
