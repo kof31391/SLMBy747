@@ -8,9 +8,11 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -145,11 +147,40 @@ public class Video_elearning extends AppCompatActivity {
                 seekBar.postDelayed(onEverySecond, 1000);
                 preload_dialog.dismiss();
                 video_display.start();
+                autoHideControl();
                 total_time = video_display.getDuration();
                 video_display.getCurrentPosition();
 
             }
         });
+
+        /*Setup auto hide media control*/
+        video_display.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                autoShowControl();
+                return false;
+            }
+        });
+    }
+
+    private void autoShowControl(){
+        LinearLayout video_controller = (LinearLayout)findViewById(R.id.video_controller);
+        video_controller.setVisibility(View.VISIBLE);
+        autoHideControl();
+    }
+
+    private void autoHideControl(){
+        Handler handler=new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(video_display.isPlaying()){
+                    LinearLayout video_controller = (LinearLayout)findViewById(R.id.video_controller);
+                    video_controller.setVisibility(View.INVISIBLE);
+                }
+            }
+        },5000);
     }
 
     public void pause(View v){
