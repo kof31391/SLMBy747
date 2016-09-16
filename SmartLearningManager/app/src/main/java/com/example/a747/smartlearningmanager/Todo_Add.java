@@ -72,8 +72,6 @@ public class Todo_Add extends AppCompatActivity {
         items = new ArrayList<>();
         spin = (Spinner)findViewById(R.id.spinner);
         topic = (TextView)findViewById(R.id.topic);
-        desc = (EditText)findViewById(R.id.todoDesc);
-            desc.setHint(" Please Enter Detail ");
         todoTime =(EditText) findViewById(R.id.timePicker);
         todoDate = (EditText) findViewById(R.id.datePicker);
         DateFormat df = new SimpleDateFormat("HH:mm");
@@ -83,7 +81,6 @@ public class Todo_Add extends AppCompatActivity {
         todoTime.setText(df.format(todo_time));
         todoDate.setText(mcurrentTime.get(Calendar.DAY_OF_MONTH)+"/"+mcurrentTime.get(Calendar.MONTH)+"/"+
                 mcurrentTime.get(Calendar.YEAR));
-            topic.setHint("Enter Topic Here");
             topic.requestFocus();
         todoTime.setOnClickListener(new View.OnClickListener() {
 

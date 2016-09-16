@@ -225,8 +225,9 @@
                                 android:layout_marginTop="5dp"
                                 android:entries="@array/categoriesSearch"
                                 android:id="@+id/spinner2"
-                                android:background="#8b97ff"
-                                style="@android:style/Widget.DeviceDefault.Spinner" />
+                                android:clickable="false"
+                                android:touchscreenBlocksFocus="false"
+                                android:background="#a3b4ff" />
 
                             <ImageButton
                                 android:layout_width="wrap_content"

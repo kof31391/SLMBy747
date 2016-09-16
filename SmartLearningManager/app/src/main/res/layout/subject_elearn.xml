@@ -174,7 +174,6 @@
             android:layout_width="match_parent"
             android:gravity="center_horizontal"
             android:background="#ff1619"
-            android:layout_marginBottom="10dp"
             android:layout_height="wrap_content">
 
 
@@ -204,24 +203,46 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text=" Semester 1/2559"
-                android:id="@+id/textView10" />
+                android:gravity="center_vertical"
+                android:padding="10dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text=" Semester 1/2559"
+                    android:id="@+id/textView10"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
+
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/imageButton35"
+                    android:src="@drawable/nextb"
+                    android:layout_gravity="center_horizontal"
+                    style="@android:style/Widget.DeviceDefault.Light.ActionButton"
+                    android:layout_alignBottom="@+id/textView10"
+                    android:layout_toEndOf="@+id/textView10" />
+
+            </RelativeLayout>
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/scrollView9"
             android:layout_gravity="center_horizontal"
             android:fillViewport="false">
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
 
                 android:id="@+id/tl_datelist">
 
