@@ -62,9 +62,10 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_margin="10dp"
+             android:padding="10dp"
             android:gravity="center_horizontal"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="#d0deff">
 
             <ImageView
                 android:layout_width="100dp"
@@ -106,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Lecturer: "
+                        android:text="Lecturer:"
                         android:layout_marginRight="10dp"
                         android:id="@+id/lecturer" />
 
@@ -171,8 +172,6 @@
             android:layout_width="match_parent"
             android:gravity="center_horizontal"
             android:background="#ff1619"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:layout_height="wrap_content">
 

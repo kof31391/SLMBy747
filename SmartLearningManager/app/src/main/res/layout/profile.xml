@@ -66,6 +66,7 @@
             android:layout_width="match_parent"
             android:padding="10dp"
             android:gravity="center_horizontal"
+            android:background="#d0deff"
             android:layout_height="wrap_content">
 
             <ImageView
@@ -92,17 +93,21 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Medium Text"
+                        android:textStyle="bold"
                         android:layout_marginRight="10dp"
                         android:id="@+id/tv_pf_fristname" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textStyle="bold"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Medium Text"
                         android:id="@+id/tv_pf_lastname"/>
 
                 </LinearLayout>
+
+
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -175,6 +180,30 @@
                         android:id="@+id/tv_pf_teleno" />
                 </LinearLayout>
             </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingTop="5dp"
+            android:layout_height="40dp"
+            android:background="#1b3c8f"
+            >
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text=" Schedule "
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="25dp"
+
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
 
         </RelativeLayout>
 
