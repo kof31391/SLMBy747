@@ -265,7 +265,7 @@ public class Main extends AppCompatActivity {
             private String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Schedule.php?std_id="+params[0]);
+                    URL url = new URL("http://54.169.58.93/Schedule.php?std_id="+params[0]+"&p_enroll=0");
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -409,6 +409,11 @@ public class Main extends AppCompatActivity {
     }
 
     protected void refreshSchedule(View v){
+        Calendar calendar = Calendar.getInstance();
+        int nowDayfoweek = calendar.get(calendar.DAY_OF_WEEK)-1;
+        nextday = nowDayfoweek;
+        TableLayout tb_schedule = (TableLayout) findViewById(R.id.tb_schedule);
+        tb_schedule.removeAllViews();
         getSchedule();
     }
 
