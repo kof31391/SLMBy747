@@ -30,10 +30,10 @@
         <activity android:name=".Profile" android:screenOrientation="landscape" />
         <activity android:name=".Video_elearning" android:screenOrientation="landscape" />
 
-        <receiver android:name=".NotificationPublisher" />
+        <receiver android:name=".NotificationPublisher" android:screenOrientation="landscape"  />
 
-        <activity android:name=".Subject_elearn" />
-        <activity android:name=".About"></activity>
+        <activity android:name=".Subject_elearn" android:screenOrientation="landscape"  />
+        <activity android:name=".About" android:screenOrientation="landscape" ></activity>
     </application>
 
 </manifest>
