@@ -163,7 +163,7 @@ public class Subject_elearn extends AppCompatActivity {
                             c_absent++;
                         }
                         absent.setText(String.valueOf(c_absent));
-                        cell.setText(c.getString("e_date") + "  " + c.getString("e_time").substring(0,5)+" "+watch_status);
+                        cell.setText(c.getString("e_date") + "  "+c.getString("e_time")+" "+watch_status);
                         cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                         row.addView(cell);
                         row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));

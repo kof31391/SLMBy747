@@ -67,7 +67,8 @@
             android:layout_width="match_parent"
             android:gravity="center_horizontal"
             android:padding="10dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/rl_videoDisplay">
 
             <VideoView
                 android:id="@+id/video_display"
