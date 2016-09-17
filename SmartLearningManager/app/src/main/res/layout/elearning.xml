@@ -188,13 +188,15 @@
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+                            android:divider="@android:color/darker_gray"
                             android:paddingTop="10dp"
                             android:paddingBottom="10dp"
                             android:paddingRight="10dp"
                             android:paddingLeft="10dp"
                             android:background="#e9e9e9"
                             android:dividerHeight="0.5dp"
-                            style="@android:style/Widget.Holo.Light.ExpandableListView" />
+
+                             />
                     </LinearLayout>
 
                 </LinearLayout>
