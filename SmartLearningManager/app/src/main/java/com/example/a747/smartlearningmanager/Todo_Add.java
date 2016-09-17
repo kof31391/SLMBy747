@@ -72,6 +72,7 @@ public class Todo_Add extends AppCompatActivity {
         items = new ArrayList<>();
         spin = (Spinner)findViewById(R.id.spinner);
         topic = (TextView)findViewById(R.id.topic);
+		desc = (EditText)findViewById(R.id.desc);
         todoTime =(EditText) findViewById(R.id.timePicker);
         todoDate = (EditText) findViewById(R.id.datePicker);
         DateFormat df = new SimpleDateFormat("HH:mm");
