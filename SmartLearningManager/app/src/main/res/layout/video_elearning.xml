@@ -93,7 +93,7 @@
                     android:nestedScrollingEnabled="false"
                     android:onClick="pause"
                     android:src="@drawable/pause"
-                    android:background="#000000" />
+                    style="@android:style/Widget.DeviceDefault.Light.ActionButton" />
 
                 <SeekBar
                     android:layout_width="160dp"
