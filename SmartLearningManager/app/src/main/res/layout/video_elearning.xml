@@ -145,10 +145,11 @@
                     android:id="@+id/video_subcode"
                     android:text="test"
                     android:layout_toStartOf="@+id/addTodoBtn"
-                    android:textSize="30dp"
+                    android:textSize="23dp"
                     android:background="#62b4f9"
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="10dp"
+                    android:paddingTop="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="5dp"
                     android:paddingBottom="10dp"
@@ -161,7 +162,7 @@
                     android:inputType="textMultiLine"
                     android:ems="10"
                     android:text="detailsubject"
-                    android:textSize="20dp"
+                    android:textSize="18dp"
                     android:layout_marginTop="5dp"
                     android:paddingTop="5dp"
                     android:paddingLeft="10dp"
@@ -191,14 +192,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Date. "
-                        android:textSize="20dp"
+                        android:textSize="18dp"
                         />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="video_date"
-                        android:textSize="20dp"
+                        android:textSize="18dp"
                         android:id="@+id/video_date" />
 
                 </LinearLayout>
@@ -217,7 +218,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Time. "
-                        android:textSize="20dp"
+                        android:textSize="18dp"
                         />
 
                     <TextView
@@ -225,7 +226,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="video_time"
-                        android:textSize="20dp"
+                        android:textSize="18dp"
                         android:id="@+id/video_time" />
 
                 </LinearLayout>

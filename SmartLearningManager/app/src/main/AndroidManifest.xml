@@ -10,25 +10,25 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login">
+        <activity android:name=".Login" android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main" />
+        <activity android:name=".Main" android:screenOrientation="landscape" />
         <activity android:name=".Todo_List"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-        <activity android:name=".Todo_View" />
-        <activity android:name=".News" />
-        <activity android:name=".more_setting" />
-        <activity android:name=".Todo_Add" />
-        <activity android:name=".Elearning" />
-        <activity android:name=".Noti" />
-        <activity android:name=".Todo_edit" />
-        <activity android:name=".Profile" />
-        <activity android:name=".Video_elearning" />
+            android:windowSoftInputMode="stateAlwaysHidden" android:screenOrientation="landscape"/>
+        <activity android:name=".Todo_View" android:screenOrientation="landscape" />
+        <activity android:name=".News" android:screenOrientation="landscape"/>
+        <activity android:name=".more_setting" android:screenOrientation="landscape"/>
+        <activity android:name=".Todo_Add" android:screenOrientation="landscape" />
+        <activity android:name=".Elearning" android:screenOrientation="landscape"/>
+        <activity android:name=".Noti" android:screenOrientation="landscape"/>
+        <activity android:name=".Todo_edit" android:screenOrientation="landscape"/>
+        <activity android:name=".Profile" android:screenOrientation="landscape" />
+        <activity android:name=".Video_elearning" android:screenOrientation="landscape" />
 
         <receiver android:name=".NotificationPublisher" />
 

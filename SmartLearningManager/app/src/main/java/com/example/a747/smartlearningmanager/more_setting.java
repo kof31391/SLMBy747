@@ -3,6 +3,7 @@ package com.example.a747.smartlearningmanager;
 import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInstaller;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ public class more_setting extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         String std_id = pref.getString("std_id", null);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if(std_id != null){
             super.onCreate(savedInstanceState);
             setContentView(R.layout.more_setting);

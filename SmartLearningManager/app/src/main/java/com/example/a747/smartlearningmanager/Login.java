@@ -2,6 +2,7 @@ package com.example.a747.smartlearningmanager;
 
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         String std_id = pref.getString("std_id", null);
         if(std_id != null){
