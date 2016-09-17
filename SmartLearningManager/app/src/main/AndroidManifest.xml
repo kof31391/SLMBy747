@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Main" />
-        <activity android:name=".Todo_List" />
+        <activity android:name=".Todo_List"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity android:name=".Todo_View" />
         <activity android:name=".News" />
         <activity android:name=".more_setting" />

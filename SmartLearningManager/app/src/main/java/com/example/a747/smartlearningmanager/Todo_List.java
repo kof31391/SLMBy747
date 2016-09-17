@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -54,7 +55,6 @@ public class Todo_List extends AppCompatActivity {
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private SimpleDateFormat time = new SimpleDateFormat("HH:mm");
     private ArrayList<Integer> posTemp;
-    private  todoObj temps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +63,7 @@ public class Todo_List extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         stdid = pref.getString("std_id", null);
         spinner = (Spinner)findViewById(R.id.spinner2);
-
         query = (EditText)findViewById(R.id.searchBox);
-
         try {
             lvItems = (MyListView) findViewById(R.id.lvItems);
             show = new ArrayList<>();
