@@ -106,7 +106,7 @@ public class Subject_elearn extends AppCompatActivity {
             protected String doInBackground(String... params) {
                 try {
                     String subj = subject.substring(0,6);
-                    URL url = new URL("http://54.169.58.93/Elearning_datelist.php?subject="+subj);
+                    URL url = new URL("http://54.169.58.93/Elearning_datelist.php?std_id="+std_id+"&subject="+subj);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {
@@ -151,11 +151,11 @@ public class Subject_elearn extends AppCompatActivity {
                         });
                         cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                         cell.setPadding(20, 20, 0, 20);
-                        if ((i % 2) == 0) {
-                            cell.setBackgroundColor(Color.parseColor("#E6E6E6"));
-                            if(c.getString("check_status").equalsIgnoreCase("N") && c.getString("check_watch_e").equalsIgnoreCase("null")){
-                                cell.setBackgroundColor(Color.parseColor("#FFFF99"));
-                            }
+                        if(c.getString("check_status").equalsIgnoreCase("N") && c.getString("check_watch_e").equalsIgnoreCase("null")){
+                            cell.setBackgroundColor(Color.parseColor("#FFFF99"));
+                        }
+                        if(c.getString("check_watch_e").equalsIgnoreCase("Y")){
+                            cell.setBackgroundColor(Color.parseColor("#66FF66"));
                         }
                         if(c.getString("check_status").equalsIgnoreCase("N")){
                             c_absent++;
