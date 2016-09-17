@@ -82,6 +82,7 @@ public class Main extends AppCompatActivity {
         iniDate = prefInitial.getString("Initial",null);
         if(iniDate == null){
             setProfile();
+            getMaxEnrollment();
             setRSS();
             getRSS();
             setNotiSchedule();
@@ -100,6 +101,7 @@ public class Main extends AppCompatActivity {
                     editorInitial.putString("Initial",df.format(now));
                     editorInitial.commit();
                     setProfile();
+                    getMaxEnrollment();
                     setRSS();
                     getRSS();
                     setNotiSchedule();
@@ -257,6 +259,52 @@ public class Main extends AppCompatActivity {
         row.setLayoutParams(params2);
         tl_news.addView(row);
         Log.i("Initial","Initial get RSS success");
+    }
+
+    private void getMaxEnrollment(){
+        class GetDataJSON extends AsyncTask<String,Void,String> {
+            HttpURLConnection urlConnection = null;
+            private String strJSON;
+            protected String doInBackground(String... params) {
+                try {
+                    URL url = new URL("http://54.169.58.93/maxEnrollment.php");
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    int code = urlConnection.getResponseCode();
+                    if (code == 200) {
+                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                        if (in != null) {
+                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+                            String line;
+                            while ((line = bufferedReader.readLine()) != null)
+                                strJSON = line;
+                        }
+                        in.close();
+                    }
+                    return strJSON;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    urlConnection.disconnect();
+                }
+                return strJSON;
+            }
+
+            protected void onPostExecute(String strJSON) {
+                try {
+                    Log.i("Initial","Initial set last enrollment...");
+                    JSONArray data = new JSONArray(strJSON);
+                    JSONObject c = data.getJSONObject(0);
+                    SQLiteDatabase mydatabase = openOrCreateDatabase("Enrollment",MODE_PRIVATE,null);
+                    mydatabase.execSQL("DROP TABLE IF EXISTS Enrollment");
+                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Enrollment(semester VARCHAR,enroll_year VARCHAR);");
+                    mydatabase.execSQL("INSERT INTO Enrollment VALUES('"+c.getString("semester")+"','"+c.getString("enroll_year")+"');");
+                    Log.i("Initial","Initial set last enrollment success");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        new GetDataJSON().execute();
     }
 
     private void setNotiSchedule(){

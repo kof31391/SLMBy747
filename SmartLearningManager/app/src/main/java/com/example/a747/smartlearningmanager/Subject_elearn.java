@@ -37,6 +37,7 @@ import java.util.HashMap;
 public class Subject_elearn extends AppCompatActivity {
     String std_id;
     String subject;
+    String status = "n";
     String telno;
     int c_absent = 0;
     TextView subjCode;
@@ -68,8 +69,6 @@ public class Subject_elearn extends AppCompatActivity {
 
         getSubjectDetial(subject);
         getSubjectVideo(subject);
-
-
     }
 
     private void getSubjectDetial(final String subject){
@@ -106,7 +105,7 @@ public class Subject_elearn extends AppCompatActivity {
             protected String doInBackground(String... params) {
                 try {
                     String subj = subject.substring(0,6);
-                    URL url = new URL("http://54.169.58.93/Elearning_datelist.php?std_id="+std_id+"&subject="+subj);
+                    URL url = new URL("http://54.169.58.93/Elearning_datelist.php?std_id="+std_id+"&subject="+subj+"&status="+status);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {
@@ -130,51 +129,134 @@ public class Subject_elearn extends AppCompatActivity {
 
             protected void onPostExecute(String strJSON) {
                 try {
-                    Log.i("Setup","Set video detail...");
+                    Log.i("Setup", "Set video detail...");
                     JSONArray data = new JSONArray(strJSON);
-                    SQLiteDatabase mydatabase = openOrCreateDatabase("Elearning",MODE_PRIVATE,null);
+                    SQLiteDatabase mydatabase = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
                     mydatabase.execSQL("DROP TABLE IF EXISTS Elearning");
                     mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_date VARCHAR, e_time VARCHAR, e_link VARCHAR);");
                     TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
-                    for(int i=0;i<data.length();i++){
+                    for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
-                        mydatabase.execSQL("INSERT INTO Elearning VALUES('"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("subject_room")+"','"+c.getString("e_date")+"','"+c.getString("e_time")+"','"+c.getString("e_link")+"');");
+                        mydatabase.execSQL("INSERT INTO Elearning VALUES('" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_link") + "');");
                         TableRow row = new TableRow(Subject_elearn.this);
                         TextView cell = new TextView(Subject_elearn.this);
                         cell.setId(i);
                         cell.setClickable(true);
                         cell.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v) {
-                                gotoVideo(v);
+                            public void onClick(View v) {gotoVideo(v);
                             }
                         });
                         cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                         cell.setPadding(20, 20, 0, 20);
-                        if(c.getString("check_status").equalsIgnoreCase("N") && c.getString("check_watch_e").equalsIgnoreCase("null")){
+                        if (c.getString("check_status").equalsIgnoreCase("N") && c.getString("check_watch_e").equalsIgnoreCase("null")) {
                             cell.setBackgroundColor(Color.parseColor("#FFFF99"));
                         }
-                        if(c.getString("check_watch_e").equalsIgnoreCase("Y")){
+                        if (c.getString("check_watch_e").equalsIgnoreCase("Y")) {
                             cell.setBackgroundColor(Color.parseColor("#66FF66"));
                         }
-                        if(c.getString("check_status").equalsIgnoreCase("N")){
+                        if (c.getString("check_status").equalsIgnoreCase("N")) {
                             c_absent++;
                         }
                         absent.setText(String.valueOf(c_absent));
-                        cell.setText(c.getString("e_date")+"  "+c.getString("e_time"));
-                        cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
+                        cell.setText(c.getString("e_date") + "  " + c.getString("e_time"));
+                        cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                         row.addView(cell);
-                        row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT, 1f));
+                        row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
                         tl_datelist.addView(row);
                     }
-                    Log.i("Setup","Set video detail success");
-
+                    mydatabase = openOrCreateDatabase("Enrollment", MODE_PRIVATE, null);
+                    Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Enrollment;",null);
+                    resultSet.moveToFirst();
+                    TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
+                    tv_title_semester.setText(" Semester "+resultSet.getString(resultSet.getColumnIndex("semester"))+"/"+resultSet.getString(resultSet.getColumnIndex("enroll_year")));
+                    resultSet.close();
+                    mydatabase.close();
+                    Log.i("Setup", "Set video detail success");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
         new GetDataJSON().execute();
+    }
+
+    public void getPastSubjectVideo(View v){
+        TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
+        tl_datelist.removeAllViews();
+        if(status == "n"){
+            status = "p";
+            class GetDataJSON extends AsyncTask<String,Void,String> {
+                HttpURLConnection urlConnection = null;
+                private String strJSON;
+                protected String doInBackground(String... params) {
+                    try {
+                        String subj = subject.substring(0,6);
+                        URL url = new URL("http://54.169.58.93/Elearning_datelist.php?std_id="+std_id+"&subject="+subj+"&status="+status);
+                        urlConnection = (HttpURLConnection) url.openConnection();
+                        int code = urlConnection.getResponseCode();
+                        if (code == 200) {
+                            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                            if (in != null) {
+                                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+                                String line;
+                                while ((line = bufferedReader.readLine()) != null)
+                                    strJSON = line;
+                            }
+                            in.close();
+                        }
+                        return strJSON;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        urlConnection.disconnect();
+                    }
+                    return strJSON;
+                }
+
+                protected void onPostExecute(String strJSON) {
+                    try {
+                        Log.i("Setup", "Set past video detail...");
+                        JSONArray data = new JSONArray(strJSON);
+                        SQLiteDatabase mydatabase = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
+                        mydatabase.execSQL("DROP TABLE IF EXISTS Elearning");
+                        mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_date VARCHAR, e_time VARCHAR, e_link VARCHAR);");
+                        TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject c = data.getJSONObject(i);
+                            mydatabase.execSQL("INSERT INTO Elearning VALUES('" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_link") + "');");
+                            TableRow row = new TableRow(Subject_elearn.this);
+                            TextView cell = new TextView(Subject_elearn.this);
+                            cell.setId(i);
+                            cell.setClickable(true);
+                            cell.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {gotoVideo(v);
+                                }
+                            });
+                            cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                            cell.setPadding(20, 20, 0, 20);
+                            cell.setText(c.getString("e_date") + "  " + c.getString("e_time"));
+                            cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+                            row.addView(cell);
+                            row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
+                            tl_datelist.addView(row);
+                            absent.setText("0");
+                            TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
+                            tv_title_semester.setText(" Semester "+c.getString("semester")+"/"+c.getString("enroll_year"));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            new GetDataJSON().execute();
+        }else{
+            status = "n";
+            c_absent = 0;
+            getSubjectVideo(subject);
+        }
+
     }
 
     public void gotoVideo(View v){
