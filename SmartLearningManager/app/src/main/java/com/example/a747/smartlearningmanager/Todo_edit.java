@@ -289,7 +289,6 @@ public class Todo_edit extends AppCompatActivity {
 
 
     public void cancelNotification(Notification notification) {
-        System.out.println("Cancel");
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
@@ -313,23 +312,18 @@ public class Todo_edit extends AppCompatActivity {
         }
         return TimeDifference;
     }
-    private void scheduleNotification(Notification notification, long delay) {
+    private int scheduleNotification(Notification notification, long delay) {
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        int id = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         long futureInMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
 
-    /*    Intent intent = new Intent(this, Todo_View.class);
-        intent.putExtra("message", (Parcelable) temp);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(Todo_View.class);
-        stackBuilder.addNextIntent(intent);
-        PendingIntent pending =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);*/
+    return id;
 
     }
     private String getTimeCurrent() {

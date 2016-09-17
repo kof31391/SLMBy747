@@ -18,6 +18,15 @@ public class todoObj implements Parcelable,Serializable,Comparable<todoObj>{
     private Date date;
     private String category;
     private boolean isFinish;
+    private int notiId;
+
+    public int getNotiId() {
+        return notiId;
+    }
+
+    public void setNotiId(int notiId) {
+        this.notiId = notiId;
+    }
 
     public String getCategory() {
         return category;

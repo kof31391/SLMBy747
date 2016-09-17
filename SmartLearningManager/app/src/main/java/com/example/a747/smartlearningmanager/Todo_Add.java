@@ -265,7 +265,7 @@ public class Todo_Add extends AppCompatActivity {
         try {
             Date dNow = df.parse(future);
             Date dFuture = df.parse(now);
-            TimeDifference = ((dNow.getTime() - dFuture.getTime())+500);
+            TimeDifference = ((dNow.getTime() - dFuture.getTime())-1500);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -275,7 +275,7 @@ public class Todo_Add extends AppCompatActivity {
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) (System.currentTimeMillis() % Integer.MAX_VALUE), notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         long futureInMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);

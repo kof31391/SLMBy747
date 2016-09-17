@@ -1,10 +1,18 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 
@@ -46,6 +54,7 @@ public class Todo_List extends AppCompatActivity {
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private SimpleDateFormat time = new SimpleDateFormat("HH:mm");
     private ArrayList<Integer> posTemp;
+    private  todoObj temps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +65,7 @@ public class Todo_List extends AppCompatActivity {
         spinner = (Spinner)findViewById(R.id.spinner2);
 
         query = (EditText)findViewById(R.id.searchBox);
+
         try {
             lvItems = (MyListView) findViewById(R.id.lvItems);
             show = new ArrayList<>();
@@ -146,11 +156,13 @@ public class Todo_List extends AppCompatActivity {
             }
         });
     }
+
     private  void sendToEditor(int pos){
         Intent intent = new Intent(this,Todo_edit.class);
         intent.putExtra("todo", pos);
         startActivity(intent);
     }
+
 
     private void sendToView(int pos){
         Intent intent = new Intent(this,Todo_View.class);
