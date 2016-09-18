@@ -117,7 +117,7 @@ public class Profile extends AppCompatActivity {
         });
     }
 
-    public void getProfile(String std_id){
+    public void getProfile(final String std_id){
         class GetDataJSON extends AsyncTask<String,Void,String> {
             HttpURLConnection urlConnection = null;
             public String strJSON;
@@ -163,7 +163,7 @@ public class Profile extends AppCompatActivity {
                     tv_pf = (TextView) findViewById(R.id.tv_pf_teleno);
                     tv_pf.setText(c.getString("phonenum"));
                     tv_pfi = (ImageView) findViewById(R.id.tv_pf_image);
-                    new ImageLoadTask("http://54.169.58.93/student_image/56130500097.jpg",tv_pfi).execute();
+                    new ImageLoadTask("http://54.169.58.93/student_image/"+std_id+".jpg",tv_pfi).execute();
                     //tv_pfi.setImageResource(c.getString("image"));
                 }catch(Exception e){
                     e.printStackTrace();
@@ -249,7 +249,7 @@ public class Profile extends AppCompatActivity {
 
 }
 
-    class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
+class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
 
     private String url;
     private ImageView imageView;
