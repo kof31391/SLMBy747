@@ -127,15 +127,18 @@ public class Todo_List extends AppCompatActivity {
                         sendToEditor(index);
                     }else{
                         items.get(index).setFinish(!items.get(index).isFinish());
-                        adapter.notifyDataSetChanged();
-                        writeItems();
                         if(items.get(index).isFinish()==true){
                             cancelNotification(getNotification(index),items.get(index).getNotiId());
+                        }else{
+                            scheduleNotification(getNotification(index),items.get(index).getNotiId());
                         }
+                        adapter.notifyDataSetChanged();
+                        writeItems();
                     }
                 }else{
                     int pos = posTemp.get(index);
                     if (item.getTitle().equals("Delete")) {
+                        cancelNotification(getNotification(pos),items.get(pos).getNotiId());
                         items.remove(pos);
                         items.trimToSize();
                         adapter.notifyDataSetChanged();

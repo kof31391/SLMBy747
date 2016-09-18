@@ -144,10 +144,8 @@ public class Noti extends AppCompatActivity {
                 int tempYear =items.get(j).getDate().getYear()-1900;
                 that.setYear(tempYear);
                 if(now.compareTo(that)>-1) {
-                    if(items.get(j).isFinish()==true)
-                    show.add(items.get(j).getTopic() + "\n" + items.get(j).getCategory()+"\tStatus: Finish");
-                    else
-                        show.add(items.get(j).getTopic() + "\n" + items.get(j).getCategory()+"\tStatus: Not Finish");
+                    if(items.get(j).isFinish()==false)
+                    show.add(items.get(j).getTopic() + "\n" + items.get(j).getCategory());
                 }
             }
 

@@ -132,7 +132,7 @@
                             android:background="#e9e9e9"
                             android:drawableEnd="@drawable/sortdown"
                             android:ems="10"
-                            android:clickable="false"
+                            android:focusable="false"
                             android:layout_marginRight="10dp"
                             android:id="@+id/datePicker" />
 
@@ -143,7 +143,7 @@
                             android:background="#e9e9e9"
                             android:drawableEnd="@drawable/sortdown"
                             android:ems="10"
-
+                            android:focusable="false"
                             android:id="@+id/timePicker" />
                     </LinearLayout>
 

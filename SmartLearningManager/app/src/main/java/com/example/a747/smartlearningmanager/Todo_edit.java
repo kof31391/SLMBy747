@@ -73,6 +73,7 @@ public class Todo_edit extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_edit);
+        DateFormat df = new SimpleDateFormat("HH:mm");
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         temp = pref.getString("std_id", null);
         stdid = pref.getString("std_id", null)+"Notification.txt";
@@ -95,7 +96,7 @@ public class Todo_edit extends AppCompatActivity {
         }
         spinner.setSelection(recObj.getPosition());
         todoDate.setText(date.getDate()+"/"+(date.getMonth())+"/"+(date.getYear()));
-        todoTime.setText(date.getHours()+":"+date.getMinutes());
+        todoTime.setText(df.format(date));
             topic.setText(recObj.getTopic());
             desc.setText(recObj.getDesc());
         todoTime.setOnClickListener(new View.OnClickListener() {
@@ -242,14 +243,9 @@ public class Todo_edit extends AppCompatActivity {
             Collections.sort(items);
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
             ois.writeObject(items);
-            if(origin==false&&temp.isFinish()==true) {
-                NotificationObj noti = new NotificationObj(temp);
-                writeNoti(noti);
-            }
              /*Setup Notification*/
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date dateFuture = temp.getDate();
-            dateFuture.setYear(dateFuture.getYear()-1900);
             String future = dateFormat.format(dateFuture);
             String title = temp.getTopic();
             String content = temp.getDesc();
