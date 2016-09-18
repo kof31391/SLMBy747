@@ -27,6 +27,7 @@ import android.widget.VideoView;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -76,6 +77,13 @@ public class Video_elearning extends AppCompatActivity {
             elearning_date = extras.getString("date");
             elearning_time = extras.getString("time");
             elearning_link = extras.getString("link");
+        }
+
+        try {
+            String sql = "";
+            //URL url = new URL("http://54.169.58.93/Insert.php?sql="+sql);
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         /*Start preload*/

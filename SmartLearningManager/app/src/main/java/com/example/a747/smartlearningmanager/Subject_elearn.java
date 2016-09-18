@@ -169,13 +169,20 @@ public class Subject_elearn extends AppCompatActivity {
                         cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                         cell.setPadding(20, 20, 0, 20);
                         watch_status = "";
+
+                        /*check stats*/
                         if (c.getString("check_status").equalsIgnoreCase("N") && c.getString("check_watch_e").equalsIgnoreCase("null")) {
-                            cell.setBackgroundColor(Color.parseColor("#ffaaae"));
-                        }
-                        if (c.getString("check_watch_e").equalsIgnoreCase("Y")) {
+                            cell.setBackgroundColor(Color.parseColor("#FFAAAE"));
+                        }else if(c.getString("check_status").equalsIgnoreCase("N") && c.getString("check_watch_e").equalsIgnoreCase("Y")){
+                            cell.setBackgroundColor(Color.parseColor("#FFAAAE"));
+                            watch_status = "Watched.";
+                        }else if(c.getString("check_status").equalsIgnoreCase("Y") && c.getString("check_watch_e").equalsIgnoreCase("null")){
+
+                        }else if(c.getString("check_status").equalsIgnoreCase("Y") && c.getString("check_watch_e").equalsIgnoreCase("Y")){
                             cell.setBackgroundColor(Color.parseColor("#FFADEBC7"));
                             watch_status = "Watched.";
                         }
+
                         if (c.getString("check_status").equalsIgnoreCase("N")) {
                             c_absent++;
                         }
@@ -186,6 +193,7 @@ public class Subject_elearn extends AppCompatActivity {
                         row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
                         tl_datelist.addView(row);
                     }
+                    mydatabase.close();
                     mydatabase = openOrCreateDatabase("Enrollment", MODE_PRIVATE, null);
                     Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Enrollment;",null);
                     resultSet.moveToFirst();
