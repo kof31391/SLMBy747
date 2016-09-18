@@ -396,8 +396,11 @@ public class Main extends AppCompatActivity {
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
         final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nowDayfoweek+"' ORDER BY subject_date ASC;",null);
         resultSet.moveToFirst();
+        System.out.println("Now Day: "+nowDayfoweek);
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nowDayfoweek) {
+            case 0 : title_day.setText("Sunday");
+                break;
             case 1 : title_day.setText("Monday");
                 break;
             case 2 : title_day.setText("Tuesday");
@@ -409,8 +412,6 @@ public class Main extends AppCompatActivity {
             case 5 : title_day.setText("Friday");
                 break;
             case 6 : title_day.setText("Saturday");
-                break;
-            case 7 : title_day.setText("Sunday");
                 break;
         }
         if (resultSet.getCount() != 0) {
@@ -479,6 +480,8 @@ public class Main extends AppCompatActivity {
         resultSet.moveToFirst();
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nextday) {
+            case 0 : title_day.setText("Sunday");
+                break;
             case 1 : title_day.setText("Monday");
                 break;
             case 2 : title_day.setText("Tuesday");
@@ -490,8 +493,6 @@ public class Main extends AppCompatActivity {
             case 5 : title_day.setText("Friday");
                 break;
             case 6 : title_day.setText("Saturday");
-                break;
-            case 7 : title_day.setText("Sunday");
                 break;
         }
         TableLayout tb_schedule = (TableLayout) findViewById(R.id.tb_schedule);
@@ -563,6 +564,8 @@ public class Main extends AppCompatActivity {
         resultSet.moveToFirst();
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nextday) {
+            case 0 : title_day.setText("Sunday");
+                break;
             case 1 : title_day.setText("Monday");
                 break;
             case 2 : title_day.setText("Tuesday");
@@ -574,8 +577,6 @@ public class Main extends AppCompatActivity {
             case 5 : title_day.setText("Friday");
                 break;
             case 6 : title_day.setText("Saturday");
-                break;
-            case 7 : title_day.setText("Sunday");
                 break;
         }
         TableLayout tb_schedule = (TableLayout) findViewById(R.id.tb_schedule);
