@@ -3,6 +3,7 @@ package com.example.a747.smartlearningmanager;
 import android.app.MediaRouteButton;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -22,11 +23,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,6 +43,8 @@ public class Video_elearning extends AppCompatActivity {
     TextView timing;
     int total_time;
     boolean isFullScreen = false;
+    String std_id;
+    String subject_id = "";
     String elearning_code = "";
     String elearning_name = "";
     String elearning_room = "";
@@ -69,8 +74,12 @@ public class Video_elearning extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.video_elearning);
 
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        std_id = pref.getString("std_id", null);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            subject_id = extras.getString("id");
             elearning_code = extras.getString("code");
             elearning_name = extras.getString("name");
             elearning_room = extras.getString("room");
@@ -80,8 +89,14 @@ public class Video_elearning extends AppCompatActivity {
         }
 
         try {
-            String sql = "";
-            //URL url = new URL("http://54.169.58.93/Insert.php?sql="+sql);
+            URL url = new URL("http://54.169.58.93/Update_watchElearn.php?std_id="+std_id+"&subject_id="+subject_id+"&check_datetime="+elearning_date+"&check_time="+elearning_time);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            int code = urlConnection.getResponseCode();
+            if(code == 200){
+                Toast.makeText(getApplicationContext(),"Update status", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(),"No update status", Toast.LENGTH_SHORT).show();
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

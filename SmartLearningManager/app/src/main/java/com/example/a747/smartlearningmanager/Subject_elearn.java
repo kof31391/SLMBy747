@@ -152,11 +152,11 @@ public class Subject_elearn extends AppCompatActivity {
                     JSONArray data = new JSONArray(strJSON);
                     SQLiteDatabase mydatabase = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
                     mydatabase.execSQL("DROP TABLE IF EXISTS Elearning");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_date VARCHAR, e_time VARCHAR, e_link VARCHAR);");
+                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_date VARCHAR, e_time VARCHAR, e_link VARCHAR);");
                     TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
-                        mydatabase.execSQL("INSERT INTO Elearning VALUES('" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_link") + "');");
+                        mydatabase.execSQL("INSERT INTO Elearning VALUES('"+c.getString("subject_id")+"','" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_link") + "');");
                         TableRow row = new TableRow(Subject_elearn.this);
                         TextView cell = new TextView(Subject_elearn.this);
                         cell.setId(i);
@@ -186,6 +186,7 @@ public class Subject_elearn extends AppCompatActivity {
                         if (c.getString("check_status").equalsIgnoreCase("N")) {
                             c_absent++;
                         }
+
                         absent.setText(String.valueOf(c_absent));
                         cell.setText(c.getString("e_date") + "  "+c.getString("e_time")+" "+watch_status);
                         cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
@@ -250,11 +251,12 @@ public class Subject_elearn extends AppCompatActivity {
                         if(data.length() > 0){
                             SQLiteDatabase mydatabase = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
                             mydatabase.execSQL("DROP TABLE IF EXISTS Elearning");
-                            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_date VARCHAR, e_time VARCHAR, e_link VARCHAR);");
+                            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_date VARCHAR, e_time VARCHAR, e_link VARCHAR);");
                             TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
-                                mydatabase.execSQL("INSERT INTO Elearning VALUES('" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_link") + "');");
+                                mydatabase.execSQL("INSERT INTO Elearning VALUES('"+c.getString("subject_id")+"','" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_link") + "');");
+                                System.out.println("ID: "+c.getString("subject_id"));
                                 TableRow row = new TableRow(Subject_elearn.this);
                                 TextView cell = new TextView(Subject_elearn.this);
                                 cell.setId(i);
@@ -305,6 +307,7 @@ public class Subject_elearn extends AppCompatActivity {
         Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Elearning WHERE e_date='"+date+"' AND e_time='"+time+"';",null);
         resultSet.moveToFirst();
         Intent intent = new Intent(this,Video_elearning.class);
+        intent.putExtra("id",resultSet.getString(resultSet.getColumnIndex("subject_id")));
         intent.putExtra("code",resultSet.getString(resultSet.getColumnIndex("subject_code")));
         intent.putExtra("name",resultSet.getString(resultSet.getColumnIndex("subject_name")));
         intent.putExtra("room",resultSet.getString(resultSet.getColumnIndex("subject_room")));
