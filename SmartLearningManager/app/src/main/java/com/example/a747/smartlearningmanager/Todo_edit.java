@@ -292,7 +292,7 @@ public class Todo_edit extends AppCompatActivity {
 
     public void cancelNotification(Notification notification) {
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, (int) (System.currentTimeMillis() % Integer.MAX_VALUE));
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         pendingIntent.cancel();
@@ -316,7 +316,7 @@ public class Todo_edit extends AppCompatActivity {
     }
     private int scheduleNotification(Notification notification, long delay) {
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, (int) (System.currentTimeMillis() % Integer.MAX_VALUE));
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
         int id = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
