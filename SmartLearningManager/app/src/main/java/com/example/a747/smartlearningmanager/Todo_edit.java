@@ -236,6 +236,7 @@ public class Todo_edit extends AppCompatActivity {
                 temp.setFinish(false);
             }
             temp.setDate(Util.getDateFromEditText(todoDate,todoTime));
+            temp.setNotiId(recObj.getNotiId());
             items.remove(pos);
             items.add(temp);
             Collections.sort(items);
@@ -252,10 +253,12 @@ public class Todo_edit extends AppCompatActivity {
             String future = dateFormat.format(dateFuture);
             String title = temp.getTopic();
             String content = temp.getDesc();
+            int id = temp.getNotiId();
             if(temp.isFinish()==false) {
+                cancelNotification(getNotification(title,content),id);
                 scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future));
             }else{
-                cancelNotification(getNotification(title, content));
+                cancelNotification(getNotification(title, content),id);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -290,11 +293,12 @@ public class Todo_edit extends AppCompatActivity {
 
 
 
-    public void cancelNotification(Notification notification) {
+    public void cancelNotification(Notification notification,int id) {
+        System.out.println("Cancel"+id);
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, (int) (System.currentTimeMillis() % Integer.MAX_VALUE));
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         pendingIntent.cancel();
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
@@ -315,10 +319,10 @@ public class Todo_edit extends AppCompatActivity {
         return TimeDifference;
     }
     private int scheduleNotification(Notification notification, long delay) {
-        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, (int) (System.currentTimeMillis() % Integer.MAX_VALUE));
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
         int id = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, id);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         long futureInMillis = SystemClock.elapsedRealtime() + delay;

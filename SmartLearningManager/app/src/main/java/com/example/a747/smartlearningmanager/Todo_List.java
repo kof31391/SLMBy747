@@ -11,6 +11,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
@@ -39,6 +40,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,6 +59,7 @@ public class Todo_List extends AppCompatActivity {
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private SimpleDateFormat time = new SimpleDateFormat("HH:mm");
     private ArrayList<Integer> posTemp;
+    private todoObj temps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +129,9 @@ public class Todo_List extends AppCompatActivity {
                         items.get(index).setFinish(!items.get(index).isFinish());
                         adapter.notifyDataSetChanged();
                         writeItems();
+                        if(items.get(index).isFinish()==true){
+                            cancelNotification(getNotification(index),items.get(index).getNotiId());
+                        }
                     }
                 }else{
                     int pos = posTemp.get(index);
@@ -146,6 +153,68 @@ public class Todo_List extends AppCompatActivity {
                 return true;
     }
 
+    private long getSchedule(String now, String future) {
+        long TimeDifference = 0;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date dNow = df.parse(future);
+            Date dFuture = df.parse(now);
+            TimeDifference = ((dNow.getTime() - dFuture.getTime())+500);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return TimeDifference;
+    }
+
+    private String getTimeCurrent() {
+        Calendar calendar = Calendar.getInstance();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = calendar.getTime();
+        String sDate = dateFormat.format(date);
+        return sDate;
+    }
+
+    private int scheduleNotification(Notification notification, long delay) {
+        int id = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, id);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+
+        return id;
+
+    }
+
+    private Notification getNotification(int index) {
+        temps = new todoObj();       //start
+        temps.setTopic(items.get(index).getTopic());
+        temps.setDesc(items.get(index).getDesc());
+        temps.setCategory(items.get(index).getCategory());
+        temps.setDate(items.get(index).getDate());
+        NotificationObj noti = new NotificationObj(temps);
+        Intent intent = new Intent(this, Todo_View.class);
+        intent.putExtra("message", (Parcelable) temps);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(Todo_View.class);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent pendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Notification notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(temps.getTopic())
+                .setContentText(temps.getDesc())
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setSound(alarmSound)
+                .build();
+        return notification;
+    }
+
     private void setupListViewListener(){
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -155,6 +224,17 @@ public class Todo_List extends AppCompatActivity {
                 sendToView(pos);
             }
         });
+    }
+
+    public void cancelNotification(Notification notification,int id) {
+        System.out.println("Cancel"+id);
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, (int) (System.currentTimeMillis() % Integer.MAX_VALUE));
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent.cancel();
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 
     private  void sendToEditor(int pos){

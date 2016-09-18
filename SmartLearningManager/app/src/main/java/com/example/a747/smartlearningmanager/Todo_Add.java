@@ -198,10 +198,6 @@ public class Todo_Add extends AppCompatActivity {
             temp.setDesc(desc.getText().toString());
             temp.setCategory(category);
             temp.setDate(Util.getDateFromEditText(todoDate,todoTime));
-            items.add(temp);
-            Collections.sort(items);
-            ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
-            ois.writeObject(items);
 
             /*Setup Notification*/
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -214,9 +210,14 @@ public class Todo_Add extends AppCompatActivity {
                 String title = temp.getTopic();
                 String content = temp.getDesc();
                 if(temp.isFinish()==false) {
-                    scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future));
+                scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future),temp);
                 }
             }
+            System.out.println("ID2 is "+temp.getNotiId());
+            items.add(temp);
+            Collections.sort(items);
+            ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
+            ois.writeObject(items);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -273,14 +274,17 @@ public class Todo_Add extends AppCompatActivity {
         }
         return TimeDifference;
     }
-    private void scheduleNotification(Notification notification, long delay) {
+    private void scheduleNotification(Notification notification, long delay, todoObj obj) {
+        int id = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, (int) (System.currentTimeMillis() % Integer.MAX_VALUE));
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, id);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) (System.currentTimeMillis() % Integer.MAX_VALUE), notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         long futureInMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+        obj.setNotiId(id);
+        System.out.println("ID is "+obj.getNotiId());
     }
 
 
