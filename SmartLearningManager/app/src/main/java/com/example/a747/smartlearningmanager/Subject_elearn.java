@@ -1,5 +1,6 @@
 package com.example.a747.smartlearningmanager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -12,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -100,6 +102,19 @@ public class Subject_elearn extends AppCompatActivity {
         int imageResource = getResources().getIdentifier(uri, "drawable", getPackageName());
         Drawable image = getResources().getDrawable(imageResource);
         lecturerImage.setImageDrawable(image);
+    }
+
+    public void Help(View v){
+        new AlertDialog.Builder(Subject_elearn.this)
+                .setTitle("Help")
+                .setMessage("Highlight with red means you're absent on that class\n" +
+                        "Highlight with green means you're already watched that video")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setIcon(android.R.drawable.ic_menu_help)
+                .show();
     }
 
     private void getSubjectVideo(final String subject){

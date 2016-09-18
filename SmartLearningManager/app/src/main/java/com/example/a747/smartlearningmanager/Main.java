@@ -55,7 +55,6 @@ public class Main extends AppCompatActivity {
     private String finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_it_feed";
     private HandleXML obj;
     private String std_id;
-    private  String subj;
     private String iniDate;
 
     private int lastest_news;
@@ -113,7 +112,6 @@ public class Main extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        /*End initial*/
         getSchedule();
     }
     @Override
