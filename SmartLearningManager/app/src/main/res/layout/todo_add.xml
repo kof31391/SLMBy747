@@ -77,8 +77,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
+                    android:paddingRight="30dp"
+                    android:paddingLeft="30dp"
                     android:paddingTop="40dp">
 
                     <EditText
@@ -105,12 +105,12 @@
                         style="@android:style/Widget.Spinner" />
 
                     <EditText
-                        android:layout_width="320dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine"
-                        android:background="#cecece"
+                        android:background="#edf9ff"
                         android:textSize="20dp"
-                        android:lines="5"
+                        android:lines="7"
                         android:id="@+id/todoDesc"
                         android:hint="Please Enter Detail"
                         android:paddingRight="10dp"
