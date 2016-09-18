@@ -223,7 +223,7 @@
                     android:layout_alignParentStart="true" />
 
                 <ImageButton
-                    android:layout_width="30dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:id="@+id/imageButton35"
                     android:src="@drawable/nextb"
@@ -233,14 +233,18 @@
                     android:layout_toEndOf="@+id/title_semester"
                     android:onClick="getPastSubjectVideo" />
 
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:onClick="Help"
+                    android:id="@+id/help"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:src="@android:drawable/ic_menu_help"
+                    style="@android:style/Widget.DeviceDefault.Light.ActionButton"/>
+
             </RelativeLayout>
         </LinearLayout>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="Help"
-            android:id="@+id/help" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -252,7 +256,7 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
+                android:layout_marginTop="5dp"
                 android:id="@+id/tl_datelist">
 
             </TableLayout>

@@ -170,10 +170,10 @@ public class Subject_elearn extends AppCompatActivity {
                         cell.setPadding(20, 20, 0, 20);
                         watch_status = "";
                         if (c.getString("check_status").equalsIgnoreCase("N") && c.getString("check_watch_e").equalsIgnoreCase("null")) {
-                            cell.setBackgroundColor(Color.parseColor("#FFFF99"));
+                            cell.setBackgroundColor(Color.parseColor("#ffaaae"));
                         }
                         if (c.getString("check_watch_e").equalsIgnoreCase("Y")) {
-                            cell.setBackgroundColor(Color.parseColor("#F5F5F5"));
+                            cell.setBackgroundColor(Color.parseColor("#FFADEBC7"));
                             watch_status = "Watched.";
                         }
                         if (c.getString("check_status").equalsIgnoreCase("N")) {
