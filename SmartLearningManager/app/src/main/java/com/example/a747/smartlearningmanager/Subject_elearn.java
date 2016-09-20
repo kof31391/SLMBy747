@@ -19,6 +19,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -47,8 +50,10 @@ public class Subject_elearn extends AppCompatActivity {
     int c_absent = 0;
     TextView subjCode;
     TextView lecturer;
-    TextView lecturerMail;
-    TextView lecturerTel;
+    TextView class_room;
+    TextView class_Time;
+    ImageButton imgB_call;
+    ImageButton imgB_mail;
     ImageView lecturerImage;
     TextView subjName;
     TextView absent;
@@ -62,14 +67,15 @@ public class Subject_elearn extends AppCompatActivity {
         subjCode = (TextView)findViewById(R.id.subjCode);
         subjName = (TextView)findViewById(R.id.subjname);
         lecturer = (TextView)findViewById(R.id.lecturerName);
-        lecturerMail = (TextView)findViewById(R.id.leturerMail);
-        lecturerTel = (TextView) findViewById(R.id.lecturerTel);
+        class_room = (TextView) findViewById(R.id.class_room);
+        class_Time = (TextView) findViewById(R.id.class_Time);
+        imgB_call = (ImageButton) findViewById(R.id.imgB_call);
+        imgB_mail = (ImageButton) findViewById(R.id.imgB_mail);
         lecturerImage = (ImageView) findViewById(R.id.lecturerImage) ;
         absent = (TextView) findViewById(R.id.absent);
 
         Intent intent = getIntent();
         subject = intent.getExtras().getString("subject");
-
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         std_id = pref.getString("std_id", null);
 
@@ -80,15 +86,15 @@ public class Subject_elearn extends AppCompatActivity {
     private void getSubjectDetial(final String subject){
         String subj = subject.substring(0,6);
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Subject_Lecturer sl JOIN Schedule s ON sl.subject_code = s.subject_code JOIN Lecturer l ON sl.lecturer_id = l.lecturer_id WHERE s.subject_code='"+subj+"';",null);
+        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Subject_Lecturer sl JOIN Schedule s ON sl.subject_code = s.subject_code JOIN Lecturer l ON sl.lecturer_id = l.lecturer_id WHERE s.subject_code='"+subj+"';",null);
         resultSet.moveToFirst();
         subjCode.setText(resultSet.getString(resultSet.getColumnIndex("subject_code")));
         subjName.setText(resultSet.getString(resultSet.getColumnIndex("subject_name")));
         lecturer.setText(resultSet.getString(resultSet.getColumnIndex("lecturer_name"))+" "+resultSet.getString(resultSet.getColumnIndex("lecturer_lastname")));
-        lecturerMail.setText(resultSet.getString(resultSet.getColumnIndex("lecturer_email")));
-        lecturerTel.setText(resultSet.getString(resultSet.getColumnIndex("lecturer_tel")));
+        class_room.setText(resultSet.getString(resultSet.getColumnIndex("subject_room")));
+        class_Time.setText(resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
         telno = resultSet.getString(resultSet.getColumnIndex("lecturer_tel"));
-        lecturerTel.setOnClickListener(new View.OnClickListener() {
+        imgB_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent callIntent = new Intent(Intent.ACTION_DIAL);
@@ -96,6 +102,15 @@ public class Subject_elearn extends AppCompatActivity {
                 callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(callIntent);
 
+            }
+        });
+        imgB_mail.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                emailIntent.setType("plain/text");
+                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{resultSet.getString(resultSet.getColumnIndex("lecturer_email"))});
+                startActivity(emailIntent);
             }
         });
         String uri = "lecturer_"+resultSet.getString(resultSet.getColumnIndex("lecturer_name")).toLowerCase();
@@ -169,7 +184,6 @@ public class Subject_elearn extends AppCompatActivity {
                         cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                         cell.setPadding(20, 20, 0, 20);
                         watch_status = "";
-
                         /*check stats*/
                         if (c.getString("check_status").equalsIgnoreCase("N") && c.getString("check_watch_e").equalsIgnoreCase("null")) {
                             cell.setBackgroundColor(Color.parseColor("#FFAAAE"));
@@ -186,7 +200,6 @@ public class Subject_elearn extends AppCompatActivity {
                         if (c.getString("check_status").equalsIgnoreCase("N")) {
                             c_absent++;
                         }
-
                         absent.setText(String.valueOf(c_absent));
                         cell.setText(c.getString("e_date") + "  "+c.getString("e_time")+" "+watch_status);
                         cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));

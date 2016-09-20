@@ -56,11 +56,8 @@ public class Main extends AppCompatActivity {
     private HandleXML obj;
     private String std_id;
     private String iniDate;
-
     private int lastest_news;
-
     private int last_noti_id;
-
     private int nextday = 0;
 
     @Override
@@ -380,6 +377,7 @@ public class Main extends AppCompatActivity {
                             }
                         }
                     }
+                    mydatabase.close();
                     Log.i("Initial","Initial set notification for schedule success");
                 }catch (Exception e){
                     e.printStackTrace();
