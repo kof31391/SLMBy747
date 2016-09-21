@@ -62,7 +62,7 @@ public class Login extends AppCompatActivity {
         protected String doInBackground(String... params) {
             StringBuilder stringBuilder = null;
             try {
-                URL url = new URL("http://54.169.58.93/TestLdap.php");
+                URL url = new URL("http://54.169.58.93/LDAP_Login.php");
                 HttpURLConnection client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 String urlParameters = "username=" + params[0] + "&password=" + params[1];

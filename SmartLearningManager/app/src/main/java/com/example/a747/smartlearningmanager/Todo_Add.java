@@ -202,7 +202,6 @@ public class Todo_Add extends AppCompatActivity {
             /*Setup Notification*/
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date dateFuture = temp.getDate();
-            dateFuture.setYear(dateFuture.getYear()-1900);
             Calendar c = Calendar.getInstance();
             Date dateNow = c.getTime();
             if(dateFuture.getTime()>dateNow.getTime()){
@@ -213,7 +212,6 @@ public class Todo_Add extends AppCompatActivity {
                 scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future),temp);
                 }
             }
-            System.out.println("ID2 is "+temp.getNotiId());
             items.add(temp);
             Collections.sort(items);
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
@@ -284,7 +282,6 @@ public class Todo_Add extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
         obj.setNotiId(id);
-        System.out.println("ID is "+obj.getNotiId());
     }
 
 
@@ -304,7 +301,6 @@ public class Todo_Add extends AppCompatActivity {
         PendingIntent pendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
         Notification notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)

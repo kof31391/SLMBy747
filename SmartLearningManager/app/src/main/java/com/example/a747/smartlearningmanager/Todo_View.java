@@ -12,10 +12,8 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class Todo_View extends AppCompatActivity {
@@ -32,6 +30,7 @@ public class Todo_View extends AppCompatActivity {
     private TextView category;
     private TextView status;
     private String temp;
+    private boolean fromNoti = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +55,7 @@ public class Todo_View extends AppCompatActivity {
             if (((todoObj) intent.getParcelableExtra("message")).getTopic() != null) {
                 recObj = intent.getParcelableExtra("message");
             }
+            fromNoti = true;
             topic.setText(recObj.getTopic());
             category.setText(recObj.getCategory());
             desc.setText(recObj.getDesc());
@@ -91,7 +91,7 @@ public class Todo_View extends AppCompatActivity {
                 }
                 date.setText("" + recObj.getDate().getDate());
                 month.setText("" + recObj.getDate().getMonth());
-                year.setText("" + recObj.getDate().getYear());
+                year.setText("" + (recObj.getDate().getYear()+1900));
                 if(recObj.getDate().getHours()<10) {
                     hour.setText("0" + recObj.getDate().getHours());
                 }else{
@@ -119,7 +119,18 @@ public class Todo_View extends AppCompatActivity {
     }
 
     public void onClickBack(View v) {
-        Intent intent = new Intent(this,Todo_List.class);
+        Intent intent = new Intent(this,Noti.class);
+        try {
+            if (fromNoti == false && getIntent().getExtras().getString("check").equals("noti")) {
+                intent = new Intent(this, Noti.class);
+            }
+        }catch(Exception e) {
+            if (fromNoti == false) {
+            intent = new Intent(this, Todo_List.class);
+        } else {
+            intent = new Intent(this, Noti.class);
+        }
+        }
         startActivity(intent);
     }
 

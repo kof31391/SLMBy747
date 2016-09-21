@@ -24,6 +24,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,7 +36,7 @@ public class Noti extends AppCompatActivity {
     private MyListView lvitems;
     private String stdid;
     private ArrayList<String> show;
-    private int pos;
+    private ArrayList<Integer> pos = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +103,7 @@ public class Noti extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                pos = position;
-                sendToDetail(pos);
+                sendToDetail(pos.get(position));
             }
         });
     }
@@ -111,6 +111,7 @@ public class Noti extends AppCompatActivity {
     private void sendToDetail(int pos){
             Intent intent = new Intent(this, Todo_View.class);
             intent.putExtra("todo", pos);
+            intent.putExtra("check","noti");
             startActivity(intent);
 
     }
@@ -136,15 +137,13 @@ public class Noti extends AppCompatActivity {
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
-
             items = (ArrayList<NotificationObj>)ois.readObject();
             for(int j = 0 ;j<items.size();j++) {
                 Date now = Calendar.getInstance().getTime();
                 Date that = items.get(j).getDate();
-                int tempYear =items.get(j).getDate().getYear()-1900;
-                that.setYear(tempYear);
-                if(now.compareTo(that)>-1) {
-                    if(items.get(j).isFinish()==false)
+                if(now.compareTo(that)>-1&&items.get(j).isFinish()==false) {
+                    System.out.println("position: "+j);
+                    pos.add(j);
                     show.add(items.get(j).getTopic() + "\n" + items.get(j).getCategory());
                 }
             }
@@ -169,6 +168,7 @@ public class Noti extends AppCompatActivity {
         Intent intent = new Intent(this, Todo_List.class);
         startActivity(intent);
     }
+
     public void gotoSetting(View v){
         Intent intent = new Intent(this, more_setting.class);
         startActivity(intent);

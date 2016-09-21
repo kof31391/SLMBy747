@@ -156,26 +156,7 @@ public class Todo_List extends AppCompatActivity {
                 return true;
     }
 
-    private long getSchedule(String now, String future) {
-        long TimeDifference = 0;
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date dNow = df.parse(future);
-            Date dFuture = df.parse(now);
-            TimeDifference = ((dNow.getTime() - dFuture.getTime())+500);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return TimeDifference;
-    }
 
-    private String getTimeCurrent() {
-        Calendar calendar = Calendar.getInstance();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = calendar.getTime();
-        String sDate = dateFormat.format(date);
-        return sDate;
-    }
 
     private int scheduleNotification(Notification notification, long delay) {
         int id = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
@@ -275,7 +256,6 @@ public class Todo_List extends AppCompatActivity {
                 items = (ArrayList<todoObj>)ois.readObject();
             for(int j = 0 ;j<items.size();j++) {
                 date = items.get(j).getDate();
-                date.setYear(date.getYear()-1900);
                 show.add(items.get(j).getTopic()+"\n"+"Deadline: "+sdf.format(date)+" at "+time.format(date));
             }
 

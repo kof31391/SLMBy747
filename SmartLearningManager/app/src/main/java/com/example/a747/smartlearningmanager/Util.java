@@ -33,7 +33,7 @@ public class Util {
         int min = Integer.parseInt(time[1].trim());
         dates.setDate(day);
         dates.setMonth(month);
-        dates.setYear(year);
+        dates.setYear(year-1900);
         dates.setHours(hour);
         dates.setMinutes(min);
         dates.setSeconds(0);
@@ -46,6 +46,11 @@ public class Util {
         }else{
             return 0;
         }
+    }
+
+
+    public void setData(){
+
     }
 
 
