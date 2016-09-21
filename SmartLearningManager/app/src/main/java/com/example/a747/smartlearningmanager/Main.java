@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
@@ -41,6 +42,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,9 +54,10 @@ public class Main extends AppCompatActivity {
     ArrayList<String> al_desc;
     ArrayList<String> al_title;
 
-    private String finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_it_feed";
+    private String finalUrl;
     private HandleXML obj;
     private String std_id;
+    private String department;
     private String iniDate;
     private int lastest_news;
     private int last_noti_id;
@@ -62,6 +65,10 @@ public class Main extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         std_id = pref.getString("std_id", null);
         if(std_id != null){
@@ -177,6 +184,17 @@ public class Main extends AppCompatActivity {
 
     private void setRSS (){
         Log.i("Initial","Initial set RSS...");
+        SQLiteDatabase Profile_db = openOrCreateDatabase("Profile",MODE_PRIVATE,null);
+        Cursor resultSet = Profile_db.rawQuery("SELECT * FROM Profile",null);
+        resultSet.moveToFirst();
+        String department =  resultSet.getString(resultSet.getColumnIndex("department"));
+        if(department.equalsIgnoreCase("CS")){
+            department = "CS";
+            finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_cs_feed";
+        }else{
+            department = "IT";
+            finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_it_feed";
+        }
         obj = new HandleXML(finalUrl);
         obj.fetchXML();
         al_title = obj.getAl_title();
@@ -186,7 +204,27 @@ public class Main extends AppCompatActivity {
         mydatabase.execSQL("DROP TABLE IF EXISTS RSS");
         mydatabase.execSQL("CREATE TABLE IF NOT EXISTS RSS(title VARCHAR,description VARCHAR);");
         for(int i=0;i<al_title.size();i++){
-            mydatabase.execSQL("INSERT INTO RSS VALUES('"+al_title.get(i).toString()+"','"+al_desc.get(i).toString()+"');");
+            try {
+                String title = al_title.get(i).toString().replace("'","");
+                String uri = Uri.parse("http://54.169.58.93/RSS_Update.php")
+                        .buildUpon()
+                        .appendQueryParameter("title",title)
+                        .appendQueryParameter("department",department)
+                        .appendQueryParameter("mode","ini")
+                        .build().toString();
+                URL url = new URL(uri);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                if(urlConnection.getResponseCode() == 200){
+                    System.out.println("Add RSS success");
+                }else{
+                    System.out.println("Add RSS fail");
+                }
+                urlConnection.disconnect();
+                System.out.println("uri: "+url.toString());
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            mydatabase.execSQL("INSERT INTO RSS VALUES('"+al_title.get(i).toString().replace("'","")+"','"+al_desc.get(i).toString().replace("'","")+"');");
         }
         mydatabase.close();
         Log.i("Initial","Initial set RSS success");
