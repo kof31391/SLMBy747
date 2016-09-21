@@ -19,8 +19,8 @@ import java.util.ArrayList;
 public class Todo_View extends AppCompatActivity {
     private TextView desc;
     private TextView topic;
-    private ArrayList<todoObj> items;
-    private todoObj recObj;
+    private ArrayList<NotificationObj> items;
+    private NotificationObj recObj;
     private int pos;
     private TextView date;
     private TextView month;
@@ -136,12 +136,12 @@ public class Todo_View extends AppCompatActivity {
 
     private void readItems() {
         File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, temp+".txt");
+        File todoFile = new File(filesDir, temp+"Notification.txt");
         try {
             FileInputStream fis = new FileInputStream(todoFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
 
-            items = (ArrayList<todoObj>)ois.readObject();
+            items = (ArrayList<NotificationObj>)ois.readObject();
 
         } catch (IOException e) {
             items = new ArrayList<>();
