@@ -104,19 +104,13 @@ public class Todo_edit extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(Todo_edit.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        if(selectedMinute<=9) {
-                            todoTime.setText(selectedHour + ":0" + selectedMinute);
-                        }else{
-                            todoTime.setText(selectedHour + ":" + selectedMinute);
-                        }
+                        todoTime.setText(Util.getMinuteFormat(selectedHour,selectedMinute));
                     }
-                }, hour, minute, true);
+                }, mcurrentTime.get(Calendar.HOUR_OF_DAY), mcurrentTime.get(Calendar.MINUTE), true);
                 mTimePicker.show();
             }
         });
@@ -200,7 +194,7 @@ public class Todo_edit extends AppCompatActivity {
             ObjectInputStream ois = new ObjectInputStream(fis);
             NotiItems = (ArrayList<NotificationObj>)ois.readObject();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -227,16 +221,12 @@ public class Todo_edit extends AppCompatActivity {
         File todoFile = new File(filesDir, temp+".txt");
         try {
             readItems();
-            todoObj temp = new todoObj();
-            temp.setTopic(topic.getText().toString());
-            temp.setDesc(desc.getText().toString());
-            temp.setCategory(category);
+            todoObj temp = Util.setValue(topic.getText().toString(),desc.getText().toString(),category,Util.getDateFromEditText(todoDate,todoTime));
             if(finish.isChecked()==true){
                 temp.setFinish(true);
             }else{
                 temp.setFinish(false);
             }
-            temp.setDate(Util.getDateFromEditText(todoDate,todoTime));
             temp.setNotiId(recObj.getNotiId());
             items.remove(pos);
             items.add(temp);
@@ -262,12 +252,7 @@ public class Todo_edit extends AppCompatActivity {
     }
 
     private Notification getNotification(String title, String content) {
-        temps = new todoObj();       //start
-        temps.setTopic(topic.getText().toString());
-        temps.setDesc(desc.getText().toString());
-        temps.setCategory(category);
-        temps.setDate(Util.getDateFromEditText(todoDate,todoTime));
-        NotificationObj noti = new NotificationObj(temps);
+        temps = Util.setValue(topic.getText().toString(),desc.getText().toString(),category,Util.getDateFromEditText(todoDate,todoTime));
         Intent intent = new Intent(this, Todo_View.class);
         intent.putExtra("message", (Parcelable) temps);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -290,7 +275,6 @@ public class Todo_edit extends AppCompatActivity {
 
 
     public void cancelNotification(Notification notification,int id) {
-        System.out.println("Cancel"+id);
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, (int) (System.currentTimeMillis() % Integer.MAX_VALUE));
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);

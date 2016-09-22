@@ -18,10 +18,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by 747 on 30-Aug-16.
- */
 public class Util {
+    static Calendar mcurrentTime = Calendar.getInstance();
+    static DateFormat df = new SimpleDateFormat("HH:mm");
+
     public static java.util.Date getDateFromEditText(EditText d,EditText t){
         Date dates = new Date();
         String dateArr[] = d.getText().toString().split("/");
@@ -48,4 +48,31 @@ public class Util {
         }
     }
 
+    public static String getTimeFormat(){
+        Date todo_time = new Date();
+        todo_time.setHours(mcurrentTime.get(Calendar.HOUR_OF_DAY));
+        todo_time.setMinutes(mcurrentTime.get(Calendar.MINUTE));
+        return df.format(todo_time);
+    }
+
+    public static String getDateFormat(){
+       return mcurrentTime.get(Calendar.DAY_OF_MONTH)+"/"+mcurrentTime.get(Calendar.MONTH)+"/"+
+        mcurrentTime.get(Calendar.YEAR);
+    }
+
+    public static String getMinuteFormat(int hour,int minute){
+        Date date = new Date();
+        date.setHours(hour);
+        date.setMinutes(minute);
+        return df.format(date);
+    }
+
+    public static todoObj setValue(String title,String desc,String category,Date date){
+        todoObj temp = new todoObj();
+        temp.setTopic(title);
+        temp.setDesc(desc);
+        temp.setCategory(category);
+        temp.setDate(date);
+        return temp;
+    }
 }

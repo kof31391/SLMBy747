@@ -269,7 +269,6 @@ public class Subject_elearn extends AppCompatActivity {
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 mydatabase.execSQL("INSERT INTO Elearning VALUES('"+c.getString("subject_id")+"','" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_link") + "');");
-                                System.out.println("ID: "+c.getString("subject_id"));
                                 TableRow row = new TableRow(Subject_elearn.this);
                                 TextView cell = new TextView(Subject_elearn.this);
                                 cell.setId(i);
@@ -337,7 +336,6 @@ public class Subject_elearn extends AppCompatActivity {
     public void gotoElean(View v){
         Intent temp = getIntent();
         String from = temp.getExtras().getString("from");
-        System.out.println(from);
         if(from.equals("Elearning")){
             Intent intent = new Intent(this, Elearning.class);
             startActivity(intent);

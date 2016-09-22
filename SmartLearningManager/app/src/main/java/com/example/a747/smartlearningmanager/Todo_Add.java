@@ -68,7 +68,6 @@ public class Todo_Add extends AppCompatActivity {
         setContentView(R.layout.todo_add);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         stdid = pref.getString("std_id", null)+"Notification.txt";
-        System.out.println(stdid);
         Intent intent = getIntent();
         fileName = intent.getStringExtra("fileName");
         items = new ArrayList<>();
@@ -77,32 +76,20 @@ public class Todo_Add extends AppCompatActivity {
 		desc = (EditText)findViewById(R.id.todoDesc);
         todoTime =(EditText) findViewById(R.id.timePicker);
         todoDate = (EditText) findViewById(R.id.datePicker);
-        DateFormat df = new SimpleDateFormat("HH:mm");
-        Date todo_time = new Date();
-        todo_time.setHours(mcurrentTime.get(Calendar.HOUR_OF_DAY));
-        todo_time.setMinutes(mcurrentTime.get(Calendar.MINUTE));
-        todoTime.setText(df.format(todo_time));
-        todoDate.setText(mcurrentTime.get(Calendar.DAY_OF_MONTH)+"/"+mcurrentTime.get(Calendar.MONTH)+"/"+
-                mcurrentTime.get(Calendar.YEAR));
+        todoTime.setText(Util.getTimeFormat());
+        todoDate.setText(Util.getDateFormat());
             topic.requestFocus();
         todoTime.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(Todo_Add.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        if(selectedMinute<=9) {
-                            todoTime.setText(selectedHour + ":0" + selectedMinute);
-                        }else{
-                            todoTime.setText(selectedHour + ":" + selectedMinute);
-                        }
+                        todoTime.setText(Util.getMinuteFormat(selectedHour,selectedMinute));
                     }
-                }, hour, minute, true);
+                }, mcurrentTime.get(Calendar.HOUR_OF_DAY), mcurrentTime.get(Calendar.MINUTE), true);
                 mTimePicker.show();
 
             }
@@ -120,11 +107,6 @@ public class Todo_Add extends AppCompatActivity {
         todoDate.setFocusable(false);
         todoDate.setClickable(true);
     }
-
-
-
-
-
 
     public void onClickAddTodo(View view) {
         category = String.valueOf(spin.getSelectedItem());
@@ -182,7 +164,7 @@ public class Todo_Add extends AppCompatActivity {
             ObjectInputStream ois = new ObjectInputStream(fis);
             items = (ArrayList<todoObj>)ois.readObject();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -193,12 +175,7 @@ public class Todo_Add extends AppCompatActivity {
         File todoFile = new File(filesDir, fileName);
         try {
             readItems();
-            temp = new todoObj();
-            temp.setTopic(topic.getText().toString());
-            temp.setDesc(desc.getText().toString());
-            temp.setCategory(category);
-            temp.setDate(Util.getDateFromEditText(todoDate,todoTime));
-
+            temp = Util.setValue(topic.getText().toString(),desc.getText().toString(),category,Util.getDateFromEditText(todoDate,todoTime));
             /*Setup Notification*/
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date dateFuture = temp.getDate();
@@ -238,7 +215,7 @@ public class Todo_Add extends AppCompatActivity {
             ObjectInputStream ois = new ObjectInputStream(fis);
             NotiItems = (ArrayList<NotificationObj>)ois.readObject();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -286,11 +263,7 @@ public class Todo_Add extends AppCompatActivity {
 
 
     private Notification getNotification(String title,String content) {
-        temp = new todoObj();       //start
-        temp.setTopic(topic.getText().toString());
-        temp.setDesc(desc.getText().toString());
-        temp.setCategory(category);
-        temp.setDate(Util.getDateFromEditText(todoDate,todoTime));
+        temp = Util.setValue(topic.getText().toString(),desc.getText().toString(),category,Util.getDateFromEditText(todoDate,todoTime));
         NotificationObj noti = new NotificationObj(temp);
         writeNoti(noti);        //stop
         Intent intent = new Intent(this, Todo_View.class);

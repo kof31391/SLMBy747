@@ -40,11 +40,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Todo_List extends AppCompatActivity {
@@ -174,12 +171,7 @@ public class Todo_List extends AppCompatActivity {
     }
 
     private Notification getNotification(int index) {
-        temps = new todoObj();       //start
-        temps.setTopic(items.get(index).getTopic());
-        temps.setDesc(items.get(index).getDesc());
-        temps.setCategory(items.get(index).getCategory());
-        temps.setDate(items.get(index).getDate());
-        NotificationObj noti = new NotificationObj(temps);
+        temps = Util.setValue(items.get(index).getTopic(),items.get(index).getDesc(),items.get(index).getCategory(),items.get(index).getDate());
         Intent intent = new Intent(this, Todo_View.class);
         intent.putExtra("message", (Parcelable) temps);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -211,7 +203,6 @@ public class Todo_List extends AppCompatActivity {
     }
 
     public void cancelNotification(Notification notification,int id) {
-        System.out.println("Cancel"+id);
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, (int) (System.currentTimeMillis() % Integer.MAX_VALUE));
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
@@ -231,6 +222,7 @@ public class Todo_List extends AppCompatActivity {
     private void sendToView(int pos){
         Intent intent = new Intent(this,Todo_View.class);
         intent.putExtra("todo", pos);
+        intent.putExtra("source","list");
         startActivity(intent);
     }
 

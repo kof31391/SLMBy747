@@ -66,7 +66,6 @@ public class Login extends AppCompatActivity {
                 HttpURLConnection client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 String urlParameters = "username=" + params[0] + "&password=" + params[1];
-                System.out.println("USERNAME "+ params[0]);
                 client.setDoOutput(true);
                 DataOutputStream wr = new DataOutputStream(client.getOutputStream());
                 wr.writeBytes(urlParameters);
@@ -79,10 +78,9 @@ public class Login extends AppCompatActivity {
                 while ((line = reader.readLine()) != null) {
                     stringBuilder.append(line + "\n");
                 }
-                System.out.println(stringBuilder.toString());
                 res = stringBuilder.toString();
             } catch (IOException ex) {
-                System.out.println(ex);
+
             }
             return res;
         }

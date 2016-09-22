@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.sql.Array;
 import java.util.ArrayList;
 
 public class Todo_View extends AppCompatActivity {
@@ -31,6 +32,8 @@ public class Todo_View extends AppCompatActivity {
     private TextView status;
     private String temp;
     private boolean fromNoti = false;
+    private ArrayList<todoObj> item;
+    private todoObj todo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,91 +53,72 @@ public class Todo_View extends AppCompatActivity {
         year = (TextView)findViewById(R.id.Year);
         hour = (TextView)findViewById(R.id.Hour);
         minute = (TextView)findViewById(R.id.Minute);
-        readItems();
-        try {
-            if (((todoObj) intent.getParcelableExtra("message")).getTopic() != null) {
-                recObj = intent.getParcelableExtra("message");
-            }
+        try{
+            ((todoObj) intent.getParcelableExtra("message")).getTopic();
+            todo = intent.getParcelableExtra("message");
             fromNoti = true;
-            topic.setText(recObj.getTopic());
-            category.setText(recObj.getCategory());
-            desc.setText(recObj.getDesc());
-            if(recObj.isFinish()==true){
+            topic.setText(todo.getTopic());
+            category.setText(todo.getCategory());
+            desc.setText(todo.getDesc());
+            if(todo.isFinish()==true){
                 status.setText(status.getText()+"Finish");
             }else{
                 status.setText(status.getText()+"Not Finish");
             }
-            date.setText("" + recObj.getDate().getDate());
-            month.setText("" + recObj.getDate().getMonth());
-            year.setText("" + recObj.getDate().getYear());
-            if(recObj.getDate().getHours()<10) {
-                hour.setText("0" + recObj.getDate().getHours());
-            }else{
-                hour.setText("" + recObj.getDate().getHours());
-            }
-            if(recObj.getDate().getMinutes()<10){
-                minute.setText("0" + recObj.getDate().getMinutes());
-            }else{
-                minute.setText("" + recObj.getDate().getMinutes());
-            }
-        }catch(Exception e) {
+            date.setText("" + todo.getDate().getDate());
+            month.setText("" + todo.getDate().getMonth());
+            year.setText("" + (todo.getDate().getYear()+1900));
+            hour.setText(Util.getMinuteFormat(todo.getDate().getHours(),todo.getDate().getMinutes()));
+        }catch(NullPointerException np) {
             pos = intent.getIntExtra("todo",0);
             try {
-                recObj = items.get(pos);
-                topic.setText(recObj.getTopic());
-                category.setText(recObj.getCategory());
-                desc.setText(recObj.getDesc());
-                if(recObj.isFinish()==true){
-                    status.setText(status.getText()+"Finish");
-                }else{
-                    status.setText(status.getText()+"Not Finish");
-                }
-                date.setText("" + recObj.getDate().getDate());
-                month.setText("" + recObj.getDate().getMonth());
-                year.setText("" + (recObj.getDate().getYear()+1900));
-                if(recObj.getDate().getHours()<10) {
-                    hour.setText("0" + recObj.getDate().getHours());
-                }else{
-                    hour.setText("" + recObj.getDate().getHours());
-                }
-                if(recObj.getDate().getMinutes()<10){
-                    minute.setText("0" + recObj.getDate().getMinutes());
-                }else{
-                    minute.setText("" + recObj.getDate().getMinutes());
+                if (intent.getExtras().getString("source").equals("list")) {
+                    readItems();
+                    setForList();
                 }
             }catch(Exception ex){
-                final Intent intents = new Intent(this,Noti.class);
-                new AlertDialog.Builder(Todo_View.this)
-                        .setTitle("Alert")
-                        .setMessage("This todo isn't exists.")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivity(intents);
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                try {
+                    readItemsNoti();
+                    setForNoti();
+                } catch (Exception e) {
+                    showAlert();
+                }
             }
         }
     }
 
-    public void onClickBack(View v) {
-        Intent intent = new Intent(this,Noti.class);
-        try {
-            if (fromNoti == false && getIntent().getExtras().getString("check").equals("noti")) {
-                intent = new Intent(this, Noti.class);
-            }
-        }catch(Exception e) {
-            if (fromNoti == false) {
-            intent = new Intent(this, Todo_List.class);
-        } else {
-            intent = new Intent(this, Noti.class);
+    private void setForList(){
+        todo = item.get(pos);
+        topic.setText(todo.getTopic());
+        category.setText(todo.getCategory());
+        desc.setText(todo.getDesc());
+        if(todo.isFinish()==true){
+            status.setText(status.getText()+"Finish");
+        }else{
+            status.setText(status.getText()+"Not Finish");
         }
-        }
-        startActivity(intent);
+        date.setText("" + todo.getDate().getDate());
+        month.setText("" + todo.getDate().getMonth());
+        year.setText("" + (todo.getDate().getYear()+1900));
+        hour.setText(Util.getMinuteFormat(todo.getDate().getHours(),todo.getDate().getMinutes()));
+        minute.setText("");
     }
 
-    private void readItems() {
+    private void showAlert(){
+        final Intent intents = new Intent(this, Noti.class);
+        new AlertDialog.Builder(Todo_View.this)
+                .setTitle("Alert")
+                .setMessage("This todo isn't exists.")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(intents);
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void readItemsNoti() {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, temp+"Notification.txt");
         try {
@@ -148,5 +132,51 @@ public class Todo_View extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setForNoti(){
+        recObj = items.get(pos);
+        topic.setText(recObj.getTopic());
+        category.setText(recObj.getCategory());
+        desc.setText(recObj.getDesc());
+        if (recObj.isFinish() == true) {
+            status.setText(status.getText() + "Finish");
+        } else {
+            status.setText(status.getText() + "Not Finish");
+        }
+        date.setText("" + recObj.getDate().getDate());
+        month.setText("" + recObj.getDate().getMonth());
+        year.setText("" + (recObj.getDate().getYear() + 1900));
+        hour.setText(Util.getMinuteFormat(recObj.getDate().getHours(), recObj.getDate().getMinutes()));
+    }
+
+    private void readItems() {
+        File filesDir = getFilesDir();
+        File todoFile = new File(filesDir, temp+".txt");
+        try {
+            FileInputStream fis = new FileInputStream(todoFile);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            item = (ArrayList<todoObj>)ois.readObject();
+        } catch (IOException e) {
+            item = new ArrayList<>();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onClickBack(View v) {
+        Intent intent = new Intent(this,Noti.class);
+        try {
+            if (fromNoti == false && getIntent().getExtras().getString("check").equals("noti")) {
+                intent = new Intent(this, Noti.class);
+            }
+        }catch(Exception e) {
+            if (fromNoti == false) {
+                intent = new Intent(this, Todo_List.class);
+            } else {
+                intent = new Intent(this, Noti.class);
+            }
+        }
+        startActivity(intent);
     }
 }

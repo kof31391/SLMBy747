@@ -142,7 +142,6 @@ public class Noti extends AppCompatActivity {
                 Date now = Calendar.getInstance().getTime();
                 Date that = items.get(j).getDate();
                 if(now.compareTo(that)>-1&&items.get(j).isFinish()==false) {
-                    System.out.println("position: "+j);
                     pos.add(j);
                     show.add(items.get(j).getTopic() + "\n" + items.get(j).getCategory());
                 }

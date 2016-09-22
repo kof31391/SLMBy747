@@ -220,7 +220,6 @@ public class Main extends AppCompatActivity {
                     System.out.println("Add RSS fail");
                 }
                 urlConnection.disconnect();
-                System.out.println("uri: "+url.toString());
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -432,7 +431,6 @@ public class Main extends AppCompatActivity {
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
         final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nowDayfoweek+"' ORDER BY subject_date ASC;",null);
         resultSet.moveToFirst();
-        System.out.println("Now Day: "+nowDayfoweek);
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nowDayfoweek) {
             case 0 : title_day.setText("Sunday");
