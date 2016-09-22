@@ -318,7 +318,7 @@ public class Subject_elearn extends AppCompatActivity {
         String time = text.substring(12,20);
         Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Elearning WHERE e_date='"+date+"' AND e_time='"+time+"';",null);
         resultSet.moveToFirst();
-        Intent intent = new Intent(this,Video_elearning.class);
+        Intent intent = new Intent(this,Video.class);
         intent.putExtra("id",resultSet.getString(resultSet.getColumnIndex("subject_id")));
         intent.putExtra("code",resultSet.getString(resultSet.getColumnIndex("subject_code")));
         intent.putExtra("name",resultSet.getString(resultSet.getColumnIndex("subject_name")));

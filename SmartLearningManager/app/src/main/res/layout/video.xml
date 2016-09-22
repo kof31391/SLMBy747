@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/video"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.a747.smartlearningmanager.Video">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="#091534"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/video_titlebar">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addTodoBtn"
+            android:src="@drawable/backb"
+            android:layout_gravity="center_horizontal"
+            android:background="#091534"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:onClick="gotoSubjectElearn"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" >
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton8"
+                android:src="@drawable/videob"
+                android:layout_gravity="center_horizontal"
+                android:background="#091534"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Elearning"
+                android:id="@+id/textView13"
+                android:textColor="#ffffff"
+                android:paddingTop="5dp"
+                android:textSize="23dp"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/imageButton8" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@+id/video_titlebar"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/black"
+        android:onClick="autoShowControl"
+        android:id="@+id/video_display">
+        <VideoView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/video_view"
+            android:layout_centerInParent="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/video_controller"
+            android:weightSum="1"
+            android:layout_centerVertical="false"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="false"
+            android:gravity="center">
+            <ImageButton
+                android:layout_width="60dip"
+                android:layout_height="45dip"
+                android:id="@+id/btnPlay"
+                android:layout_gravity="left|bottom"
+                android:nestedScrollingEnabled="false"
+                android:onClick="pause"
+                android:src="@drawable/pause"
+                style="@android:style/Widget.DeviceDefault.Light.ActionButton" />
+            <SeekBar
+                android:layout_height="match_parent"
+                android:id="@+id/video_seekBar"
+                android:layout_width="200dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00:00"
+                android:id="@+id/timing"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:textColor="#ffffff" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:maxWidth="60dip"
+                android:maxHeight="45dip"
+                android:scaleType="fitCenter"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/imageButton28"
+                android:src="@drawable/media_fullscreen"
+                android:onClick="fullscreen"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/video_display"
+        android:id="@+id/video_detail">
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:id="@+id/video_detail_subcode"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_height="40dp"
+            android:background="?attr/actionModeSplitBackground"
+            android:textAllCaps="false"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:textColor="@android:color/background_light" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -10,30 +10,61 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login" android:screenOrientation="landscape">
+        <activity
+            android:name=".Login"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main" android:screenOrientation="landscape" />
-        <activity android:name=".Todo_List"
-            android:windowSoftInputMode="stateAlwaysHidden" android:screenOrientation="landscape"/>
-        <activity android:name=".Todo_View" android:screenOrientation="landscape" />
-        <activity android:name=".News" android:screenOrientation="landscape"/>
-        <activity android:name=".more_setting" android:screenOrientation="landscape"/>
-        <activity android:name=".Todo_Add" android:screenOrientation="landscape" />
-        <activity android:name=".Elearning" android:screenOrientation="landscape"/>
-        <activity android:name=".Noti" android:screenOrientation="landscape"/>
-        <activity android:name=".Todo_edit" android:screenOrientation="landscape"/>
-        <activity android:name=".Profile" android:screenOrientation="landscape" />
-        <activity android:name=".Video_elearning" android:screenOrientation="landscape" />
+        <activity
+            android:name=".Main"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Todo_List"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".Todo_View"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".News"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".more_setting"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Todo_Add"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Elearning"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Noti"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Todo_edit"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Profile"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".Video_elearning"
+            android:screenOrientation="landscape" />
 
-        <receiver android:name=".NotificationPublisher" android:screenOrientation="landscape"  />
+        <receiver
+            android:name=".NotificationPublisher"
+            android:screenOrientation="landscape" />
 
-        <activity android:name=".Subject_elearn" android:screenOrientation="landscape"  />
-        <activity android:name=".About" android:screenOrientation="landscape" ></activity>
+        <activity
+            android:name=".Subject_elearn"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".About"
+            android:screenOrientation="landscape" />
+        <activity android:name=".Video"></activity>
     </application>
 
 </manifest>
