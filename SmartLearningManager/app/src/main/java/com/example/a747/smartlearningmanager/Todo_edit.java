@@ -95,7 +95,7 @@ public class Todo_edit extends AppCompatActivity {
             finish.setChecked(true);
         }
         spinner.setSelection(recObj.getPosition());
-        todoDate.setText(date.getDate()+"/"+(date.getMonth())+"/"+(date.getYear()));
+        todoDate.setText(date.getDate()+"/"+(date.getMonth())+"/"+(date.getYear()+1900));
         todoTime.setText(df.format(date));
             topic.setText(recObj.getTopic());
             desc.setText(recObj.getDesc());

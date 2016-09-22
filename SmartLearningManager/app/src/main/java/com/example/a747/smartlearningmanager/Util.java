@@ -48,10 +48,4 @@ public class Util {
         }
     }
 
-
-    public void setData(){
-
-    }
-
-
 }
