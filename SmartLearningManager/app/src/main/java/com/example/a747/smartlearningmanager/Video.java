@@ -27,9 +27,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE;
 
@@ -96,8 +102,17 @@ public class Video extends AppCompatActivity {
         int width = size.x;
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((width*55)/100,LinearLayout.LayoutParams.MATCH_PARENT);
         seekBar.setLayoutParams(lp);
-
+        try {
+            Video_object vdo = Read();
+            System.out.println(vdo.toString());
+            if (vdo.getE_code().equals("I")) {
+                System.out.println("NOOO");
+                video_view.seekTo(Read().getLastMinute());
+            }
+        }catch(Exception e){}
     }
+
+
     protected void setVideoDetail(){
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -155,6 +170,10 @@ public class Video extends AppCompatActivity {
 
     protected void fullscreen(View v){
         if(isFullscreen == false) {
+            Video_object video = new Video_object();
+            video.setE_code("I");
+            video.setLastMinute(seekBar.getProgress());
+            Write(video);
             video_view.pause();
             setRequestedOrientation(SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
             isFullscreen = true;
@@ -162,6 +181,31 @@ public class Video extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             isFullscreen = false;
         }
+    }
+
+    private void Write(Video_object v){
+        File filesDir = getFilesDir();
+        File todoFile = new File(filesDir, "progress.txt");
+        try{
+            ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
+            ois.writeObject(v);
+            System.out.println("Write");
+        }catch(Exception e){
+            System.out.println("Err: "+e);
+        }
+    }
+
+    private Video_object Read() {
+        Video_object obj = new Video_object();
+        File filesDir = getFilesDir();
+        File todoFile = new File(filesDir, "progress.txt");
+        try {
+            FileInputStream fis = new FileInputStream(todoFile);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            obj = (Video_object) ois.readObject();
+        } catch (Exception e) {
+        }
+        return obj;
     }
 
     private Runnable onEverySecond = new Runnable() {

@@ -2,18 +2,20 @@ package com.example.a747.smartlearningmanager;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.Serializable;
+
 /**
  * Created by lenovo on 22/9/2559.
  */
 
-public class Video_object {
+public class Video_object implements Serializable{
     private String e_code;
     private String e_name;
     private String e_room;
     private String e_date;
     private String e_time;
     private String e_link;
-    private String lastMinute;
+    private int lastMinute;
 
     public String getE_code(){
         return e_code;
@@ -39,7 +41,7 @@ public class Video_object {
         return e_link;
     }
 
-    public String getLastMinute() {
+    public int getLastMinute() {
         return lastMinute;
     }
 
@@ -67,11 +69,24 @@ public class Video_object {
         this.e_link = e_link;
     }
 
-    public void setLastMinute(String lastMinute) {
+    public void setLastMinute(int lastMinute) {
         this.lastMinute = lastMinute;
     }
 
     public void saveInstace(){
         SQLiteDatabase video_db = SQLiteDatabase.openOrCreateDatabase("Video",null);
+    }
+
+    @Override
+    public String toString() {
+        return "Video_object{" +
+                "e_code='" + e_code + '\'' +
+                ", e_name='" + e_name + '\'' +
+                ", e_room='" + e_room + '\'' +
+                ", e_date='" + e_date + '\'' +
+                ", e_time='" + e_time + '\'' +
+                ", e_link='" + e_link + '\'' +
+                ", lastMinute=" + lastMinute +
+                '}';
     }
 }
