@@ -36,6 +36,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -49,6 +51,7 @@ public class Video extends AppCompatActivity {
     private String e_room;
     private String e_date;
     private String e_time;
+    private String e_count;
     private String e_link;
     private String lecturer;
     private int lastMinute = 0;
@@ -117,12 +120,13 @@ public class Video extends AppCompatActivity {
         if (extras != null) {
             subject_id = extras.getString("id");
             e_code = extras.getString("code");
+            lecturer = extras.getString("lecturer");
             e_name = extras.getString("name");
             e_room = extras.getString("room");
             e_date = extras.getString("date");
             e_time = extras.getString("time");
+            e_count = extras.getString("count");
             e_link = extras.getString("link");
-            lecturer = extras.getString("lecturer");
 
             video_object = new Video_object(this);
             video_object.setE_code(e_code);
@@ -148,6 +152,25 @@ public class Video extends AppCompatActivity {
         tv_subject.setText(e_code+" - "+e_name);
         TextView tv_lecturer = (TextView) findViewById(R.id.video_detail_lecturer);
         tv_lecturer.setText(lecturer);
+        TextView tv_room = (TextView) findViewById(R.id.video_detail_room);
+        tv_room.setText(e_room);
+        TextView tv_date = (TextView) findViewById(R.id.video_detail_date);
+        String date_temp = e_date;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            java.util.Date date = df.parse(date_temp);
+            df = new SimpleDateFormat("dd/MM/yyyy");
+            date_temp = df.format(date);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+        tv_date.setText(date_temp);
+        TextView tv_time = (TextView) findViewById(R.id.video_detail_time);
+        tv_time.setText(e_time.substring(0,5));
+        TextView tv_count = (TextView) findViewById(R.id.video_detail_count);
+        long temp = Long.valueOf(e_count);
+        temp++;
+        tv_count.setText(String.valueOf(temp));
     }
 
     protected void getPreload() {
@@ -222,8 +245,10 @@ public class Video extends AppCompatActivity {
         try {
             super.onConfigurationChanged(configuration);
             if(configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                ImageButton btn_fullscreen = (ImageButton) findViewById(R.id.btnFullscreen);
+                btn_fullscreen.setImageResource(R.drawable.fullscreen);
                 setVideoDetail();
-                getPreload();
+                //getPreload();
                 timing = (TextView) findViewById(R.id.timing);
                 video_view = (VideoView) findViewById(R.id.video_view);
                 video_view.setVideoURI(Uri.parse("http://54.169.58.93:80/video_elearning/" + e_link));
@@ -231,7 +256,7 @@ public class Video extends AppCompatActivity {
                 video_view.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
-                        preload_dialog.dismiss();
+                        //preload_dialog.dismiss();
                         seekBar.setMax(video_view.getDuration());
                         seekBar.postDelayed(onEverySecond, 1000);
                         video_view.getCurrentPosition();
@@ -248,9 +273,11 @@ public class Video extends AppCompatActivity {
                 RelativeLayout rl_video_display = (RelativeLayout) findViewById(R.id.video_display);
                 rl_video_display.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
                 /*End set layout fullscreen*/
+                ImageButton btn_fullscreen = (ImageButton) findViewById(R.id.btnFullscreen);
+                btn_fullscreen.setImageResource(R.drawable.fullscreen_exit);
 
                 setVideoDetail();
-                getPreload();
+                //getPreload();
                 timing = (TextView) findViewById(R.id.timing);
                 video_view = (VideoView) findViewById(R.id.video_view);
                 video_view.setVideoURI(Uri.parse("http://54.169.58.93:80/video_elearning/" + e_link));
@@ -258,7 +285,7 @@ public class Video extends AppCompatActivity {
                 video_view.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
-                        preload_dialog.dismiss();
+                        //preload_dialog.dismiss();
                         seekBar.setMax(video_view.getDuration());
                         seekBar.postDelayed(onEverySecond, 1000);
                         video_view.getCurrentPosition();

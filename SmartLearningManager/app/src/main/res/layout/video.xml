@@ -83,8 +83,10 @@
             android:layout_centerInParent="false"
             android:gravity="center">
             <ImageButton
-                android:layout_width="60dip"
+                android:layout_width="50dip"
                 android:layout_height="45dip"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
                 android:id="@+id/btnPlay"
                 android:layout_gravity="left|bottom"
                 android:nestedScrollingEnabled="false"
@@ -105,17 +107,15 @@
                 android:textColor="#ffffff" />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:maxWidth="60dip"
-                android:maxHeight="45dip"
+                android:layout_width="50dip"
+                android:layout_height="45dip"
                 android:scaleType="fitCenter"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/imageButton28"
-                android:src="@drawable/media_fullscreen"
+                android:id="@+id/btnFullscreen"
+                android:src="@drawable/fullscreen"
                 android:onClick="fullscreen"
-                android:layout_gravity="center_vertical" />
+                android:layout_gravity="center_vertical"
+                android:padding="10dp"
+                style="@android:style/Widget.DeviceDefault.Light.ActionButton" />
         </LinearLayout>
     </RelativeLayout>
     <RelativeLayout
@@ -142,26 +142,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
             android:layout_below="@+id/video_detail_subcode">
 
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <TextView
-                        android:layout_height="40dp"
+                        android:layout_height="20dp"
                         android:layout_width="match_parent"
                         android:gravity="center_vertical"
                         android:paddingLeft="15dp"
                         android:text="Lecturer: "
                         android:textStyle="bold" />
                     <TextView
-                        android:layout_height="40dp"
+                        android:layout_height="20dp"
                         android:layout_width="match_parent"
                         android:id="@+id/video_detail_lecturer"
                         android:gravity="center_vertical"
@@ -171,15 +171,78 @@
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_height="20dp"
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="15dp"
+                        android:text="Room: "
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_height="20dp"
+                        android:layout_width="match_parent"
+                        android:id="@+id/video_detail_room"
+                        android:gravity="center_vertical"
+                        android:text="TextView"
+                        android:textColor="@android:color/darker_gray" />
+                </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_height="20dp"
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="15dp"
+                        android:text="Date: "
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_height="20dp"
+                        android:layout_width="match_parent"
+                        android:id="@+id/video_detail_date"
+                        android:gravity="center_vertical"
+                        android:text="TextView"
+                        android:textColor="@android:color/darker_gray" />
+                </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_height="20dp"
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="15dp"
+                        android:text="Time: "
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_height="20dp"
+                        android:layout_width="match_parent"
+                        android:id="@+id/video_detail_time"
+                        android:gravity="center_vertical"
+                        android:text="TextView"
+                        android:textColor="@android:color/darker_gray" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_height="20dp"
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="15dp"
+                        android:text="Viewed: "
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_height="20dp"
+                        android:layout_width="match_parent"
+                        android:id="@+id/video_detail_count"
+                        android:gravity="center_vertical"
+                        android:text="TextView"
+                        android:textColor="@android:color/darker_gray" />
+                </TableRow>
             </TableLayout>
         </ScrollView>
 

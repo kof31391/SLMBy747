@@ -39,6 +39,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 public class Subject_elearn extends AppCompatActivity {
@@ -167,11 +171,11 @@ public class Subject_elearn extends AppCompatActivity {
                     JSONArray data = new JSONArray(strJSON);
                     SQLiteDatabase mydatabase = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
                     mydatabase.execSQL("DROP TABLE IF EXISTS Elearning");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_date VARCHAR, e_time VARCHAR, e_link VARCHAR);");
+                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_id VARCHAR, e_date VARCHAR, e_time VARCHAR, e_count VARCHAR, e_link VARCHAR);");
                     TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
-                        mydatabase.execSQL("INSERT INTO Elearning VALUES('"+c.getString("subject_id")+"','" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_link") + "');");
+                        mydatabase.execSQL("INSERT INTO Elearning VALUES('"+c.getString("subject_id")+"','" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_id") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_count") + "','" + c.getString("e_link") + "');");
                         TableRow row = new TableRow(Subject_elearn.this);
                         TextView cell = new TextView(Subject_elearn.this);
                         cell.setId(i);
@@ -201,7 +205,12 @@ public class Subject_elearn extends AppCompatActivity {
                             c_absent++;
                         }
                         absent.setText(String.valueOf(c_absent));
-                        cell.setText(c.getString("e_date") + "  "+c.getString("e_time")+" "+watch_status);
+                        String date_temp = c.getString("e_date");
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                        java.util.Date date = df.parse(date_temp);
+                        df = new SimpleDateFormat("dd/MM/yyyy");
+                        date_temp = df.format(date);
+                        cell.setText(date_temp + "  "+c.getString("e_time")+" "+watch_status);
                         cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                         row.addView(cell);
                         row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
@@ -264,11 +273,11 @@ public class Subject_elearn extends AppCompatActivity {
                         if(data.length() > 0){
                             SQLiteDatabase mydatabase = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
                             mydatabase.execSQL("DROP TABLE IF EXISTS Elearning");
-                            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_date VARCHAR, e_time VARCHAR, e_link VARCHAR);");
+                            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_id VARCHAR, e_date VARCHAR, e_time VARCHAR, e_count VARCHAR, e_link VARCHAR);");
                             TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
-                                mydatabase.execSQL("INSERT INTO Elearning VALUES('"+c.getString("subject_id")+"','" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_link") + "');");
+                                mydatabase.execSQL("INSERT INTO Elearning VALUES('"+c.getString("subject_id")+"','" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_id") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_count") + "','" + c.getString("e_link") + "');");
                                 TableRow row = new TableRow(Subject_elearn.this);
                                 TextView cell = new TextView(Subject_elearn.this);
                                 cell.setId(i);
@@ -281,7 +290,12 @@ public class Subject_elearn extends AppCompatActivity {
                                 });
                                 cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                                 cell.setPadding(20, 20, 0, 20);
-                                cell.setText(c.getString("e_date") + "  " + c.getString("e_time"));
+                                String date_temp = c.getString("e_date");
+                                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                                java.util.Date date = df.parse(date_temp);
+                                df = new SimpleDateFormat("dd/MM/yyyy");
+                                date_temp = df.format(date);
+                                cell.setText(date_temp + "  " + c.getString("e_time"));
                                 cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                                 row.addView(cell);
                                 row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
@@ -315,6 +329,14 @@ public class Subject_elearn extends AppCompatActivity {
         TextView tv = (TextView) v;
         String text = tv.getText().toString();
         String date = text.substring(0,10);
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            java.util.Date date_temp = df.parse(date);
+            df = new SimpleDateFormat("yyyy-MM-dd");
+            date = df.format(date_temp);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
         String time = text.substring(12,20);
         Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Elearning WHERE e_date='"+date+"' AND e_time='"+time+"';",null);
         resultSet.moveToFirst();
@@ -325,8 +347,21 @@ public class Subject_elearn extends AppCompatActivity {
         intent.putExtra("room",resultSet.getString(resultSet.getColumnIndex("subject_room")));
         intent.putExtra("date",resultSet.getString(resultSet.getColumnIndex("e_date")));
         intent.putExtra("time",resultSet.getString(resultSet.getColumnIndex("e_time")));
+        intent.putExtra("count",resultSet.getString(resultSet.getColumnIndex("e_count")));
         intent.putExtra("link",resultSet.getString(resultSet.getColumnIndex("e_link")));
         intent.putExtra("lecturer",lecturer.getText());
+
+        try{
+            URL url = new URL("http://54.169.58.93/Elearning_updatecount.php?e_id="+resultSet.getString(resultSet.getColumnIndex("e_id")));
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            if(urlConnection.getResponseCode() == 200){
+                Log.i("ELS","Added watch count");
+            }else{
+                Log.i("ELS","No added watch count");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         Intent temp = getIntent();
         String from = temp.getExtras().getString("from");
