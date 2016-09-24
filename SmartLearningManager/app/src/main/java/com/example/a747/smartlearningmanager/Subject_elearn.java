@@ -326,6 +326,7 @@ public class Subject_elearn extends AppCompatActivity {
         intent.putExtra("date",resultSet.getString(resultSet.getColumnIndex("e_date")));
         intent.putExtra("time",resultSet.getString(resultSet.getColumnIndex("e_time")));
         intent.putExtra("link",resultSet.getString(resultSet.getColumnIndex("e_link")));
+        intent.putExtra("lecturer",lecturer.getText());
 
         Intent temp = getIntent();
         String from = temp.getExtras().getString("from");

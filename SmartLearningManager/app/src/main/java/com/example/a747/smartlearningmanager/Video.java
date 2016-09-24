@@ -12,8 +12,10 @@ import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -48,11 +50,13 @@ public class Video extends AppCompatActivity {
     private String e_date;
     private String e_time;
     private String e_link;
+    private String lecturer;
+    private int lastMinute = 0;
     private ProgressDialog preload_dialog;
     private SeekBar seekBar;
     private VideoView video_view;
     private TextView timing;
-    private Boolean isFullscreen = false;
+    private Video_object video_object;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,22 +100,17 @@ public class Video extends AppCompatActivity {
                 timing.setText(sdf.format(timecur));
             }
         });
+        /*Set seekbar layout*/
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((width*55)/100,LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((width*50)/100,LinearLayout.LayoutParams.MATCH_PARENT);
         seekBar.setLayoutParams(lp);
-        try {
-            Video_object vdo = Read();
-            System.out.println(vdo.toString());
-            if (vdo.getE_code().equals("I")) {
-                System.out.println("NOOO");
-                video_view.seekTo(Read().getLastMinute());
-            }
-        }catch(Exception e){}
-    }
 
+        /*Play continues*/
+        video_view.seekTo(video_object.getLastMinute());
+    }
 
     protected void setVideoDetail(){
         Bundle extras = getIntent().getExtras();
@@ -123,9 +122,32 @@ public class Video extends AppCompatActivity {
             e_date = extras.getString("date");
             e_time = extras.getString("time");
             e_link = extras.getString("link");
+            lecturer = extras.getString("lecturer");
+
+            video_object = new Video_object(this);
+            video_object.setE_code(e_code);
+            video_object.setE_name(e_name);
+            video_object.setE_room(e_room);
+            video_object.setE_date(e_date);
+            video_object.setE_time(e_time);
+            video_object.setE_link(e_link);
+
+            if(video_object.readInstace(e_code,e_date,e_time)){
+                e_code = video_object.getE_code();
+                e_name = video_object.getE_name();
+                e_room = video_object.getE_room();
+                e_date = video_object.getE_date();
+                e_time = video_object.getE_time();
+                e_link = video_object.getE_link();
+                lastMinute = video_object.getLastMinute();
+            }else{
+                video_object.saveInstace();
+            }
         }
         TextView tv_subject = (TextView) findViewById(R.id.video_detail_subcode);
         tv_subject.setText(e_code+" - "+e_name);
+        TextView tv_lecturer = (TextView) findViewById(R.id.video_detail_lecturer);
+        tv_lecturer.setText(lecturer);
     }
 
     protected void getPreload() {
@@ -169,43 +191,19 @@ public class Video extends AppCompatActivity {
     }
 
     protected void fullscreen(View v){
-        if(isFullscreen == false) {
-            Video_object video = new Video_object();
-            video.setE_code("I");
-            video.setLastMinute(seekBar.getProgress());
-            Write(video);
+        Configuration configuration = getResources().getConfiguration();
+        super.onConfigurationChanged(configuration);
+        if(configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            video_object.setLastMinute(seekBar.getProgress());
+            video_object.saveInstace();
             video_view.pause();
             setRequestedOrientation(SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-            isFullscreen = true;
         }else{
+            video_object.setLastMinute(seekBar.getProgress());
+            video_object.saveInstace();
+            video_view.pause();
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-            isFullscreen = false;
         }
-    }
-
-    private void Write(Video_object v){
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "progress.txt");
-        try{
-            ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
-            ois.writeObject(v);
-            System.out.println("Write");
-        }catch(Exception e){
-            System.out.println("Err: "+e);
-        }
-    }
-
-    private Video_object Read() {
-        Video_object obj = new Video_object();
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "progress.txt");
-        try {
-            FileInputStream fis = new FileInputStream(todoFile);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            obj = (Video_object) ois.readObject();
-        } catch (Exception e) {
-        }
-        return obj;
     }
 
     private Runnable onEverySecond = new Runnable() {
@@ -275,11 +273,32 @@ public class Video extends AppCompatActivity {
     }
 
     protected void gotoSubjectElearn(View v) {
+        video_object.setLastMinute(seekBar.getProgress());
+        video_object.saveInstace();
         Intent intent = new Intent(this, Subject_elearn.class);
         intent.putExtra("subject",e_code);
         Intent temp = getIntent();
         String from = temp.getExtras().getString("from");
         intent.putExtra("from",from);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            Log.d("CDA", "onKeyDown Called");
+            video_object.setLastMinute(seekBar.getProgress());
+            video_object.saveInstace();
+            Intent intent = new Intent(this, Subject_elearn.class);
+            intent.putExtra("subject",e_code);
+            Intent temp = getIntent();
+            String from = temp.getExtras().getString("from");
+            intent.putExtra("from",from);
+            startActivity(intent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
