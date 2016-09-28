@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Elearning extends AppCompatActivity {
+    Boolean isExpand = false;
+
     List<String> thisyear = new ArrayList<>();
     List<String> all = new ArrayList<>();
 

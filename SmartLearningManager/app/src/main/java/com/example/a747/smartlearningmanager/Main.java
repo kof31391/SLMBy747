@@ -54,7 +54,6 @@ public class Main extends AppCompatActivity {
     ArrayList<String> al_desc;
     ArrayList<String> al_title;
 
-    private String finalUrl;
     private HandleXML obj;
     private String std_id;
     private String department;
@@ -80,6 +79,7 @@ public class Main extends AppCompatActivity {
         }
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         /*Initial*/
+        clearAlarmNoti();
         SharedPreferences prefInitial = getApplicationContext().getSharedPreferences("Initial", 0);
         SharedPreferences.Editor editorInitial = prefInitial.edit();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -170,9 +170,6 @@ public class Main extends AppCompatActivity {
                     mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Profile(firstname VARCHAR, lastname VARCHAR, department VARCHAR, grade VARCHAR, email VARCHAR, phonenum VARCHAR, image VARCHAR);");
                     mydatabase.execSQL("INSERT INTO Profile VALUES('"+c.getString("firstname")+"','"+c.getString("lastname")+"','"+c.getString("department")+"','"+c.getString("grade")+"','"+c.getString("email")+"','"+c.getString("phonenum")+"','"+c.getString("image")+"');");
                     mydatabase.close();
-                    if (c.getString("department") == "CS") {
-                        finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_cs_feed";
-                    }
                     Log.i("Initial","Initial Profile success");
                 }catch (Exception e){
                     e.printStackTrace();
@@ -183,50 +180,68 @@ public class Main extends AppCompatActivity {
     }
 
     private void setRSS (){
-        Log.i("Initial","Initial set RSS...");
         SQLiteDatabase Profile_db = openOrCreateDatabase("Profile",MODE_PRIVATE,null);
         Cursor resultSet = Profile_db.rawQuery("SELECT * FROM Profile",null);
         resultSet.moveToFirst();
         String department =  resultSet.getString(resultSet.getColumnIndex("department"));
-        if(department.equalsIgnoreCase("CS")){
-            department = "CS";
-            finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_cs_feed";
-        }else{
-            department = "IT";
-            finalUrl = "http://www4.sit.kmutt.ac.th/student/bsc_it_feed";
-        }
-        obj = new HandleXML(finalUrl);
-        obj.fetchXML();
-        al_title = obj.getAl_title();
-        al_desc = obj.getAl_desc();
-        while(obj.parsingComplete);
-        SQLiteDatabase mydatabase = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
-        mydatabase.execSQL("DROP TABLE IF EXISTS RSS");
-        mydatabase.execSQL("CREATE TABLE IF NOT EXISTS RSS(title VARCHAR,description VARCHAR);");
-        for(int i=0;i<al_title.size();i++){
-            try {
-                String title = al_title.get(i).toString().replace("'","");
-                String uri = Uri.parse("http://54.169.58.93/RSS_Update.php")
-                        .buildUpon()
-                        .appendQueryParameter("title",title)
-                        .appendQueryParameter("department",department)
-                        .appendQueryParameter("mode","ini")
-                        .build().toString();
-                URL url = new URL(uri);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                if(urlConnection.getResponseCode() == 200){
-                    System.out.println("Add RSS success");
-                }else{
-                    System.out.println("Add RSS fail");
+        Profile_db.close();
+        class GetDataJSON extends AsyncTask<String,Void,String> {
+            HttpURLConnection urlConnection = null;
+            public String strJSON;
+            protected String doInBackground(String... params) {
+                try {
+                    URL url = new URL("http://54.169.58.93/RSS_Feed.php?dept="+params[0]);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    int code = urlConnection.getResponseCode();
+                    if(code==200){
+                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                        if (in != null) {
+                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+                            String line;
+                            while ((line = bufferedReader.readLine()) != null)
+                                strJSON = line;
+                        }
+                        in.close();
+                    }
+                    return strJSON;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    urlConnection.disconnect();
                 }
-                urlConnection.disconnect();
-            }catch(Exception e){
-                e.printStackTrace();
+                return strJSON;
             }
-            mydatabase.execSQL("INSERT INTO RSS VALUES('"+al_title.get(i).toString().replace("'","")+"','"+al_desc.get(i).toString().replace("'","")+"');");
+            protected void onPostExecute(String strJSON) {
+                Log.i("Initial","Initial set RSS...");
+                try{
+                    JSONArray data = new JSONArray(strJSON);
+                    SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
+                    RSS_db.execSQL("DROP TABLE IF EXISTS RSS");
+                    RSS_db.execSQL("CREATE TABLE IF NOT EXISTS RSS(id INT, title VARCHAR, description VARCHAR, date date, count INT);");
+                    for(int i=0;i<data.length();i++){
+                        JSONObject c = data.getJSONObject(i);
+                        RSS_db.execSQL("INSERT INTO RSS(title, description, date, count) SELECT * FROM (SELECT '"+encodeUnicode(c.getString("title"))+"','"+encodeUnicode(c.getString("description"))+"','"+c.getString("date")+"','"+c.getInt("count")+"') AS tmp WHERE NOT EXISTS (SELECT * FROM RSS WHERE id='"+c.getInt("id")+"');");
+                        RSS_db.execSQL("UPDATE RSS SET count='"+c.getInt("count")+"' WHERE id='"+c.getInt("id")+"';");
+                    }
+                    RSS_db.close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                Log.i("Initial","Initial set RSS success");
+            }
         }
-        mydatabase.close();
-        Log.i("Initial","Initial set RSS success");
+        new GetDataJSON().execute(department);
+    }
+
+    private String encodeUnicode(String str) {
+        String strEncoded = "";
+        try {
+            byte[] bytes = str.getBytes("UTF-8");
+            strEncoded = new String(bytes, "UTF-8");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return strEncoded;
     }
 
     private void getRSS(){
@@ -754,6 +769,21 @@ public class Main extends AppCompatActivity {
                 .setSound(alarmSound)
                 .build();
         return notification;
+    }
+
+    private void clearAlarmNoti(){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Intent updateServiceIntent = new Intent(this, Main.class);
+        PendingIntent pendingUpdateIntent = PendingIntent.getService(this, 0, updateServiceIntent, 0);
+
+        // Cancel alarms
+        try {
+            alarmManager.cancel(pendingUpdateIntent);
+            Log.e("ALM", "AlarmManager update was canceled. ");
+        } catch (Exception e) {
+            Log.e("ALM", "AlarmManager update was not canceled. " + e.toString());
+        }
     }
 
     public void gotoTodo(View v){
