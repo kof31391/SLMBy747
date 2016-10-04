@@ -66,6 +66,10 @@ public class more_setting extends AppCompatActivity {
         Intent intent = new Intent(this,About.class);
         startActivity(intent);
     }
+    public void gotopagenews(View v){
+        Intent intent = new Intent(this, Page_news.class);
+        startActivity(intent);
+    }
 
     public void logout(View v){
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);

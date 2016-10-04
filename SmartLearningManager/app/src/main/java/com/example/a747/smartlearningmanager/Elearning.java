@@ -140,4 +140,8 @@ public class Elearning extends AppCompatActivity {
         Intent intent = new Intent(this, Elearning.class);
         startActivity(intent);
     }
+    public void gotopagenews(View v){
+        Intent intent = new Intent(this, Page_news.class);
+        startActivity(intent);
+    }
 }

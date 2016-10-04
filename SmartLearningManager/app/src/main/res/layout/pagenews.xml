@@ -1,42 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/pagenews"
     android:layout_width="match_parent"
-    tools:context=".Main"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    tools:context="com.example.a747.smartlearningmanager.Page_news">
+
+
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
-            android:background="#091534">
+            android:background="#091534" >
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent" >
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:weightSum="1">
+                    android:weightSum="1" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Smart Learning Manager"
-                        android:id="@+id/textView4"
+                        android:id="@+id/textView5"
                         android:textColor="#ffffff"
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="10dp"
@@ -55,14 +56,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:onClick="gotoAbout"
-                            android:id="@+id/imageButton7"
+                            android:id="@+id/imageButton4"
                             android:src="@drawable/infow"
                             android:background="#091534"
                             android:layout_alignTop="@+id/textView"
-                            android:layout_gravity="right"
-                            />
+                            android:layout_gravity="right" />
                     </LinearLayout>
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -75,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageButton9"
-                        android:src="@drawable/home"
+                        android:src="@drawable/homew"
                         android:background="#091534"
                         android:layout_alignParentBottom="true"
                         android:onClick="gotoHome"
@@ -85,7 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageButton15"
-                        android:src="@drawable/rssw"
+                        android:src="@drawable/rssbb"
                         android:background="#091534"
                         android:layout_marginLeft="30dp"
                         android:layout_alignTop="@+id/imageButton"
@@ -148,26 +147,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/linearLayout">
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:background="#ffffff"
-                    android:gravity="center_vertical"
-                    android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:layout_height="match_parent" >
+                    android:paddingTop="5dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content" >
 
                     <ImageButton
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:id="@+id/imageButton13"
-                        android:src="@drawable/view"
+                        android:src="@drawable/rssbb"
                         android:layout_marginLeft="10dp"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
@@ -176,8 +175,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Schedule"
+                        android:text="News"
                         android:id="@+id/textView6"
                         android:layout_marginLeft="20dp"
                         android:textColor="#000000"
@@ -188,140 +186,39 @@
                     <Button
                         style="?android:attr/buttonStyleInset"
                         android:layout_width="wrap_content"
-                        android:layout_height="23dp"
+                        android:layout_height="25dp"
                         android:text="refresh"
-                        android:id="@+id/button"
+                        android:id="@+id/clear"
+                        android:background="#f6ee00"
                         android:layout_marginLeft="7dp"
-                        android:onClick="refreshSchedule"
-                        android:background="#f6ee00" />
+                      />
 
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:paddingTop="5dp"
-                    android:layout_height="35dp"
-                    android:background="#1b3c8f"
-                    >
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text=" Today "
-                        android:textColor="#ffffff"
-                        android:textStyle="bold"
-                        android:textSize="23dp"
-
-                        android:id="@+id/title_day"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true" />
-
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/imageButton33"
-                        android:src="@drawable/nextw"
-                        android:onClick="nextSchedule"
-                        style="@android:style/Widget.DeviceDefault.Light.ActionButton"
-                        android:layout_alignBottom="@+id/title_day"
-                        android:layout_alignParentEnd="true" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/imageButton34"
-                        android:src="@drawable/previousw"
-                        android:onClick="prevSchedule"
-                        style="@android:style/Widget.DeviceDefault.Light.ActionButton"
-                        android:layout_alignBottom="@+id/title_day"
-                        android:layout_alignParentStart="true" />
-
-                </RelativeLayout>
-
-                <ScrollView
-                    android:id="@+id/scrollView4"
-                    android:layout_width="match_parent"
-                    android:layout_height="190dp"
-                    android:fillViewport="true"
-                    android:layout_below="@+id/imageButton6">
-
-                    <TableLayout
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#c0d4e0"
-                        android:id="@+id/tb_schedule">
-
-
-                    </TableLayout>
-                </ScrollView>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/linearLayout"
-                android:layout_alignParentStart="true">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:background="#ffffff"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:gravity="center_vertical"
-                    android:layout_height="match_parent">
-
-                    <ImageButton
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:id="@+id/imageButton14"
-                        android:src="@drawable/hotb"
-                        android:layout_marginLeft="10dp"
+                        android:background="#cecece"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
-                        android:background="#ffffff" />
+                        android:weightSum="1">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Hots"
-                        android:id="@+id/textView7"
-                        android:layout_marginStart="20dp"
-                        android:textColor="#000000"
-                        android:textSize="23dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentStart="true" />
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:background="#ffffff"
+                            android:layout_marginTop="10dp"
+                            android:layout_height="match_parent">
+                        </LinearLayout>
 
-                </LinearLayout>
-
-                <ScrollView
-                    android:id="@+id/scroller"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fillViewport="true"
-                    android:layout_below="@+id/imageButton6">
-
-                    <TableLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_ms_std_id"
-                        android:background="#c0d4e0"
-                        android:id="@+id/tl_news">
-
-                    </TableLayout>
-                </ScrollView>
-
+                    </LinearLayout>
             </LinearLayout>
-
         </RelativeLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+
+
+
+</RelativeLayout>

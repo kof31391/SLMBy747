@@ -799,6 +799,11 @@ public class Main extends AppCompatActivity {
         Log.i("GT","Go to Elearning");
     }
 
+    public void gotopagenews(View v){
+        Intent intent = new Intent(this, Page_news.class);
+        startActivity(intent);
+    }
+
 }
 //สำรหบัดึงหน้าเว็บ RSS ที่เป็นแบบ XML
 class HandleXML {

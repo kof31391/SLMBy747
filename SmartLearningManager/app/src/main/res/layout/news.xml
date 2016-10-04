@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageButton25"
-                    android:src="@drawable/rssb"
+                    android:src="@drawable/rssbb"
                     android:layout_gravity="center_horizontal"
                     android:background="#091534"
                     android:layout_alignParentTop="true"

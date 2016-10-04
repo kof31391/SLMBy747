@@ -59,46 +59,58 @@
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" >
+                android:layout_gravity="center_horizontal">
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton19"
+                    android:id="@+id/imageButton9"
                     android:src="@drawable/homew"
                     android:background="#091534"
+                    android:layout_alignParentBottom="true"
                     android:onClick="gotoHome"
-                    android:layout_alignParentBottom="true" />
+                    />
 
                 <ImageButton
-                    android:onClick="gotoTodo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton21"
+                    android:id="@+id/imageButton15"
+                    android:src="@drawable/rssw"
+                    android:background="#091534"
+                    android:layout_marginLeft="30dp"
+                    android:layout_alignTop="@+id/imageButton"
+                    android:layout_toEndOf="@+id/imageButton"
+                    android:onClick="gotopagenews"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton10"
                     android:src="@drawable/pencilw"
                     android:background="#091534"
-                    android:layout_marginLeft="35dp"
+                    android:layout_marginLeft="30dp"
                     android:layout_alignTop="@+id/imageButton"
-                    android:layout_toEndOf="@+id/imageButton" />
+                    android:layout_toEndOf="@+id/imageButton"
+                    android:onClick="gotoTodo"/>
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton20"
+                    android:id="@+id/imageButton0"
                     android:src="@drawable/videow"
                     android:background="#091534"
+                    android:layout_marginLeft="30dp"
                     android:onClick="gotoElean"
-                    android:layout_marginLeft="35dp"
                     android:layout_alignTop="@+id/imageButton"
                     android:layout_toEndOf="@+id/imageButton" />
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton22"
+                    android:id="@+id/imageButton11"
                     android:src="@drawable/notiw"
                     android:background="#091534"
-                    android:layout_marginLeft="35dp"
+                    android:layout_marginLeft="30dp"
                     android:onClick="gotoNoti"
                     android:layout_alignTop="@+id/imageButton2"
                     android:layout_toEndOf="@+id/imageButton2"
@@ -107,14 +119,19 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton23"
+                    android:id="@+id/imageButton12"
                     android:src="@drawable/moreb"
                     android:background="#091534"
-                    android:layout_marginLeft="35dp"
+                    android:layout_marginLeft="30dp"
                     android:layout_alignTop="@+id/imageButton3"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:onClick="gotoSetting"
+                    />
+
             </LinearLayout>
+
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

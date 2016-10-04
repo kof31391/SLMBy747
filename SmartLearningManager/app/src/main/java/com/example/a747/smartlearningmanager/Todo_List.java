@@ -300,6 +300,10 @@ public class Todo_List extends AppCompatActivity {
         Intent intent = new Intent(this, Elearning.class);
         startActivity(intent);
     }
+    public void gotopagenews(View v){
+        Intent intent = new Intent(this, Page_news.class);
+        startActivity(intent);
+    }
 
     public void Query(View v){
         String temp ;

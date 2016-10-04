@@ -50,6 +50,7 @@
         <activity
             android:name=".Profile"
             android:screenOrientation="portrait" />
+
         <receiver
             android:name=".NotificationPublisher"
             android:screenOrientation="portrait" />
@@ -60,7 +61,8 @@
         <activity
             android:name=".About"
             android:screenOrientation="portrait" />
-        <activity android:name=".Video"></activity>
+        <activity android:name=".Video" />
+        <activity android:name=".Page_news"></activity>
     </application>
 
 </manifest>
