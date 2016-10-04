@@ -54,10 +54,8 @@ public class Main extends AppCompatActivity {
     ArrayList<String> al_desc;
     ArrayList<String> al_title;
 
-    private HandleXML obj;
     private String std_id;
     private String department;
-    private String iniDate;
     private int lastest_news;
     private int last_noti_id;
     private int nextday = 0;
@@ -77,46 +75,21 @@ public class Main extends AppCompatActivity {
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
         }
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         /*Initial*/
         clearAlarmNoti();
         SharedPreferences prefInitial = getApplicationContext().getSharedPreferences("Initial", 0);
         SharedPreferences.Editor editorInitial = prefInitial.edit();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        iniDate = prefInitial.getString("Initial",null);
-        if(iniDate == null){
+        String iniStatus = prefInitial.getString("Initial",null);
+        if(iniStatus == null){
             setProfile();
             getMaxEnrollment();
             setRSS();
-            getRSS();
             setNotiSchedule();
-            Calendar calendar = Calendar.getInstance();
-            Date now = calendar.getTime();
-            editorInitial.putString("Initial",df.format(now));
-            editorInitial.commit();
+            getSchedule();
         }else{
-            try {
-                Date past = df.parse(iniDate);
-                Calendar calendar = Calendar.getInstance();
-                Date now = calendar.getTime();
-                long diffDate = now.getDate() - past.getDate();
-                if(diffDate > 1){
-                    editorInitial.clear();
-                    editorInitial.putString("Initial",df.format(now));
-                    editorInitial.commit();
-                    setProfile();
-                    getMaxEnrollment();
-                    setRSS();
-                    getRSS();
-                    setNotiSchedule();
-                }else{
-                    getRSS();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            getSchedule();
         }
-        getSchedule();
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
@@ -170,6 +143,7 @@ public class Main extends AppCompatActivity {
                     mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Profile(firstname VARCHAR, lastname VARCHAR, department VARCHAR, grade VARCHAR, email VARCHAR, phonenum VARCHAR, image VARCHAR);");
                     mydatabase.execSQL("INSERT INTO Profile VALUES('"+c.getString("firstname")+"','"+c.getString("lastname")+"','"+c.getString("department")+"','"+c.getString("grade")+"','"+c.getString("email")+"','"+c.getString("phonenum")+"','"+c.getString("image")+"');");
                     mydatabase.close();
+                    department = c.getString("department");
                     Log.i("Initial","Initial Profile success");
                 }catch (Exception e){
                     e.printStackTrace();
@@ -180,17 +154,20 @@ public class Main extends AppCompatActivity {
     }
 
     private void setRSS (){
-        SQLiteDatabase Profile_db = openOrCreateDatabase("Profile",MODE_PRIVATE,null);
-        Cursor resultSet = Profile_db.rawQuery("SELECT * FROM Profile",null);
-        resultSet.moveToFirst();
-        String department =  resultSet.getString(resultSet.getColumnIndex("department"));
-        Profile_db.close();
         class GetDataJSON extends AsyncTask<String,Void,String> {
             HttpURLConnection urlConnection = null;
             public String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/RSS_Feed.php?dept="+params[0]);
+                    if(department == null){
+                        SQLiteDatabase Profile_db = openOrCreateDatabase("Profile",MODE_PRIVATE,null);
+                        Cursor resultSet = Profile_db.rawQuery("SELECT * FROM Profile",null);
+                        resultSet.moveToFirst();
+                        department =  resultSet.getString(resultSet.getColumnIndex("department"));
+                        Profile_db.close();
+                    }
+                    URL url = new URL("http://54.169.58.93/RSS_Feed.php?dept=" + department);
+                    System.out.println("Depart : " + department);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -217,10 +194,10 @@ public class Main extends AppCompatActivity {
                     JSONArray data = new JSONArray(strJSON);
                     SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
                     RSS_db.execSQL("DROP TABLE IF EXISTS RSS");
-                    RSS_db.execSQL("CREATE TABLE IF NOT EXISTS RSS(id INT, title VARCHAR, description VARCHAR, date date, count INT);");
+                    RSS_db.execSQL("CREATE TABLE IF NOT EXISTS RSS(id INT, title VARCHAR, description VARCHAR, pubDate DATE, count INT);");
                     for(int i=0;i<data.length();i++){
                         JSONObject c = data.getJSONObject(i);
-                        RSS_db.execSQL("INSERT INTO RSS(title, description, date, count) SELECT * FROM (SELECT '"+encodeUnicode(c.getString("title"))+"','"+encodeUnicode(c.getString("description"))+"','"+c.getString("date")+"','"+c.getInt("count")+"') AS tmp WHERE NOT EXISTS (SELECT * FROM RSS WHERE id='"+c.getInt("id")+"');");
+                        RSS_db.execSQL("INSERT INTO RSS(title, description, pubDate, count) SELECT * FROM (SELECT '"+encodeUnicode(c.getString("title"))+"','"+encodeUnicode(c.getString("description"))+"','"+c.getString("date")+"','"+c.getInt("count")+"') AS tmp WHERE NOT EXISTS (SELECT * FROM RSS WHERE id='"+c.getInt("id")+"');");
                         RSS_db.execSQL("UPDATE RSS SET count='"+c.getInt("count")+"' WHERE id='"+c.getInt("id")+"';");
                     }
                     RSS_db.close();
@@ -228,9 +205,10 @@ public class Main extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 Log.i("Initial","Initial set RSS success");
+                getRSS();
             }
         }
-        new GetDataJSON().execute(department);
+        new GetDataJSON().execute();
     }
 
     private String encodeUnicode(String str) {
@@ -395,7 +373,7 @@ public class Main extends AppCompatActivity {
                     JSONArray data = new JSONArray(strJSON);
                     Calendar calendar = Calendar.getInstance();
                     Date nDate;
-                    int nowDayfoweek = calendar.get(calendar.DAY_OF_WEEK)-1;
+                    int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
                         mydatabase.execSQL("INSERT INTO Schedule VALUES('"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("subject_room")+"','"+c.getString("subject_date")+"','"+c.getString("subject_time_start")+"','"+c.getString("subject_time_ended")+"');");
@@ -442,7 +420,7 @@ public class Main extends AppCompatActivity {
     private void getSchedule(){
         Log.i("Initial","Initial get schedule...");
         Calendar calendar = Calendar.getInstance();
-        int nowDayfoweek = calendar.get(calendar.DAY_OF_WEEK)-1;
+        int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
         final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nowDayfoweek+"' ORDER BY subject_date ASC;",null);
         resultSet.moveToFirst();
@@ -473,7 +451,7 @@ public class Main extends AppCompatActivity {
                 cell.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gotoSubjectElarn(v);;
+                        gotoSubjectElarn(v);
                     }
                 });
                 cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -507,7 +485,7 @@ public class Main extends AppCompatActivity {
 
     protected void refreshSchedule(View v){
         Calendar calendar = Calendar.getInstance();
-        int nowDayfoweek = calendar.get(calendar.DAY_OF_WEEK)-1;
+        int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
         nextday = nowDayfoweek;
         TableLayout tb_schedule = (TableLayout) findViewById(R.id.tb_schedule);
         tb_schedule.removeAllViews();
@@ -518,7 +496,7 @@ public class Main extends AppCompatActivity {
         Log.i("Initial", "Initial get next schedule...");
         Calendar calendar = Calendar.getInstance();
         if (nextday == 0) {
-            nextday = (calendar.get(calendar.DAY_OF_WEEK) - 1);
+            nextday = (calendar.get(Calendar.DAY_OF_WEEK) - 1);
         }
         nextday++;
         if (nextday > 7) {
@@ -555,7 +533,7 @@ public class Main extends AppCompatActivity {
                 cell.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gotoSubjectElarn(v);;
+                        gotoSubjectElarn(v);
                     }
                 });
                 cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -602,7 +580,7 @@ public class Main extends AppCompatActivity {
         Log.i("Initial", "Initial get prev schedule...");
         Calendar calendar = Calendar.getInstance();
         if (nextday == 0) {
-            nextday = (calendar.get(calendar.DAY_OF_WEEK) - 1);
+            nextday = (calendar.get(Calendar.DAY_OF_WEEK) - 1);
         }
         nextday--;
         if (nextday < 1) {
@@ -639,7 +617,7 @@ public class Main extends AppCompatActivity {
                 cell.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gotoSubjectElarn(v);;
+                        gotoSubjectElarn(v);
                     }
                 });
                 cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -689,7 +667,7 @@ public class Main extends AppCompatActivity {
         TableRow.LayoutParams params2 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         TableLayout tl_news = (TableLayout) findViewById(R.id.tl_news);
         TextView remove_more_news = (TextView) findViewById(v.getId());
-        remove_more_news.setVisibility(v.GONE);
+        remove_more_news.setVisibility(View.GONE);
         for(int i=0;i<3;i++) {
             if(lastest_news != al_title.size()) {
                 TableRow row = new TableRow(this);
