@@ -84,14 +84,14 @@ public class Main extends AppCompatActivity {
             setProfile();
             getMaxEnrollment();
             setRSS();
-            //setNotiSchedule();
-            //getSchedule();
+            setNotiSchedule();
+            getSchedule();
 
             editorInitial.putString("Initial","Initialed");
             editorInitial.commit();
         }else{
             getRSS();
-            //getSchedule();
+            getSchedule();
         }
     }
     @Override
@@ -323,7 +323,7 @@ public class Main extends AppCompatActivity {
             private String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Schedule.php?std_id="+params[0]+"&p_enroll=0");
+                    URL url = new URL("http://54.169.58.93/Schedule.php?student_id="+params[0]+"&past_enroll=0");
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -351,42 +351,42 @@ public class Main extends AppCompatActivity {
                     mydatabase.execSQL("DROP TABLE IF EXISTS Schedule");
                     mydatabase.execSQL("DROP TABLE IF EXISTS Lecturer");
                     mydatabase.execSQL("DROP TABLE IF EXISTS Subject_Lecturer");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Schedule(subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, subject_date VARCHAR, subject_time_start VARCHAR, subject_time_ended VARCHAR);");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Lecturer(lecturer_id VARCHAR, lecturer_name VARCHAR, lecturer_lastname VARCHAR, lecturer_email VARCHAR, lecturer_tel VARCHAR, lecturer_image VARCHAR);");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Subject_Lecturer(sl_id VARCHAR,subject_code VARCHAR, lecturer_id VARCHAR);");
+                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Schedule(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_start_time VARCHAR, subject_end_time VARCHAR, day_id INT(2));");
+                        mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Lecturer(lecturer_id VARCHAR, lecturer_prefix VARCHAR,lecturer_fristname VARCHAR, lecturer_lastname VARCHAR, lecturer_email VARCHAR, lecturer_phone VARCHAR, lecturer_image VARCHAR);");
+                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Subject_Lecturer(sl_id VARCHAR,subject_id VARCHAR, lecturer_id VARCHAR);");
                     JSONArray data = new JSONArray(strJSON);
                     Calendar calendar = Calendar.getInstance();
                     Date nDate;
                     int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
-                        mydatabase.execSQL("INSERT INTO Schedule VALUES('"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("subject_room")+"','"+c.getString("subject_date")+"','"+c.getString("subject_time_start")+"','"+c.getString("subject_time_ended")+"');");
-                        mydatabase.execSQL("INSERT INTO Lecturer VALUES('"+c.getString("lecturer_id")+"','"+c.getString("lecturer_name")+"','"+c.getString("lecturer_lastname")+"','"+c.getString("lecturer_email")+"','"+c.getString("lecturer_tel")+"','"+c.getString("lecturer_image")+"');");
-                        mydatabase.execSQL("INSERT INTO Subject_Lecturer VALUES('"+c.getString("sl_id")+"','"+c.getString("subject_code")+"','"+c.getString("lecturer_id")+"');");
+                        mydatabase.execSQL("INSERT INTO Schedule VALUES('"+c.getString("subject_id")+"','"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("subject_start_time")+"','"+c.getString("subject_end_time")+"','"+c.getString("day_id")+"');");
+                        mydatabase.execSQL("INSERT INTO Lecturer VALUES('"+c.getString("lecturer_id")+"','"+c.getString("lecturer_prefix")+"','"+c.getString("lecturer_fristname")+"','"+c.getString("lecturer_lastname")+"','"+c.getString("lecturer_email")+"','"+c.getString("lecturer_phone")+"','"+c.getString("lecturer_image")+"');");
+                        mydatabase.execSQL("INSERT INTO Subject_Lecturer VALUES('"+c.getString("subject_lecturer_id")+"','"+c.getString("subject_id")+"','"+c.getString("lecturer_id")+"');");
                         nDate = calendar.getTime();
                         Date sDate = calendar.getTime();
-                        int scheDayofweek = c.getInt("subject_date");
+                        int scheDayofweek = c.getInt("day_id");
                         int diffDayofweek = scheDayofweek - nowDayfoweek;
                         if(diffDayofweek < 0){
                             sDate.setDate(sDate.getDate()+(diffDayofweek+7));
-                            String hmstart = c.getString("subject_time_start");
+                            String hmstart = c.getString("subject_start_time");
                             sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
                             sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
                             long diffSec = sDate.getTime() - nDate.getTime();
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        c.getString("subject_room") + " เริ่มเรียนเวลา " + c.getString("subject_time_start") + " จนถึง " + c.getString("subject_time_ended"))
+                                        " เริ่มเรียนเวลา " + c.getString("subject_start_time") + " จนถึง " + c.getString("subject_end_time"))
                                         , diffSec);
                             }
                         }else{
                             sDate.setDate(sDate.getDate()+diffDayofweek);
-                            String hmstart = c.getString("subject_time_start");
+                            String hmstart = c.getString("subject_start_time");
                             sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
                             sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
                             long diffSec = sDate.getTime() - nDate.getTime();
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        c.getString("subject_room") + " เริ่มเรียนเวลา " + c.getString("subject_time_start") + " จนถึง " + c.getString("subject_time_ended"))
+                                        " เริ่มเรียนเวลา " + c.getString("subject_start_time") + " จนถึง " + c.getString("subject_end_time"))
                                         , diffSec);
                             }
                         }
@@ -406,7 +406,7 @@ public class Main extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nowDayfoweek+"' ORDER BY subject_date ASC;",null);
+        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE day_id='"+nowDayfoweek+"' ORDER BY day_id ASC;",null);
         resultSet.moveToFirst();
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nowDayfoweek) {
@@ -448,13 +448,10 @@ public class Main extends AppCompatActivity {
                 result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
                 result += " ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-                result += "  \n";
-                result += "  Room:  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
                 result += "\n  Time:  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
+                result += resultSet.getString(resultSet.getColumnIndex("subject_start_time"));
                 result += " - ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
+                result += resultSet.getString(resultSet.getColumnIndex("subject_end_time"));
                 cell.setText(result);
                 cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
                 row.addView(cell);
@@ -464,6 +461,8 @@ public class Main extends AppCompatActivity {
             }
             mydatabase.close();
             Log.i("Initial","Initial get schedule success");
+        }else{
+            Log.i("Initial","Initial empty schedule");
         }
     }
 
@@ -487,7 +486,7 @@ public class Main extends AppCompatActivity {
             nextday = 1;
         }
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nextday+"' ORDER BY subject_date ASC;",null);
+        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE day_id='"+nextday+"' ORDER BY day_id ASC;",null);
         resultSet.moveToFirst();
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nextday) {
@@ -530,13 +529,10 @@ public class Main extends AppCompatActivity {
                 result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
                 result += " ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-                result += "  \n";
-                result += "  Room:  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
                 result += "\n  Time:  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
+                result += resultSet.getString(resultSet.getColumnIndex("subject_start_time"));
                 result += " - ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
+                result += resultSet.getString(resultSet.getColumnIndex("subject_end_time"));
                 cell.setText(result);
                 cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
                 row.addView(cell);
@@ -548,6 +544,7 @@ public class Main extends AppCompatActivity {
             Log.i("Initial","Initial get next schedule success");
         }else{
             tb_schedule.removeAllViews();
+            Log.i("Initial","Initial empty schedule");
         }
     }
 
@@ -571,7 +568,7 @@ public class Main extends AppCompatActivity {
             nextday = 7;
         }
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE subject_date='"+nextday+"' ORDER BY subject_date ASC;",null);
+        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE day_id='"+nextday+"' ORDER BY day_id ASC;",null);
         resultSet.moveToFirst();
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nextday) {
@@ -614,13 +611,10 @@ public class Main extends AppCompatActivity {
                 result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
                 result += " ";
                 result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-                result += "  \n";
-                result += "  Room:  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_room"));
                 result += "\n  Time:  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_time_start"));
+                result += resultSet.getString(resultSet.getColumnIndex("subject_start_time"));
                 result += " - ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_time_ended"));
+                result += resultSet.getString(resultSet.getColumnIndex("subject_end_time"));
                 cell.setText(result);
                 cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
                 row.addView(cell);
@@ -632,6 +626,7 @@ public class Main extends AppCompatActivity {
             Log.i("Initial","Initial get next schedule success");
         }else{
             tb_schedule.removeAllViews();
+            Log.i("Initial","Initial empty schedule");
         }
     }
 
