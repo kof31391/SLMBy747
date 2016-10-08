@@ -473,6 +473,7 @@ public class Main extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
         nextday = nowDayfoweek;
+        diffday = 0;
         TableLayout tb_schedule = (TableLayout) findViewById(R.id.tb_schedule);
         tb_schedule.removeAllViews();
         getSchedule();
