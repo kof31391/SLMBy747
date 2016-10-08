@@ -70,7 +70,6 @@ public class Todo_edit extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_edit);
         DateFormat df = new SimpleDateFormat("HH:mm");

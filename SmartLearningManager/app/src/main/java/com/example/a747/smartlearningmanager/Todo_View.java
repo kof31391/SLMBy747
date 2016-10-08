@@ -37,7 +37,6 @@ public class Todo_View extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_view);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);

@@ -142,11 +142,11 @@ public class Main extends AppCompatActivity {
                 try {
                     JSONArray data = new JSONArray(strJSON);
                     JSONObject c = data.getJSONObject(0);
-                    SQLiteDatabase mydatabase = openOrCreateDatabase("Profile",MODE_PRIVATE,null);
-                    mydatabase.execSQL("DROP TABLE IF EXISTS Profile");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Profile(firstname VARCHAR, lastname VARCHAR, department VARCHAR, email VARCHAR, phonenum VARCHAR, image VARCHAR);");
-                    mydatabase.execSQL("INSERT INTO Profile VALUES('"+c.getString("student_name")+"','"+c.getString("student_surname")+"','"+c.getString("department_briefly")+"','"+c.getString("student_email")+"','"+c.getString("student_phone")+"','"+c.getString("student_image")+"');");
-                    mydatabase.close();
+                    SQLiteDatabase Prfile_db = openOrCreateDatabase("Profile",MODE_PRIVATE,null);
+                    Prfile_db.execSQL("DROP TABLE IF EXISTS Profile");
+                    Prfile_db.execSQL("CREATE TABLE IF NOT EXISTS Profile(firstname VARCHAR, lastname VARCHAR, department VARCHAR, email VARCHAR, phonenum VARCHAR, image VARCHAR);");
+                    Prfile_db.execSQL("INSERT INTO Profile VALUES('"+c.getString("student_name")+"','"+c.getString("student_surname")+"','"+c.getString("department_briefly")+"','"+c.getString("student_email")+"','"+c.getString("student_phone")+"','"+c.getString("student_image")+"');");
+                    Prfile_db.close();
                     department = c.getString("department_briefly");
                     SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
                     SharedPreferences.Editor editor = pref.edit();
@@ -174,7 +174,6 @@ public class Main extends AppCompatActivity {
                         department =  resultSet.getString(resultSet.getColumnIndex("department"));
                         Profile_db.close();
                     }
-                    System.out.println("Dept: "+department);
                     URL url = new URL("http://54.169.58.93/RSS_Feed.php?department="+department);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
@@ -232,8 +231,8 @@ public class Main extends AppCompatActivity {
 
     private void getRSS(){
         Log.i("Initial","Initial get RSS...");
-        SQLiteDatabase mydatabase = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
-        Cursor resultSet = mydatabase.rawQuery("SELECT title, description FROM RSS ORDER BY count DESC LIMIT 5;",null);
+        SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
+        Cursor resultSet = RSS_db.rawQuery("SELECT title, description FROM RSS ORDER BY count DESC LIMIT 5;",null);
         resultSet.moveToFirst();
         al_title = new ArrayList();
         al_desc = new ArrayList();
@@ -242,7 +241,7 @@ public class Main extends AppCompatActivity {
             al_desc.add(resultSet.getString(resultSet.getColumnIndex("description")));
             resultSet.moveToNext();
         }
-        mydatabase.close();
+        RSS_db.close();
         TableLayout tl_news = (TableLayout) findViewById(R.id.tl_news);
         TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         TableRow.LayoutParams params2=new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
@@ -258,8 +257,8 @@ public class Main extends AppCompatActivity {
                     onClickNews(v);
                 }
             });
-            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            title.setPadding(20, 20, 0, 20);
+            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            title.setPadding(25, 20, 0, 25);
             if ((i % 2) == 0) {
                 title.setBackgroundColor(Color.parseColor("#E6E6E6"));
             }
@@ -305,10 +304,10 @@ public class Main extends AppCompatActivity {
                     Log.i("Initial","Initial set last enrollment...");
                     JSONArray data = new JSONArray(strJSON);
                     JSONObject c = data.getJSONObject(0);
-                    SQLiteDatabase mydatabase = openOrCreateDatabase("Enrollment",MODE_PRIVATE,null);
-                    mydatabase.execSQL("DROP TABLE IF EXISTS Enrollment");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Enrollment(semester VARCHAR,enroll_year VARCHAR);");
-                    mydatabase.execSQL("INSERT INTO Enrollment VALUES('"+c.getString("enrollment_semester")+"','"+c.getString("enrollment_year")+"');");
+                    SQLiteDatabase Enrollment_db = openOrCreateDatabase("Enrollment",MODE_PRIVATE,null);
+                    Enrollment_db.execSQL("DROP TABLE IF EXISTS Enrollment");
+                    Enrollment_db.execSQL("CREATE TABLE IF NOT EXISTS Enrollment(semester VARCHAR,enroll_year VARCHAR);");
+                    Enrollment_db.execSQL("INSERT INTO Enrollment VALUES('"+c.getString("enrollment_semester")+"','"+c.getString("enrollment_year")+"');");
                     Log.i("Initial","Initial set last enrollment success");
                 }catch (Exception e){
                     e.printStackTrace();
@@ -348,22 +347,22 @@ public class Main extends AppCompatActivity {
             protected void onPostExecute(String strJSON) {
                 try {
                     Log.i("Initial","Initial set notification for schedule...");
-                    SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-                    mydatabase.execSQL("DROP TABLE IF EXISTS Schedule");
-                    mydatabase.execSQL("DROP TABLE IF EXISTS Lecturer");
-                    mydatabase.execSQL("DROP TABLE IF EXISTS Subject_Lecturer");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Schedule(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_start_time VARCHAR, subject_end_time VARCHAR, day_id INT(2));");
-                        mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Lecturer(lecturer_id VARCHAR, lecturer_prefix VARCHAR,lecturer_fristname VARCHAR, lecturer_lastname VARCHAR, lecturer_email VARCHAR, lecturer_phone VARCHAR, lecturer_image VARCHAR);");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Subject_Lecturer(sl_id VARCHAR,subject_id VARCHAR, lecturer_id VARCHAR);");
+                    SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+                    Schedule_db.execSQL("DROP TABLE IF EXISTS Schedule");
+                    Schedule_db.execSQL("DROP TABLE IF EXISTS Lecturer");
+                    Schedule_db.execSQL("DROP TABLE IF EXISTS Subject_Lecturer");
+                    Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Schedule(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_start_time VARCHAR, subject_end_time VARCHAR, day_id INT(2));");
+                    Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Lecturer(lecturer_id VARCHAR, lecturer_prefix VARCHAR,lecturer_fristname VARCHAR, lecturer_lastname VARCHAR, lecturer_email VARCHAR, lecturer_phone VARCHAR, lecturer_image VARCHAR);");
+                    Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Subject_Lecturer(sl_id VARCHAR,subject_id VARCHAR, lecturer_id VARCHAR);");
                     JSONArray data = new JSONArray(strJSON);
                     Calendar calendar = Calendar.getInstance();
                     Date nDate;
                     int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
-                        mydatabase.execSQL("INSERT INTO Schedule VALUES('"+c.getString("subject_id")+"','"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("subject_start_time")+"','"+c.getString("subject_end_time")+"','"+c.getString("day_id")+"');");
-                        mydatabase.execSQL("INSERT INTO Lecturer VALUES('"+c.getString("lecturer_id")+"','"+c.getString("lecturer_prefix")+"','"+c.getString("lecturer_fristname")+"','"+c.getString("lecturer_lastname")+"','"+c.getString("lecturer_email")+"','"+c.getString("lecturer_phone")+"','"+c.getString("lecturer_image")+"');");
-                        mydatabase.execSQL("INSERT INTO Subject_Lecturer VALUES('"+c.getString("subject_lecturer_id")+"','"+c.getString("subject_id")+"','"+c.getString("lecturer_id")+"');");
+                        Schedule_db.execSQL("INSERT INTO Schedule VALUES('"+c.getString("subject_id")+"','"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("subject_start_time")+"','"+c.getString("subject_end_time")+"','"+c.getString("day_id")+"');");
+                        Schedule_db.execSQL("INSERT INTO Lecturer VALUES('"+c.getString("lecturer_id")+"','"+c.getString("lecturer_prefix")+"','"+c.getString("lecturer_fristname")+"','"+c.getString("lecturer_lastname")+"','"+c.getString("lecturer_email")+"','"+c.getString("lecturer_phone")+"','"+c.getString("lecturer_image")+"');");
+                        Schedule_db.execSQL("INSERT INTO Subject_Lecturer VALUES('"+c.getString("subject_lecturer_id")+"','"+c.getString("subject_id")+"','"+c.getString("lecturer_id")+"');");
                         nDate = calendar.getTime();
                         Date sDate = calendar.getTime();
                         int scheDayofweek = c.getInt("day_id");
@@ -392,7 +391,7 @@ public class Main extends AppCompatActivity {
                             }
                         }
                     }
-                    mydatabase.close();
+                    Schedule_db.close();
                     Log.i("Initial","Initial set notification for schedule success");
                 }catch (Exception e){
                     e.printStackTrace();
@@ -408,8 +407,8 @@ public class Main extends AppCompatActivity {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         String date_now = df.format(calendar.getTime());
         int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
-        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE day_id='"+nowDayfoweek+"' ORDER BY day_id ASC;",null);
+        SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+        final Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Schedule WHERE day_id='"+nowDayfoweek+"' ORDER BY day_id ASC;",null);
         resultSet.moveToFirst();
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nowDayfoweek) {
@@ -462,7 +461,7 @@ public class Main extends AppCompatActivity {
                 tb_schedule.addView(row);
                 resultSet.moveToNext();
             }
-            mydatabase.close();
+            Schedule_db.close();
             Log.i("Initial","Initial get schedule success");
         }else{
             Log.i("Initial","Initial empty schedule");
@@ -493,8 +492,8 @@ public class Main extends AppCompatActivity {
         if (nextday > 7) {
             nextday = 1;
         }
-        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE day_id='"+nextday+"' ORDER BY day_id ASC;",null);
+        SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+        final Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Schedule WHERE day_id='"+nextday+"' ORDER BY day_id ASC;",null);
         resultSet.moveToFirst();
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nextday) {
@@ -548,7 +547,7 @@ public class Main extends AppCompatActivity {
                 tb_schedule.addView(row);
                 resultSet.moveToNext();
             }
-            mydatabase.close();
+            Schedule_db.close();
             Log.i("Initial","Initial get next schedule success");
         }else{
             tb_schedule.removeAllViews();
@@ -579,8 +578,8 @@ public class Main extends AppCompatActivity {
         if (nextday < 1) {
             nextday = 7;
         }
-        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE day_id='"+nextday+"' ORDER BY day_id ASC;",null);
+        SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+        final Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Schedule WHERE day_id='"+nextday+"' ORDER BY day_id ASC;",null);
         resultSet.moveToFirst();
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nextday) {
@@ -634,7 +633,7 @@ public class Main extends AppCompatActivity {
                 tb_schedule.addView(row);
                 resultSet.moveToNext();
             }
-            mydatabase.close();
+            Schedule_db.close();
             Log.i("Initial","Initial get next schedule success");
         }else{
             tb_schedule.removeAllViews();

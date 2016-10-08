@@ -17,7 +17,6 @@ public class more_setting extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         String std_id = pref.getString("std_id", null);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if(std_id != null){
             super.onCreate(savedInstanceState);
             setContentView(R.layout.more_setting);

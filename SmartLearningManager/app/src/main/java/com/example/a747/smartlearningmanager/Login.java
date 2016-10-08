@@ -33,8 +33,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         String std_id = pref.getString("std_id", null);
         if(std_id != null){
             Intent intent = new Intent(Login.this, Main.class);

@@ -30,7 +30,6 @@ public class Elearning extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.elearning);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getSchedule();
 
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
@@ -96,14 +95,14 @@ public class Elearning extends AppCompatActivity {
     }
 
     public void getSchedule(){
-        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule ORDER BY subject_code;",null);
+        SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+        Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Schedule ORDER BY subject_code;",null);
         resultSet.moveToFirst();
         while(!resultSet.isAfterLast()){
             thisyear.add(resultSet.getString(resultSet.getColumnIndex("subject_code"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
             resultSet.moveToNext();
         }
-        mydatabase.close();
+        Schedule_db.close();
         all.add("B.Sc.IT");
         all.add("B.Sc.CS");
         all.add("M.Sc.IT");
