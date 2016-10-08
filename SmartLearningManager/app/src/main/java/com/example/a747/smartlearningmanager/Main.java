@@ -56,7 +56,6 @@ public class Main extends AppCompatActivity {
 
     private String std_id;
     private String department;
-    private int lastest_news;
     private int last_noti_id;
     private int nextday = 0;
 
@@ -66,7 +65,7 @@ public class Main extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         std_id = pref.getString("std_id", null);
         if(std_id != null){
             super.onCreate(savedInstanceState);
@@ -81,14 +80,18 @@ public class Main extends AppCompatActivity {
         SharedPreferences prefInitial = getApplicationContext().getSharedPreferences("Initial", 0);
         SharedPreferences.Editor editorInitial = prefInitial.edit();
         String iniStatus = prefInitial.getString("Initial",null);
-        if(iniStatus == null){
+        if(iniStatus != "Initialed"){
             setProfile();
             getMaxEnrollment();
             setRSS();
-            setNotiSchedule();
-            getSchedule();
+            //setNotiSchedule();
+            //getSchedule();
+
+            editorInitial.putString("Initial","Initialed");
+            editorInitial.commit();
         }else{
-            getSchedule();
+            getRSS();
+            //getSchedule();
         }
     }
     @Override
@@ -112,7 +115,7 @@ public class Main extends AppCompatActivity {
             public String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Profile.php?std_id="+params[0]);
+                    URL url = new URL("http://54.169.58.93/Profile.php?student_id="+params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -140,10 +143,14 @@ public class Main extends AppCompatActivity {
                     JSONObject c = data.getJSONObject(0);
                     SQLiteDatabase mydatabase = openOrCreateDatabase("Profile",MODE_PRIVATE,null);
                     mydatabase.execSQL("DROP TABLE IF EXISTS Profile");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Profile(firstname VARCHAR, lastname VARCHAR, department VARCHAR, grade VARCHAR, email VARCHAR, phonenum VARCHAR, image VARCHAR);");
-                    mydatabase.execSQL("INSERT INTO Profile VALUES('"+c.getString("firstname")+"','"+c.getString("lastname")+"','"+c.getString("department")+"','"+c.getString("grade")+"','"+c.getString("email")+"','"+c.getString("phonenum")+"','"+c.getString("image")+"');");
+                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Profile(firstname VARCHAR, lastname VARCHAR, department VARCHAR, email VARCHAR, phonenum VARCHAR, image VARCHAR);");
+                    mydatabase.execSQL("INSERT INTO Profile VALUES('"+c.getString("student_name")+"','"+c.getString("student_surname")+"','"+c.getString("department_briefly")+"','"+c.getString("student_email")+"','"+c.getString("student_phone")+"','"+c.getString("student_image")+"');");
                     mydatabase.close();
-                    department = c.getString("department");
+                    department = c.getString("department_briefly");
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("department",department);
+                    editor.commit();
                     Log.i("Initial","Initial Profile success");
                 }catch (Exception e){
                     e.printStackTrace();
@@ -166,8 +173,8 @@ public class Main extends AppCompatActivity {
                         department =  resultSet.getString(resultSet.getColumnIndex("department"));
                         Profile_db.close();
                     }
-                    URL url = new URL("http://54.169.58.93/RSS_Feed.php?dept=" + department);
-                    System.out.println("Depart : " + department);
+                    System.out.println("Dept: "+department);
+                    URL url = new URL("http://54.169.58.93/RSS_Feed.php?department="+department);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -197,8 +204,8 @@ public class Main extends AppCompatActivity {
                     RSS_db.execSQL("CREATE TABLE IF NOT EXISTS RSS(id INT, title VARCHAR, description VARCHAR, pubDate DATE, count INT);");
                     for(int i=0;i<data.length();i++){
                         JSONObject c = data.getJSONObject(i);
-                        RSS_db.execSQL("INSERT INTO RSS(title, description, pubDate, count) SELECT * FROM (SELECT '"+encodeUnicode(c.getString("title"))+"','"+encodeUnicode(c.getString("description"))+"','"+c.getString("date")+"','"+c.getInt("count")+"') AS tmp WHERE NOT EXISTS (SELECT * FROM RSS WHERE id='"+c.getInt("id")+"');");
-                        RSS_db.execSQL("UPDATE RSS SET count='"+c.getInt("count")+"' WHERE id='"+c.getInt("id")+"';");
+                        RSS_db.execSQL("INSERT INTO RSS(id, title, description, pubDate, count) SELECT * FROM (SELECT '"+c.getInt("rss_id")+"','"+encodeUnicode(c.getString("rss_title"))+"','"+encodeUnicode(c.getString("rss_description"))+"','"+c.getString("rss_createdate")+"','"+c.getInt("rss_count")+"') AS tmp WHERE NOT EXISTS (SELECT * FROM RSS WHERE id='"+c.getInt("rss_id")+"');");
+                        RSS_db.execSQL("UPDATE RSS SET count='"+c.getInt("rss_count")+"' WHERE id='"+c.getInt("rss_id")+"';");
                     }
                     RSS_db.close();
                 }catch(Exception e){
@@ -225,9 +232,8 @@ public class Main extends AppCompatActivity {
     private void getRSS(){
         Log.i("Initial","Initial get RSS...");
         SQLiteDatabase mydatabase = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
-        Cursor resultSet = mydatabase.rawQuery("SELECT title, description FROM RSS",null);
+        Cursor resultSet = mydatabase.rawQuery("SELECT title, description FROM RSS ORDER BY count DESC LIMIT 5;",null);
         resultSet.moveToFirst();
-        resultSet.moveToNext();
         al_title = new ArrayList();
         al_desc = new ArrayList();
         while(!resultSet.isAfterLast()){
@@ -240,8 +246,7 @@ public class Main extends AppCompatActivity {
         TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         TableRow.LayoutParams params2=new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         int i;
-        lastest_news = 7;
-        for(i=0;i<lastest_news;i++) {
+        for(i=0;i<al_title.size();i++) {
             TableRow row = new TableRow(this);
             TextView title = new TextView(this);
             title.setId(i);
@@ -263,27 +268,6 @@ public class Main extends AppCompatActivity {
             row.setLayoutParams(params2);
             tl_news.addView(row);
         }
-        //More News
-        TableRow row = new TableRow(this);
-        TextView title = new TextView(this);
-        title.setId(i);
-        title.setClickable(true);
-        title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickMoreNews(v);
-            }
-        });
-        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        title.setPadding(500, 20, 0, 50);
-        if ((i % 2) == 0) {
-            title.setBackgroundColor(Color.parseColor("#E6E6E6"));
-        }
-        title.setText("More");
-        title.setLayoutParams(params1);
-        row.addView(title);
-        row.setLayoutParams(params2);
-        tl_news.addView(row);
         Log.i("Initial","Initial get RSS success");
     }
 
@@ -293,7 +277,7 @@ public class Main extends AppCompatActivity {
             private String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/maxEnrollment.php");
+                    URL url = new URL("http://54.169.58.93/Max_Enrollment.php");
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {
@@ -323,7 +307,7 @@ public class Main extends AppCompatActivity {
                     SQLiteDatabase mydatabase = openOrCreateDatabase("Enrollment",MODE_PRIVATE,null);
                     mydatabase.execSQL("DROP TABLE IF EXISTS Enrollment");
                     mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Enrollment(semester VARCHAR,enroll_year VARCHAR);");
-                    mydatabase.execSQL("INSERT INTO Enrollment VALUES('"+c.getString("semester")+"','"+c.getString("enroll_year")+"');");
+                    mydatabase.execSQL("INSERT INTO Enrollment VALUES('"+c.getString("enrollment_semester")+"','"+c.getString("enrollment_year")+"');");
                     Log.i("Initial","Initial set last enrollment success");
                 }catch (Exception e){
                     e.printStackTrace();
@@ -656,67 +640,11 @@ public class Main extends AppCompatActivity {
         String title = al_title.get(idv).toString();
         String desc = android.text.Html.fromHtml(al_desc.get(idv).toString()).toString();
         Intent intent = new Intent(Main.this, News.class);
+        intent.putExtra("from","Main");
         intent.putExtra("title",title);
         intent.putExtra("desc", desc);
         startActivity(intent);
         Log.i("OC","On click news");
-    }
-    private void onClickMoreNews(View v){
-        Log.i("OC","Load more news...");
-        TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-        TableRow.LayoutParams params2 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-        TableLayout tl_news = (TableLayout) findViewById(R.id.tl_news);
-        TextView remove_more_news = (TextView) findViewById(v.getId());
-        remove_more_news.setVisibility(View.GONE);
-        for(int i=0;i<3;i++) {
-            if(lastest_news != al_title.size()) {
-                TableRow row = new TableRow(this);
-                TextView title = new TextView(this);
-                title.setId(lastest_news);
-                title.setClickable(true);
-                title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-                title.setPadding(20, 20, 0, 20);
-                if ((lastest_news % 2) == 0) {
-                    title.setBackgroundColor(Color.parseColor("#E6E6E6"));
-                }
-                title.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onClickNews(v);
-                    }
-                });
-                title.setText(al_title.get(lastest_news).toString());
-                row.addView(title);
-                tl_news.addView(row);
-                lastest_news++;
-            }else{
-                break;
-            }
-        }
-        if(lastest_news != al_title.size()) {
-            //More News
-            TableRow row = new TableRow(this);
-            TextView title = new TextView(this);
-            title.setId(lastest_news);
-            title.setClickable(true);
-            title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClickMoreNews(v);
-                }
-            });
-            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            title.setPadding(500, 20, 0, 50);
-            if ((lastest_news % 2) == 0) {
-                title.setBackgroundColor(Color.parseColor("#E6E6E6"));
-            }
-            title.setText("More");
-            title.setLayoutParams(params1);
-            row.addView(title);
-            row.setLayoutParams(params2);
-            tl_news.addView(row);
-        }
-        Log.i("OC","Load more news success");
     }
 
     private void scheduleNotification(Notification notification, long delay) {
@@ -799,9 +727,10 @@ public class Main extends AppCompatActivity {
         Log.i("GT","Go to Elearning");
     }
 
-    public void gotopagenews(View v){
+    public void gotoPageNews(View v){
         Intent intent = new Intent(this, Page_news.class);
         startActivity(intent);
+        Log.i("GT","Go to Page News");
     }
 
 }

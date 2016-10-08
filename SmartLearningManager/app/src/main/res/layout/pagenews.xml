@@ -191,7 +191,7 @@
                         android:id="@+id/clear"
                         android:background="#f6ee00"
                         android:layout_marginLeft="7dp"
-                      />
+                        android:onClick="setRSS" />
 
                 </LinearLayout>
 
@@ -208,8 +208,25 @@
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:background="#ffffff"
-                            android:layout_marginTop="10dp"
                             android:layout_height="match_parent">
+
+                            <ScrollView
+                                android:id="@+id/scroller"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fillViewport="true"
+                                android:layout_below="@+id/imageButton6">
+
+                                <TableLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tv_ms_std_id"
+                                    android:background="#c0d4e0"
+                                    android:id="@+id/tl_news">
+
+                                </TableLayout>
+                            </ScrollView>
+
                         </LinearLayout>
 
                     </LinearLayout>

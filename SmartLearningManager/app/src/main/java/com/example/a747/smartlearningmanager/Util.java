@@ -1,22 +1,12 @@
 package com.example.a747.smartlearningmanager;
 
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.sql.Time;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class Util {
     static Calendar mcurrentTime = Calendar.getInstance();

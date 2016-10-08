@@ -90,12 +90,12 @@ public class Login extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String message) {
+        protected void onPostExecute(String res) {
             Intent intent = new Intent(getApplicationContext(), Main.class);
-            if(message.trim().equals("true")) {
-                intent.putExtra("msg", message);
+            if(res.trim().equals("true")) {
+                intent.putExtra("msg", res);
                 startActivity(intent);
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("std_id", uidString);
                 editor.commit();
@@ -112,7 +112,7 @@ public class Login extends AppCompatActivity {
                 && keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
             Log.d("CDA", "onKeyDown Called");
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
             SharedPreferences.Editor editor = pref.edit();
             editor.clear();
             editor.commit();

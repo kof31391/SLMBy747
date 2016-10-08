@@ -66,7 +66,6 @@ public class Subject_elearn extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subject_elearn);
         subjCode = (TextView)findViewById(R.id.subjCode);
@@ -81,7 +80,7 @@ public class Subject_elearn extends AppCompatActivity {
 
         Intent intent = getIntent();
         subject = intent.getExtras().getString("subject");
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         std_id = pref.getString("std_id", null);
 
         getSubjectDetial(subject);

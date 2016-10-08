@@ -1,10 +1,8 @@
 package com.example.a747.smartlearningmanager;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -12,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import java.io.EOFException;
 import java.io.File;
@@ -24,7 +21,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,7 +40,7 @@ public class Noti extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.noti);
         lvitems = (MyListView)findViewById(R.id.noti);
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         stdid = pref.getString("std_id", null);
         show = new ArrayList<>();
         items = new ArrayList<>();

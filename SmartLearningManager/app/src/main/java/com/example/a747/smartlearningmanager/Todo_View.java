@@ -40,7 +40,7 @@ public class Todo_View extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_view);
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         temp = pref.getString("std_id", null);
         Intent intent = getIntent();
         items = new ArrayList<>();

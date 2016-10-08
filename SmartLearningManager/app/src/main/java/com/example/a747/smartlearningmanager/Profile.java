@@ -65,7 +65,7 @@ public class Profile extends AppCompatActivity {
     HashMap<String, List<String>> expandableListDetail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         String std_id = pref.getString("std_id", null);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if(std_id != null){

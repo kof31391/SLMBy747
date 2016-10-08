@@ -1,17 +1,172 @@
 package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 
 public class Page_news extends AppCompatActivity {
+
+    ArrayList<String> al_desc;
+    ArrayList<String> al_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pagenews);
+
+        getRSS();
+    }
+
+    private void getRSS(){
+        Log.i("Initial","Initial get RSS...");
+        SQLiteDatabase mydatabase = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
+        Cursor resultSet = mydatabase.rawQuery("SELECT title, description FROM RSS;",null);
+        resultSet.moveToFirst();
+        al_title = new ArrayList();
+        al_desc = new ArrayList();
+        while(!resultSet.isAfterLast()){
+            al_title.add(resultSet.getString(resultSet.getColumnIndex("title")));
+            al_desc.add(resultSet.getString(resultSet.getColumnIndex("description")));
+            resultSet.moveToNext();
+        }
+        mydatabase.close();
+        TableLayout tl_news = (TableLayout) findViewById(R.id.tl_news);
+        TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams params2=new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+        int i;
+        for(i=0;i<al_title.size();i++) {
+            TableRow row = new TableRow(this);
+            TextView title = new TextView(this);
+            title.setId(i);
+            title.setClickable(true);
+            title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickNews(v);
+                }
+            });
+            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            title.setPadding(20, 20, 0, 20);
+            if ((i % 2) == 0) {
+                title.setBackgroundColor(Color.parseColor("#E6E6E6"));
+            }
+            title.setText(al_title.get(i).toString());
+            title.setLayoutParams(params1);
+            row.addView(title);
+            row.setLayoutParams(params2);
+            tl_news.addView(row);
+        }
+        Log.i("Initial","Initial get RSS success");
+    }
+
+    protected void setRSS (View v){
+        TableLayout tl_news = (TableLayout) findViewById(R.id.tl_news);
+        tl_news.removeAllViews();
+
+        class GetDataJSON extends AsyncTask<String,Void,String> {
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
+            String department = pref.getString("department",null);
+
+            HttpURLConnection urlConnection = null;
+            public String strJSON;
+            protected String doInBackground(String... params) {
+                try {
+                    if(department == null){
+                        SQLiteDatabase Profile_db = openOrCreateDatabase("Profile",MODE_PRIVATE,null);
+                        Cursor resultSet = Profile_db.rawQuery("SELECT * FROM Profile",null);
+                        resultSet.moveToFirst();
+                        department =  resultSet.getString(resultSet.getColumnIndex("department"));
+                        Profile_db.close();
+                    }
+                    System.out.println("Dept: "+department);
+                    URL url = new URL("http://54.169.58.93/RSS_Feed.php?department="+department);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    int code = urlConnection.getResponseCode();
+                    if(code==200){
+                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                        if (in != null) {
+                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+                            String line;
+                            while ((line = bufferedReader.readLine()) != null)
+                                strJSON = line;
+                        }
+                        in.close();
+                    }
+                    return strJSON;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    urlConnection.disconnect();
+                }
+                return strJSON;
+            }
+            protected void onPostExecute(String strJSON) {
+                Log.i("Initial","Initial set RSS...");
+                try{
+                    JSONArray data = new JSONArray(strJSON);
+                    SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
+                    RSS_db.execSQL("DROP TABLE IF EXISTS RSS");
+                    RSS_db.execSQL("CREATE TABLE IF NOT EXISTS RSS(id INT, title VARCHAR, description VARCHAR, pubDate DATE, count INT);");
+                    for(int i=0;i<data.length();i++){
+                        JSONObject c = data.getJSONObject(i);
+                        RSS_db.execSQL("INSERT INTO RSS(id, title, description, pubDate, count) SELECT * FROM (SELECT '"+c.getInt("rss_id")+"','"+encodeUnicode(c.getString("rss_title"))+"','"+encodeUnicode(c.getString("rss_description"))+"','"+c.getString("rss_createdate")+"','"+c.getInt("rss_count")+"') AS tmp WHERE NOT EXISTS (SELECT * FROM RSS WHERE id='"+c.getInt("rss_id")+"');");
+                        RSS_db.execSQL("UPDATE RSS SET count='"+c.getInt("rss_count")+"' WHERE id='"+c.getInt("rss_id")+"';");
+                    }
+                    RSS_db.close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                Log.i("Initial","Initial set RSS success");
+                getRSS();
+            }
+        }
+        new GetDataJSON().execute();
+        getRSS();
+    }
+
+    private String encodeUnicode(String str) {
+        String strEncoded = "";
+        try {
+            byte[] bytes = str.getBytes("UTF-8");
+            strEncoded = new String(bytes, "UTF-8");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return strEncoded;
+    }
+
+    private void onClickNews(View v){
+        int idv = v.getId();
+        String title = al_title.get(idv).toString();
+        String desc = android.text.Html.fromHtml(al_desc.get(idv).toString()).toString();
+        Intent intent = new Intent(Page_news.this, News.class);
+        intent.putExtra("from","Page_news");
+        intent.putExtra("title",title);
+        intent.putExtra("desc", desc);
+        startActivity(intent);
+        Log.i("OC","On click news");
     }
 
     public void gotoTodo(View v){
@@ -47,10 +202,5 @@ public class Page_news extends AppCompatActivity {
         Intent intent = new Intent(this, Elearning.class);
         startActivity(intent);
         Log.i("GT","Go to Elearning");
-    }
-
-    public void gotopagenews(View v){
-        Intent intent = new Intent(this, Page_news.class);
-        startActivity(intent);
     }
 }

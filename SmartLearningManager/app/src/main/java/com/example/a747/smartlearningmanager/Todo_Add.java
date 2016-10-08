@@ -66,7 +66,7 @@ public class Todo_Add extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_add);
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         stdid = pref.getString("std_id", null)+"Notification.txt";
         Intent intent = getIntent();
         fileName = intent.getStringExtra("fileName");

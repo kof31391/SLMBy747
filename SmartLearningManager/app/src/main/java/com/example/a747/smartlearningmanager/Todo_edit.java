@@ -74,7 +74,7 @@ public class Todo_edit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_edit);
         DateFormat df = new SimpleDateFormat("HH:mm");
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         temp = pref.getString("std_id", null);
         stdid = pref.getString("std_id", null)+"Notification.txt";
         Intent intent = getIntent();

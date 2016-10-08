@@ -15,7 +15,7 @@ import android.widget.TextView;
 public class more_setting extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         String std_id = pref.getString("std_id", null);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if(std_id != null){
@@ -72,7 +72,7 @@ public class more_setting extends AppCompatActivity {
     }
 
     public void logout(View v){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         SharedPreferences.Editor editor = pref.edit();
         editor.clear();
         editor.commit();
@@ -92,7 +92,7 @@ public class more_setting extends AppCompatActivity {
                 && keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
             Log.d("CDA", "onKeyDown Called");
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
             SharedPreferences.Editor editor = pref.edit();
             editor.clear();
             editor.commit();
