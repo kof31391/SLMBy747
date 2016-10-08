@@ -58,6 +58,7 @@ public class Main extends AppCompatActivity {
     private String department;
     private int last_noti_id;
     private int nextday = 0;
+    int diffday = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -404,25 +405,27 @@ public class Main extends AppCompatActivity {
     private void getSchedule(){
         Log.i("Initial","Initial get schedule...");
         Calendar calendar = Calendar.getInstance();
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        String date_now = df.format(calendar.getTime());
         int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
         final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule WHERE day_id='"+nowDayfoweek+"' ORDER BY day_id ASC;",null);
         resultSet.moveToFirst();
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nowDayfoweek) {
-            case 0 : title_day.setText("Sunday");
+            case 0 : title_day.setText("Sunday "+date_now);
                 break;
-            case 1 : title_day.setText("Monday");
+            case 1 : title_day.setText("Monday "+date_now);
                 break;
-            case 2 : title_day.setText("Tuesday");
+            case 2 : title_day.setText("Tuesday "+date_now);
                 break;
-            case 3 : title_day.setText("Wednesday");
+            case 3 : title_day.setText("Wednesday "+date_now);
                 break;
-            case 4 : title_day.setText("Thursday");
+            case 4 : title_day.setText("Thursday "+date_now);
                 break;
-            case 5 : title_day.setText("Friday");
+            case 5 : title_day.setText("Friday "+date_now);
                 break;
-            case 6 : title_day.setText("Saturday");
+            case 6 : title_day.setText("Saturday "+date_now);
                 break;
         }
         if (resultSet.getCount() != 0) {
@@ -478,6 +481,10 @@ public class Main extends AppCompatActivity {
     protected void nextSchedule(View v){
         Log.i("Initial", "Initial get next schedule...");
         Calendar calendar = Calendar.getInstance();
+        diffday++;
+        calendar.add(Calendar.DATE,diffday);
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        String date_next = df.format(calendar.getTime());
         if (nextday == 0) {
             nextday = (calendar.get(Calendar.DAY_OF_WEEK) - 1);
         }
@@ -490,19 +497,19 @@ public class Main extends AppCompatActivity {
         resultSet.moveToFirst();
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nextday) {
-            case 0 : title_day.setText("Sunday");
+            case 0 : title_day.setText("Sunday "+date_next);
                 break;
-            case 1 : title_day.setText("Monday");
+            case 1 : title_day.setText("Monday "+date_next);
                 break;
-            case 2 : title_day.setText("Tuesday");
+            case 2 : title_day.setText("Tuesday "+date_next);
                 break;
-            case 3 : title_day.setText("Wednesday");
+            case 3 : title_day.setText("Wednesday "+date_next);
                 break;
-            case 4 : title_day.setText("Thursday");
+            case 4 : title_day.setText("Thursday "+date_next);
                 break;
-            case 5 : title_day.setText("Friday");
+            case 5 : title_day.setText("Friday "+date_next);
                 break;
-            case 6 : title_day.setText("Saturday");
+            case 6 : title_day.setText("Saturday "+date_next);
                 break;
         }
         TableLayout tb_schedule = (TableLayout) findViewById(R.id.tb_schedule);
@@ -560,6 +567,10 @@ public class Main extends AppCompatActivity {
     protected void prevSchedule(View v) {
         Log.i("Initial", "Initial get prev schedule...");
         Calendar calendar = Calendar.getInstance();
+        diffday--;
+        calendar.add(Calendar.DATE,diffday);
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        String date_prev = df.format(calendar.getTime());
         if (nextday == 0) {
             nextday = (calendar.get(Calendar.DAY_OF_WEEK) - 1);
         }
@@ -572,19 +583,19 @@ public class Main extends AppCompatActivity {
         resultSet.moveToFirst();
         TextView title_day = (TextView) findViewById(R.id.title_day);
         switch (nextday) {
-            case 0 : title_day.setText("Sunday");
+            case 0 : title_day.setText("Sunday "+date_prev);
                 break;
-            case 1 : title_day.setText("Monday");
+            case 1 : title_day.setText("Monday "+date_prev);
                 break;
-            case 2 : title_day.setText("Tuesday");
+            case 2 : title_day.setText("Tuesday "+date_prev);
                 break;
-            case 3 : title_day.setText("Wednesday");
+            case 3 : title_day.setText("Wednesday "+date_prev);
                 break;
-            case 4 : title_day.setText("Thursday");
+            case 4 : title_day.setText("Thursday "+date_prev);
                 break;
-            case 5 : title_day.setText("Friday");
+            case 5 : title_day.setText("Friday "+date_prev);
                 break;
-            case 6 : title_day.setText("Saturday");
+            case 6 : title_day.setText("Saturday "+date_prev);
                 break;
         }
         TableLayout tb_schedule = (TableLayout) findViewById(R.id.tb_schedule);
