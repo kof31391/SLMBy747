@@ -248,15 +248,15 @@ public class Video extends AppCompatActivity {
                 ImageButton btn_fullscreen = (ImageButton) findViewById(R.id.btnFullscreen);
                 btn_fullscreen.setImageResource(R.drawable.fullscreen);
                 setVideoDetail();
-                //getPreload();
+                getPreload();
                 timing = (TextView) findViewById(R.id.timing);
                 video_view = (VideoView) findViewById(R.id.video_view);
-                video_view.setVideoURI(Uri.parse("http://54.169.58.93:80/video_elearning/" + e_link));
+                video_view.setVideoURI(Uri.parse(e_link));
                 video_view.requestFocus();
                 video_view.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
-                        //preload_dialog.dismiss();
+                        preload_dialog.dismiss();
                         seekBar.setMax(video_view.getDuration());
                         seekBar.postDelayed(onEverySecond, 1000);
                         video_view.getCurrentPosition();
@@ -280,7 +280,7 @@ public class Video extends AppCompatActivity {
                 //getPreload();
                 timing = (TextView) findViewById(R.id.timing);
                 video_view = (VideoView) findViewById(R.id.video_view);
-                video_view.setVideoURI(Uri.parse("http://54.169.58.93:80/video_elearning/" + e_link));
+                video_view.setVideoURI(Uri.parse(e_link));
                 video_view.requestFocus();
                 video_view.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
@@ -303,7 +303,7 @@ public class Video extends AppCompatActivity {
         video_object.setLastMinute(seekBar.getProgress());
         video_object.saveInstace();
         Intent intent = new Intent(this, Subject_elearn.class);
-        intent.putExtra("subject",e_code);
+        intent.putExtra("subject_id",subject_id);
         Intent temp = getIntent();
         String from = temp.getExtras().getString("from");
         intent.putExtra("from",from);
@@ -319,7 +319,7 @@ public class Video extends AppCompatActivity {
             video_object.setLastMinute(seekBar.getProgress());
             video_object.saveInstace();
             Intent intent = new Intent(this, Subject_elearn.class);
-            intent.putExtra("subject",e_code);
+            intent.putExtra("subject_id",subject_id);
             Intent temp = getIntent();
             String from = temp.getExtras().getString("from");
             intent.putExtra("from",from);

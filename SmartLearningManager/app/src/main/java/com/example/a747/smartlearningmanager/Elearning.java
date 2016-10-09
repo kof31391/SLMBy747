@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Elearning extends AppCompatActivity {
     Boolean isExpand = false;
@@ -25,6 +26,8 @@ public class Elearning extends AppCompatActivity {
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
+
+    Map<String,String> mapSubject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +79,7 @@ public class Elearning extends AppCompatActivity {
                         break;
                     default :
                         Intent intent = new Intent(Elearning.this, Subject_elearn.class);
-                        intent.putExtra("subject",subject);
+                        intent.putExtra("subject_id",mapSubject.get(subject));
                         intent.putExtra("from","Elearning");
                         Elearning.this.startActivity(intent);
                         break;
@@ -95,10 +98,12 @@ public class Elearning extends AppCompatActivity {
     }
 
     public void getSchedule(){
+        mapSubject = new HashMap<>();
         SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
         Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Schedule ORDER BY subject_code;",null);
         resultSet.moveToFirst();
         while(!resultSet.isAfterLast()){
+            mapSubject.put(resultSet.getString(resultSet.getColumnIndex("subject_code"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_name")),resultSet.getString(resultSet.getColumnIndex("subject_id")));
             thisyear.add(resultSet.getString(resultSet.getColumnIndex("subject_code"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
             resultSet.moveToNext();
         }

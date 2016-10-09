@@ -77,11 +77,11 @@ public class Main extends AppCompatActivity {
         }
 
         /*Initial*/
-        clearAlarmNoti();
         SharedPreferences prefInitial = getApplicationContext().getSharedPreferences("Initial", 0);
         SharedPreferences.Editor editorInitial = prefInitial.edit();
-        String iniStatus = prefInitial.getString("Initial",null);
-        if(iniStatus != "Initialed"){
+        String iniStatus = prefInitial.getString("Initial","");
+        if(!iniStatus.equalsIgnoreCase("Initialed")){
+            clearAlarmNoti();
             setProfile();
             getMaxEnrollment();
             setRSS();
@@ -91,6 +91,7 @@ public class Main extends AppCompatActivity {
             editorInitial.putString("Initial","Initialed");
             editorInitial.commit();
         }else{
+            System.out.println("Initial: "+iniStatus);
             getRSS();
             getSchedule();
         }
@@ -306,7 +307,7 @@ public class Main extends AppCompatActivity {
                     JSONObject c = data.getJSONObject(0);
                     SQLiteDatabase Enrollment_db = openOrCreateDatabase("Enrollment",MODE_PRIVATE,null);
                     Enrollment_db.execSQL("DROP TABLE IF EXISTS Enrollment");
-                    Enrollment_db.execSQL("CREATE TABLE IF NOT EXISTS Enrollment(semester VARCHAR,enroll_year VARCHAR);");
+                    Enrollment_db.execSQL("CREATE TABLE IF NOT EXISTS Enrollment(enrollment_semester VARCHAR,enrollment_year VARCHAR);");
                     Enrollment_db.execSQL("INSERT INTO Enrollment VALUES('"+c.getString("enrollment_semester")+"','"+c.getString("enrollment_year")+"');");
                     Log.i("Initial","Initial set last enrollment success");
                 }catch (Exception e){

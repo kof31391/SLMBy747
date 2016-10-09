@@ -48,7 +48,7 @@ import java.util.HashMap;
 
 public class Subject_elearn extends AppCompatActivity {
     String std_id;
-    String subject;
+    String subject_id;
     String status = "n";
     String telno;
     String watch_status;
@@ -78,26 +78,27 @@ public class Subject_elearn extends AppCompatActivity {
         lecturerImage = (ImageView) findViewById(R.id.lecturerImage) ;
         absent = (TextView) findViewById(R.id.absent);
 
-        Intent intent = getIntent();
-        subject = intent.getExtras().getString("subject");
         SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         std_id = pref.getString("std_id", null);
 
-        getSubjectDetial(subject);
-        getSubjectVideo(subject);
+        Intent intent = getIntent();
+        subject_id = intent.getExtras().getString("subject_id");
+
+        getSubjectDetial();
+        getSubjectVideo();
     }
 
-    private void getSubjectDetial(final String subject){
-        String subj = subject.substring(0,6);
-        SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        final Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Subject_Lecturer sl JOIN Schedule s ON sl.subject_code = s.subject_code JOIN Lecturer l ON sl.lecturer_id = l.lecturer_id WHERE s.subject_code='"+subj+"';",null);
+    private void getSubjectDetial(){
+        Log.i("Setup","Setup subject detail...");
+        SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+        final Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Subject_Lecturer sl JOIN Schedule s ON sl.subject_id = s.subject_id JOIN Lecturer l ON sl.lecturer_id = l.lecturer_id WHERE s.subject_id='"+subject_id+"';",null);
         resultSet.moveToFirst();
         subjCode.setText(resultSet.getString(resultSet.getColumnIndex("subject_code")));
         subjName.setText(resultSet.getString(resultSet.getColumnIndex("subject_name")));
-        lecturer.setText(resultSet.getString(resultSet.getColumnIndex("lecturer_name"))+" "+resultSet.getString(resultSet.getColumnIndex("lecturer_lastname")));
-        class_room.setText(resultSet.getString(resultSet.getColumnIndex("subject_room")));
-        class_Time.setText(resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
-        telno = resultSet.getString(resultSet.getColumnIndex("lecturer_tel"));
+        lecturer.setText(resultSet.getString(resultSet.getColumnIndex("lecturer_fristname"))+" "+resultSet.getString(resultSet.getColumnIndex("lecturer_lastname")));
+        //class_room.setText(resultSet.getString(resultSet.getColumnIndex("subject_room")));
+        class_Time.setText(resultSet.getString(resultSet.getColumnIndex("subject_start_time"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
+        telno = resultSet.getString(resultSet.getColumnIndex("lecturer_phone"));
         imgB_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,10 +118,11 @@ public class Subject_elearn extends AppCompatActivity {
                 startActivity(emailIntent);
             }
         });
-        String uri = "lecturer_"+resultSet.getString(resultSet.getColumnIndex("lecturer_name")).toLowerCase();
+        /*String uri = "lecturer_"+resultSet.getString(resultSet.getColumnIndex("lecturer_name")).toLowerCase();
         int imageResource = getResources().getIdentifier(uri, "drawable", getPackageName());
         Drawable image = getResources().getDrawable(imageResource);
-        lecturerImage.setImageDrawable(image);
+        lecturerImage.setImageDrawable(image);*/
+        Log.i("Setup","Setup subject detail success");
     }
 
     public void Help(View v){
@@ -136,14 +138,13 @@ public class Subject_elearn extends AppCompatActivity {
                 .show();
     }
 
-    private void getSubjectVideo(final String subject){
+    private void getSubjectVideo(){
         class GetDataJSON extends AsyncTask<String,Void,String> {
             HttpURLConnection urlConnection = null;
             private String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    String subj = subject.substring(0,6);
-                    URL url = new URL("http://54.169.58.93/Elearning_datelist.php?std_id="+std_id+"&subject="+subj+"&status="+status);
+                    URL url = new URL("http://54.169.58.93/Elearning_DateList.php?student_id="+std_id+"&subject_id="+subject_id+"&status="+status);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {
@@ -169,13 +170,13 @@ public class Subject_elearn extends AppCompatActivity {
                 try {
                     Log.i("Setup", "Set video detail...");
                     JSONArray data = new JSONArray(strJSON);
-                    SQLiteDatabase mydatabase = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
-                    mydatabase.execSQL("DROP TABLE IF EXISTS Elearning");
-                    mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_id VARCHAR, e_date VARCHAR, e_time VARCHAR, e_count VARCHAR, e_link VARCHAR);");
+                    SQLiteDatabase Elearning_db = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
+                    Elearning_db.execSQL("DROP TABLE IF EXISTS Elearning");
+                    Elearning_db.execSQL("CREATE TABLE IF NOT EXISTS Elearning(video_id VARCHAR, video_name VARCHAR, video_link VARCHAR, video_room VARCHAR, video_date VARCHAR, video_visitor_count VARCHAR, subject_id INT,subject_start_time VARCHAR);");
                     TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
-                        mydatabase.execSQL("INSERT INTO Elearning VALUES('"+c.getString("subject_id")+"','" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_id") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_count") + "','" + c.getString("e_link") + "');");
+                        Elearning_db.execSQL("INSERT INTO Elearning VALUES('"+c.getString("video_id")+"','" + c.getString("video_name") + "','" + c.getString("video_link") + "','" + c.getString("video_room") + "','" + c.getString("video_date") + "','" + c.getString("video_visitor_count") + "','" + c.getString("subject_id") + "','" + c.getString("subject_start_time") + "');");
                         TableRow row = new TableRow(Subject_elearn.this);
                         TextView cell = new TextView(Subject_elearn.this);
                         cell.setId(i);
@@ -189,41 +190,41 @@ public class Subject_elearn extends AppCompatActivity {
                         cell.setPadding(20, 20, 0, 20);
                         watch_status = "";
                         /*check stats*/
-                        if (c.getString("check_status").equalsIgnoreCase("N") && c.getString("check_watch_e").equalsIgnoreCase("null")) {
+                        if (c.getString("class_check_status").equalsIgnoreCase("F") && c.getString("class_check_watch_video").equalsIgnoreCase("F")) {
                             cell.setBackgroundColor(Color.parseColor("#FFAAAE"));
-                        }else if(c.getString("check_status").equalsIgnoreCase("N") && c.getString("check_watch_e").equalsIgnoreCase("Y")){
+                        }else if(c.getString("class_check_status").equalsIgnoreCase("F") && c.getString("class_check_watch_video").equalsIgnoreCase("T")){
                             cell.setBackgroundColor(Color.parseColor("#FFAAAE"));
                             watch_status = "Watched.";
-                        }else if(c.getString("check_status").equalsIgnoreCase("Y") && c.getString("check_watch_e").equalsIgnoreCase("null")){
+                        }else if(c.getString("class_check_status").equalsIgnoreCase("T") && c.getString("class_check_watch_video").equalsIgnoreCase("F")){
 
-                        }else if(c.getString("check_status").equalsIgnoreCase("Y") && c.getString("check_watch_e").equalsIgnoreCase("Y")){
+                        }else if(c.getString("class_check_status").equalsIgnoreCase("T") && c.getString("class_check_watch_video").equalsIgnoreCase("T")){
                             cell.setBackgroundColor(Color.parseColor("#FFADEBC7"));
                             watch_status = "Watched.";
                         }
 
-                        if (c.getString("check_status").equalsIgnoreCase("N")) {
+                        if (c.getString("class_check_status").equalsIgnoreCase("F")) {
                             c_absent++;
                         }
                         absent.setText(String.valueOf(c_absent));
-                        String date_temp = c.getString("e_date");
+                        String date_temp = c.getString("video_date");
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                         java.util.Date date = df.parse(date_temp);
                         df = new SimpleDateFormat("dd/MM/yyyy");
                         date_temp = df.format(date);
-                        cell.setText(date_temp + "  "+c.getString("e_time")+" "+watch_status);
+                        cell.setText(date_temp + "  "+c.getString("subject_start_time")+" "+watch_status);
                         cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                         row.addView(cell);
                         row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
                         tl_datelist.addView(row);
                     }
-                    mydatabase.close();
-                    mydatabase = openOrCreateDatabase("Enrollment", MODE_PRIVATE, null);
-                    Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Enrollment;",null);
+                    Elearning_db.close();
+                    Elearning_db = openOrCreateDatabase("Enrollment", MODE_PRIVATE, null);
+                    Cursor resultSet = Elearning_db.rawQuery("SELECT * FROM Enrollment;",null);
                     resultSet.moveToFirst();
                     TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
-                    tv_title_semester.setText(" Semester "+resultSet.getString(resultSet.getColumnIndex("semester"))+"/"+resultSet.getString(resultSet.getColumnIndex("enroll_year")));
+                    tv_title_semester.setText(" Semester "+resultSet.getString(resultSet.getColumnIndex("enrollment_semester"))+"/"+resultSet.getString(resultSet.getColumnIndex("enrollment_year")));
                     resultSet.close();
-                    mydatabase.close();
+                    Elearning_db.close();
                     Log.i("Setup", "Set video detail success");
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -243,8 +244,7 @@ public class Subject_elearn extends AppCompatActivity {
                 private String strJSON;
                 protected String doInBackground(String... params) {
                     try {
-                        String subj = subject.substring(0,6);
-                        URL url = new URL("http://54.169.58.93/Elearning_datelist.php?std_id="+std_id+"&subject="+subj+"&status="+status);
+                        URL url = new URL("http://54.169.58.93/Elearning_DateList.php?student_id="+std_id+"&subject_id="+subject_id+"&status="+status);
                         urlConnection = (HttpURLConnection) url.openConnection();
                         int code = urlConnection.getResponseCode();
                         if (code == 200) {
@@ -271,13 +271,13 @@ public class Subject_elearn extends AppCompatActivity {
                         Log.i("Setup", "Set past video detail...");
                         JSONArray data = new JSONArray(strJSON);
                         if(data.length() > 0){
-                            SQLiteDatabase mydatabase = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
-                            mydatabase.execSQL("DROP TABLE IF EXISTS Elearning");
-                            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Elearning(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_room VARCHAR, e_id VARCHAR, e_date VARCHAR, e_time VARCHAR, e_count VARCHAR, e_link VARCHAR);");
+                            SQLiteDatabase Elearning_db = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
+                            Elearning_db.execSQL("DROP TABLE IF EXISTS Elearning");
+                            Elearning_db.execSQL("CREATE TABLE IF NOT EXISTS Elearning(video_id VARCHAR, video_name VARCHAR, video_link VARCHAR, video_room VARCHAR, video_date VARCHAR, video_visitor_count VARCHAR, subject_id INT, subject_start_time VARCHAR);");
                             TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
-                                mydatabase.execSQL("INSERT INTO Elearning VALUES('"+c.getString("subject_id")+"','" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_room") + "','" + c.getString("e_id") + "','" + c.getString("e_date") + "','" + c.getString("e_time") + "','" + c.getString("e_count") + "','" + c.getString("e_link") + "');");
+                                Elearning_db.execSQL("INSERT INTO Elearning VALUES('"+c.getString("video_id")+"','" + c.getString("video_name") + "','" + c.getString("video_link") + "','" + c.getString("video_room") + "','" + c.getString("video_date") + "','" + c.getString("video_visitor_count") + "','" + c.getString("subject_id") + "','" + c.getString("subject_start_time") + "');");
                                 TableRow row = new TableRow(Subject_elearn.this);
                                 TextView cell = new TextView(Subject_elearn.this);
                                 cell.setId(i);
@@ -290,25 +290,25 @@ public class Subject_elearn extends AppCompatActivity {
                                 });
                                 cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                                 cell.setPadding(20, 20, 0, 20);
-                                String date_temp = c.getString("e_date");
+                                String date_temp = c.getString("video_date");
                                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                                 java.util.Date date = df.parse(date_temp);
                                 df = new SimpleDateFormat("dd/MM/yyyy");
                                 date_temp = df.format(date);
-                                cell.setText(date_temp + "  " + c.getString("e_time"));
+                                cell.setText(date_temp + "  " + c.getString("subject_start_time"));
                                 cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                                 row.addView(cell);
                                 row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
                                 tl_datelist.addView(row);
                                 absent.setText("0");
                                 TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
-                                tv_title_semester.setText(" Semester " + c.getString("semester") + "/" + c.getString("enroll_year"));
+                                tv_title_semester.setText(" Semester " + c.getString("enrollment_semester") + "/" + c.getString("enrollment_year"));
                             }
                         }else{
                             Toast.makeText(getApplicationContext(),"Not found", Toast.LENGTH_SHORT).show();
                             status = "n";
                             c_absent = 0;
-                            getSubjectVideo(subject);
+                            getSubjectVideo();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -319,13 +319,13 @@ public class Subject_elearn extends AppCompatActivity {
         }else{
             status = "n";
             c_absent = 0;
-            getSubjectVideo(subject);
+            getSubjectVideo();
         }
-
     }
 
     public void gotoVideo(View v){
-        SQLiteDatabase mydatabase = openOrCreateDatabase("Elearning",MODE_PRIVATE,null);
+        SQLiteDatabase Subject_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+        SQLiteDatabase Elearning_db = openOrCreateDatabase("Elearning",MODE_PRIVATE,null);
         TextView tv = (TextView) v;
         String text = tv.getText().toString();
         String date = text.substring(0,10);
@@ -338,21 +338,24 @@ public class Subject_elearn extends AppCompatActivity {
             e.printStackTrace();
         }
         String time = text.substring(12,20);
-        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Elearning WHERE e_date='"+date+"' AND e_time='"+time+"';",null);
-        resultSet.moveToFirst();
+        Cursor rs_elearning = Elearning_db.rawQuery("SELECT * FROM Elearning  WHERE video_date='"+date+"' AND subject_start_time='"+time+"';",null);
+        rs_elearning.moveToFirst();
+        String subject_id = rs_elearning.getString(rs_elearning.getColumnIndex("subject_id"));
+        Cursor rs_subject = Subject_db.rawQuery("SELECT * FROM Schedule WHERE subject_id='"+subject_id+"';",null);
+        rs_subject.moveToFirst();
         Intent intent = new Intent(this,Video.class);
-        intent.putExtra("id",resultSet.getString(resultSet.getColumnIndex("subject_id")));
-        intent.putExtra("code",resultSet.getString(resultSet.getColumnIndex("subject_code")));
-        intent.putExtra("name",resultSet.getString(resultSet.getColumnIndex("subject_name")));
-        intent.putExtra("room",resultSet.getString(resultSet.getColumnIndex("subject_room")));
-        intent.putExtra("date",resultSet.getString(resultSet.getColumnIndex("e_date")));
-        intent.putExtra("time",resultSet.getString(resultSet.getColumnIndex("e_time")));
-        intent.putExtra("count",resultSet.getString(resultSet.getColumnIndex("e_count")));
-        intent.putExtra("link",resultSet.getString(resultSet.getColumnIndex("e_link")));
+        intent.putExtra("id",rs_subject.getString(rs_subject.getColumnIndex("subject_id")));
+        intent.putExtra("code",rs_subject.getString(rs_subject.getColumnIndex("subject_code")));
+        intent.putExtra("name",rs_subject.getString(rs_subject.getColumnIndex("subject_name")));
+        intent.putExtra("room",rs_elearning.getString(rs_elearning.getColumnIndex("video_room")));
+        intent.putExtra("date",rs_elearning.getString(rs_elearning.getColumnIndex("video_date")));
+        intent.putExtra("time",rs_subject.getString(rs_subject.getColumnIndex("subject_start_time")));
+        intent.putExtra("count",rs_elearning.getString(rs_elearning.getColumnIndex("video_visitor_count")));
+        intent.putExtra("link",rs_elearning.getString(rs_elearning.getColumnIndex("video_link")));
         intent.putExtra("lecturer",lecturer.getText());
 
         try{
-            URL url = new URL("http://54.169.58.93/Elearning_updatecount.php?e_id="+resultSet.getString(resultSet.getColumnIndex("e_id")));
+            URL url = new URL("http://54.169.58.93/Elearning_UpdateCount.php?video_id="+rs_elearning.getString(rs_elearning.getColumnIndex("video_id")));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             if(urlConnection.getResponseCode() == 200){
                 Log.i("ELS","Added watch count");
