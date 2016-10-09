@@ -82,8 +82,8 @@
                         />
 
                     <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:id="@+id/imageButton15"
                         android:src="@drawable/rssw"
                         android:background="#091534"
@@ -303,18 +303,23 @@
                 <ScrollView
                     android:id="@+id/scroller"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:fillViewport="true"
                     android:layout_below="@+id/imageButton6">
 
-                    <TableLayout
+                    <HorizontalScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_ms_std_id"
-                        android:background="#c0d4e0"
-                        android:id="@+id/tl_news">
+                        android:layout_height="wrap_content">
 
-                    </TableLayout>
+                        <TableLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_below="@+id/tv_ms_std_id"
+                            android:background="#c0d4e0"
+                            android:id="@+id/tl_news">
+
+                        </TableLayout>
+                    </HorizontalScrollView>
                 </ScrollView>
 
             </LinearLayout>
