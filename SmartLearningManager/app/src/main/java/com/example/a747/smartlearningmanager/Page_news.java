@@ -8,9 +8,15 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -41,8 +47,8 @@ public class Page_news extends AppCompatActivity {
 
     private void getRSS(){
         Log.i("Initial","Initial get RSS...");
-        SQLiteDatabase mydatabase = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
-        Cursor resultSet = mydatabase.rawQuery("SELECT title, description FROM RSS;",null);
+        SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
+        Cursor resultSet = RSS_db.rawQuery("SELECT title, description FROM RSS;",null);
         resultSet.moveToFirst();
         al_title = new ArrayList();
         al_desc = new ArrayList();
@@ -51,13 +57,17 @@ public class Page_news extends AppCompatActivity {
             al_desc.add(resultSet.getString(resultSet.getColumnIndex("description")));
             resultSet.moveToNext();
         }
-        mydatabase.close();
-        TableLayout tl_news = (TableLayout) findViewById(R.id.tl_news);
-        TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-        TableRow.LayoutParams params2=new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+        RSS_db.close();
+
+        LinearLayout ll_news = (LinearLayout) findViewById(R.id.ll_news);
+        ViewGroup.LayoutParams vlp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        Display display = getWindowManager().getDefaultDisplay();
+        int mWidth = display.getWidth();
+
+
         int i;
         for(i=0;i<al_title.size();i++) {
-            TableRow row = new TableRow(this);
+            HorizontalScrollView hsv = new HorizontalScrollView(this);
             TextView title = new TextView(this);
             title.setId(i);
             title.setClickable(true);
@@ -73,10 +83,11 @@ public class Page_news extends AppCompatActivity {
                 title.setBackgroundColor(Color.parseColor("#E6E6E6"));
             }
             title.setText(al_title.get(i).toString());
-            title.setLayoutParams(params1);
-            row.addView(title);
-            row.setLayoutParams(params2);
-            tl_news.addView(row);
+            title.setLayoutParams(vlp);
+            title.setMinimumWidth(mWidth);
+            hsv.addView(title);
+            hsv.setHorizontalScrollBarEnabled(false);
+            ll_news.addView(hsv);
         }
         Log.i("Initial","Initial get RSS success");
     }

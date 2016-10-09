@@ -195,46 +195,41 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#cecece"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:weightSum="1">
+
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#cecece"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentStart="true"
-                        android:weightSum="1">
+                        android:background="#ffffff"
+                        android:layout_height="match_parent">
 
-                        <LinearLayout
-                            android:orientation="vertical"
+                        <ScrollView
+                            android:id="@+id/scroller"
                             android:layout_width="match_parent"
-                            android:background="#ffffff"
-                            android:layout_height="match_parent">
-
-                            <ScrollView
-                                android:id="@+id/scroller"
+                            android:layout_height="match_parent"
+                            android:fillViewport="true"
+                            android:layout_below="@+id/imageButton6">
+                            <LinearLayout
+                                android:orientation="vertical"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:fillViewport="true"
-                                android:layout_below="@+id/imageButton6">
-
-                                <HorizontalScrollView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
-
-                                    <TableLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:layout_below="@+id/tv_ms_std_id"
-                                        android:background="#c0d4e0"
-                                        android:id="@+id/tl_news">
-
-                                    </TableLayout>
-                                </HorizontalScrollView>
-                            </ScrollView>
-
-                        </LinearLayout>
+                                android:layout_below="@+id/tv_ms_std_id"
+                                android:background="#c0d4e0"
+                                android:id="@+id/ll_news"
+                                >
+                            </LinearLayout>
+                        </ScrollView>
 
                     </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
 
