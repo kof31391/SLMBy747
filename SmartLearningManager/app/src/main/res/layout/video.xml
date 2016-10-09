@@ -104,7 +104,7 @@
                 android:id="@+id/timing"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:textColor="#ffffff" />
+                android:textColor="@color/colorPrimaryDark" />
 
             <ImageButton
                 android:layout_width="50dip"
@@ -134,7 +134,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_height="40dp"
-            android:background="?attr/actionModeSplitBackground"
+            android:background="@color/colorPrimary"
             android:textAllCaps="false"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
@@ -262,7 +262,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_height="40dp"
-            android:background="?attr/actionModeSplitBackground"
+            android:background="@color/colorPrimary"
             android:textAllCaps="false"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"

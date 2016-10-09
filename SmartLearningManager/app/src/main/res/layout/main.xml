@@ -210,7 +210,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text=" Today "
                         android:textColor="#ffffff"
                         android:textStyle="bold"
                         android:textSize="23dp"

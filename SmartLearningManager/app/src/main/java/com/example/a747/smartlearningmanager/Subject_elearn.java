@@ -91,7 +91,7 @@ public class Subject_elearn extends AppCompatActivity {
     private void getSubjectDetial(){
         Log.i("Setup","Setup subject detail...");
         SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        final Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Subject_Lecturer sl JOIN Schedule s ON sl.subject_id = s.subject_id JOIN Lecturer l ON sl.lecturer_id = l.lecturer_id WHERE s.subject_id='"+subject_id+"';",null);
+        final Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Subject_Lecturer sl JOIN Subject s ON sl.subject_id = s.subject_id JOIN Lecturer l ON sl.lecturer_id = l.lecturer_id WHERE s.subject_id='"+subject_id+"';",null);
         resultSet.moveToFirst();
         subjCode.setText(resultSet.getString(resultSet.getColumnIndex("subject_code")));
         subjName.setText(resultSet.getString(resultSet.getColumnIndex("subject_name")));
@@ -118,10 +118,10 @@ public class Subject_elearn extends AppCompatActivity {
                 startActivity(emailIntent);
             }
         });
-        /*String uri = "lecturer_"+resultSet.getString(resultSet.getColumnIndex("lecturer_name")).toLowerCase();
+        String uri = "lecturer_"+resultSet.getString(resultSet.getColumnIndex("lecturer_fristname")).toLowerCase();
         int imageResource = getResources().getIdentifier(uri, "drawable", getPackageName());
         Drawable image = getResources().getDrawable(imageResource);
-        lecturerImage.setImageDrawable(image);*/
+        lecturerImage.setImageDrawable(image);
         Log.i("Setup","Setup subject detail success");
     }
 
@@ -341,7 +341,7 @@ public class Subject_elearn extends AppCompatActivity {
         Cursor rs_elearning = Elearning_db.rawQuery("SELECT * FROM Elearning  WHERE video_date='"+date+"' AND subject_start_time='"+time+"';",null);
         rs_elearning.moveToFirst();
         String subject_id = rs_elearning.getString(rs_elearning.getColumnIndex("subject_id"));
-        Cursor rs_subject = Subject_db.rawQuery("SELECT * FROM Schedule WHERE subject_id='"+subject_id+"';",null);
+        Cursor rs_subject = Subject_db.rawQuery("SELECT * FROM Subject WHERE subject_id='"+subject_id+"';",null);
         rs_subject.moveToFirst();
         Intent intent = new Intent(this,Video.class);
         intent.putExtra("id",rs_subject.getString(rs_subject.getColumnIndex("subject_id")));

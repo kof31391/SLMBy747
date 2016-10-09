@@ -100,7 +100,7 @@ public class Elearning extends AppCompatActivity {
     public void getSchedule(){
         mapSubject = new HashMap<>();
         SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Schedule ORDER BY subject_code;",null);
+        Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Subject ORDER BY subject_code;",null);
         resultSet.moveToFirst();
         while(!resultSet.isAfterLast()){
             mapSubject.put(resultSet.getString(resultSet.getColumnIndex("subject_code"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_name")),resultSet.getString(resultSet.getColumnIndex("subject_id")));
