@@ -81,13 +81,12 @@ public class Main extends AppCompatActivity {
         SharedPreferences.Editor editorInitial = prefInitial.edit();
         String iniStatus = prefInitial.getString("Initial","");
         if(!iniStatus.equals("Initialed")){
-            clearAlarmNoti();
-            setProfile();
-            getMaxEnrollment();
-            setRSS();
-            setNotiSchedule();
-            editorInitial.putString("Initial","Initialed");
-            editorInitial.commit();
+                clearAlarmNoti();
+                setProfile();
+                getMaxEnrollment();
+                setNotiSchedule();
+                editorInitial.putString("Initial","Initialed");
+                editorInitial.commit();
         }else{
             getRSS();
             getSchedule();
@@ -391,6 +390,8 @@ public class Main extends AppCompatActivity {
                     }
                     Schedule_db.close();
                     Log.i("Initial","Initial set notification for schedule success");
+                    setRSS();
+                    getSchedule();
                 }catch (Exception e){
                     e.printStackTrace();
                 }
