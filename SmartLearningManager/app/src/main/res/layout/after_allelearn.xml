@@ -22,7 +22,7 @@
             android:background="#091534"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:onClick="gotoSubjectElearn"
+            android:onClick="gotoElearn"
             android:layout_gravity="center"
             android:layout_alignParentBottom="true" />
 
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="B.sc??"
-                android:id="@+id/subjname"
+                android:id="@+id/title_dept"
                 android:textColor="#ffffff"
                 android:paddingTop="5dp"
                 android:textSize="18dp"
@@ -65,23 +65,22 @@
         android:background="#ffffff"
         android:layout_height="match_parent"
         android:layout_below="@+id/video_titlebar"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        >
 
         <ScrollView
+            android:id="@+id/scroller"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/scrollView9"
-            android:layout_gravity="center_horizontal"
-            android:fillViewport="false">
+            android:fillViewport="true">
 
-            <TableLayout
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:id="@+id/tl_datelist">
+                android:background="#c0d4e0"
+                android:id="@+id/tl_subjectlist">
 
-            </TableLayout>
+            </LinearLayout>
         </ScrollView>
 
     </RelativeLayout>

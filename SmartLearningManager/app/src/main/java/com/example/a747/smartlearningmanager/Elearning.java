@@ -66,16 +66,22 @@ public class Elearning extends AppCompatActivity {
                 final String subject = (String) expandableListAdapter.getChild(groupPosition, childPosition);
                 switch (subject){
                     case "B.Sc.IT" :
+                        gotoAllSubject("B.Sc.IT");
                         break;
                     case "B.Sc.CS" :
+                        gotoAllSubject("B.Sc.CS");
                         break;
                     case "M.Sc.IT" :
+                        gotoAllSubject("M.Sc.IT");
                         break;
                     case "M.Sc.EM/M.Sc.BIS" :
+                        gotoAllSubject("M.Sc.EM/M.Sc.BIS");
                         break;
                     case "M.Sc.SE" :
+                        gotoAllSubject("M.Sc.SE");
                         break;
                     case "Event" :
+                        gotoAllSubject("Event");
                         break;
                     default :
                         Intent intent = new Intent(Elearning.this, Subject_elearn.class);
@@ -117,6 +123,13 @@ public class Elearning extends AppCompatActivity {
         expandableListDetail  = new HashMap<>();
         expandableListDetail.put("All", all);
         expandableListDetail.put("This semester", thisyear);
+    }
+
+    protected void gotoAllSubject(String temp){
+        Intent intent = new Intent(Elearning.this, After_allelearn.class);
+        intent.putExtra("department",temp);
+        intent.putExtra("from","Elearning");
+        Elearning.this.startActivity(intent);
     }
 
     public void gotoAbout(View v){

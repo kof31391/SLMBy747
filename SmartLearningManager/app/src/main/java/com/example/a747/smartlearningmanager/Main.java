@@ -261,7 +261,7 @@ public class Main extends AppCompatActivity {
                 }
             });
             title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            title.setPadding(20, 20, 20, 20);
+            title.setPadding(20, 25, 20, 25);
             if ((i % 2) == 0) {
                 title.setBackgroundColor(Color.parseColor("#E6E6E6"));
             }
@@ -443,7 +443,7 @@ public class Main extends AppCompatActivity {
                 cell.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gotoSubjectElarn(v);
+                        gotoSubjectElearn(v);
                     }
                 });
                 cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -529,7 +529,7 @@ public class Main extends AppCompatActivity {
                 cell.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gotoSubjectElarn(v);
+                        gotoSubjectElearn(v);
                     }
                 });
                 cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -561,7 +561,7 @@ public class Main extends AppCompatActivity {
         }
     }
 
-    private void gotoSubjectElarn(View v){
+    private void gotoSubjectElearn(View v){
         String subject_code = ((TextView)v).getText().toString().substring(2,8);
         String temp = ((TextView)v).getText().toString();
         String subject_start_time = temp.substring((temp.indexOf("Time:")+7),(temp.indexOf("Time:")+15));
@@ -623,7 +623,7 @@ public class Main extends AppCompatActivity {
                 cell.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gotoSubjectElarn(v);
+                        gotoSubjectElearn(v);
                     }
                 });
                 cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
