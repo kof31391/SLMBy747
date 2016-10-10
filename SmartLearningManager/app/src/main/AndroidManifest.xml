@@ -62,7 +62,8 @@
             android:name=".About"
             android:screenOrientation="portrait" />
         <activity android:name=".Video" />
-        <activity android:name=".Page_news"></activity>
+        <activity android:name=".Page_news" />
+        <activity android:name=".After_allelearn"></activity>
     </application>
 
 </manifest>
