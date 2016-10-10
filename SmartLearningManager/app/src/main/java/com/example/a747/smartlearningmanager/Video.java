@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -21,8 +23,10 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -64,6 +68,8 @@ public class Video extends AppCompatActivity {
     private String m_id;
     private String m_name;
     private String m_link;
+    private int m_amount;
+    private ArrayList<Material_Object> al;
 
 
     @Override
@@ -178,13 +184,14 @@ public class Video extends AppCompatActivity {
         tv_count.setText(String.valueOf(temp));
     }
 
-    protected void setMaterial(){
+ /*   protected void setMaterial(){
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             subject_id = extras.getString("id");
             m_id = extras.getString("m_id");
             m_name = extras.getString("m_name");
             m_link = extras.getString("m_link");
+            m_amount = Integer.parseInt(extras.getString("m_amount"));
 
             material_object = new Material_Object();
             material_object.setMaterial_id(m_id);
@@ -192,31 +199,30 @@ public class Video extends AppCompatActivity {
             material_object.setMaterial_url(m_link);
             material_object.setSubject_id(subject_id);
 
+
         }
-      /*  TextView tv_subject = (TextView) findViewById(R.id.video_detail_subcode);
-        tv_subject.setText(e_code+" - "+e_name);
-        TextView tv_lecturer = (TextView) findViewById(R.id.video_detail_lecturer);
-        tv_lecturer.setText(lecturer);
-        TextView tv_room = (TextView) findViewById(R.id.video_detail_room);
-        tv_room.setText(e_room);
-        TextView tv_date = (TextView) findViewById(R.id.video_detail_date);
-        String date_temp = e_date;
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            java.util.Date date = df.parse(date_temp);
-            df = new SimpleDateFormat("dd/MM/yyyy");
-            date_temp = df.format(date);
-        }catch (ParseException e){
-            e.printStackTrace();
+        ListView lv = (ListView)findViewById(R.id.material_list);
+        ViewGroup.LayoutParams vlp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        Display display = getWindowManager().getDefaultDisplay();
+        int mWidth = display.getWidth();
+        for(int i=0;i<m_amount;i++) {
+            HorizontalScrollView hsv = new HorizontalScrollView(this);
+            TextView title = new TextView(this);
+            title.setId(i);
+            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            title.setPadding(20, 20, 20, 20);
+            if ((i % 2) == 0) {
+                title.setBackgroundColor(Color.parseColor("#E6E6E6"));
+            }
+            title.setText(al_title.get(i).toString());
+            title.setLayoutParams(vlp);
+            title.setMinimumWidth(mWidth);
+            hsv.addView(title);
+            hsv.setHorizontalScrollBarEnabled(false);
+            lv.addView(hsv);
         }
-        tv_date.setText(date_temp);
-        TextView tv_time = (TextView) findViewById(R.id.video_detail_time);
-        tv_time.setText(e_time.substring(0,5));
-        TextView tv_count = (TextView) findViewById(R.id.video_detail_count);
-        long temp = Long.valueOf(e_count);
-        temp++;
-        tv_count.setText(String.valueOf(temp));*/
-    }
+
+    }*/
 
     protected void getPreload() {
         preload_dialog = new ProgressDialog(this);
