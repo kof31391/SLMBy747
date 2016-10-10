@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -63,10 +64,7 @@ public class Page_news extends AppCompatActivity {
         ViewGroup.LayoutParams vlp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         Display display = getWindowManager().getDefaultDisplay();
         int mWidth = display.getWidth();
-
-
-        int i;
-        for(i=0;i<al_title.size();i++) {
+        for(int i=0;i<al_title.size();i++) {
             HorizontalScrollView hsv = new HorizontalScrollView(this);
             TextView title = new TextView(this);
             title.setId(i);
@@ -78,7 +76,7 @@ public class Page_news extends AppCompatActivity {
                 }
             });
             title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            title.setPadding(20, 20, 0, 20);
+            title.setPadding(20, 20, 20, 20);
             if ((i % 2) == 0) {
                 title.setBackgroundColor(Color.parseColor("#E6E6E6"));
             }
@@ -92,9 +90,9 @@ public class Page_news extends AppCompatActivity {
         Log.i("Initial","Initial get RSS success");
     }
 
-    protected void setRSS (View v){
-        TableLayout tl_news = (TableLayout) findViewById(R.id.tl_news);
-        tl_news.removeAllViews();
+    protected void setRSS (){
+        LinearLayout ll_news = (LinearLayout) findViewById(R.id.ll_news);
+        ll_news.removeAllViews();
 
         class GetDataJSON extends AsyncTask<String,Void,String> {
             SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
@@ -154,7 +152,6 @@ public class Page_news extends AppCompatActivity {
             }
         }
         new GetDataJSON().execute();
-        getRSS();
     }
 
     private String encodeUnicode(String str) {
@@ -178,6 +175,26 @@ public class Page_news extends AppCompatActivity {
         intent.putExtra("desc", desc);
         startActivity(intent);
         Log.i("OC","On click news");
+    }
+
+    public void refreshRSS(View v){
+        setRSS();
+        getRSS();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            Log.d("CDA", "onKeyDown Called");
+            Intent setIntent = new Intent(this, Main.class);
+            setIntent.addCategory(Intent.CATEGORY_HOME);
+            setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(setIntent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public void gotoTodo(View v){

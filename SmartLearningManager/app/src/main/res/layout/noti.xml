@@ -117,7 +117,6 @@
                         android:src="@drawable/notib"
                         android:background="#091534"
                         android:layout_marginLeft="30dp"
-                        android:onClick="gotoNoti"
                         android:layout_alignTop="@+id/imageButton2"
                         android:layout_toEndOf="@+id/imageButton2"
                         />

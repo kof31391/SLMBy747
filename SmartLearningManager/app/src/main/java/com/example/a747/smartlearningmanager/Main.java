@@ -23,10 +23,13 @@ import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -159,6 +162,8 @@ public class Main extends AppCompatActivity {
     }
 
     private void setRSS (){
+        LinearLayout ll_hotnews = (LinearLayout) findViewById(R.id.ll_hotnews);
+        ll_hotnews.removeAllViews();
         class GetDataJSON extends AsyncTask<String,Void,String> {
             HttpURLConnection urlConnection = null;
             public String strJSON;
@@ -239,12 +244,11 @@ public class Main extends AppCompatActivity {
             resultSet.moveToNext();
         }
         RSS_db.close();
-        TableLayout tl_news = (TableLayout) findViewById(R.id.tl_news);
-        TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-        TableRow.LayoutParams params2=new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-        int i;
-        for(i=0;i<al_title.size();i++) {
-            TableRow row = new TableRow(this);
+        LinearLayout ll_hotnews = (LinearLayout) findViewById(R.id.ll_hotnews);
+        Display display = getWindowManager().getDefaultDisplay();
+        int mWidth = display.getWidth();
+        for(int i=0;i<al_title.size();i++) {
+            HorizontalScrollView hsv = new HorizontalScrollView(this);
             TextView title = new TextView(this);
             title.setId(i);
             title.setClickable(true);
@@ -254,16 +258,17 @@ public class Main extends AppCompatActivity {
                     onClickNews(v);
                 }
             });
-            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            title.setPadding(25, 20, 0, 25);
+            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            title.setPadding(20, 20, 20, 20);
             if ((i % 2) == 0) {
                 title.setBackgroundColor(Color.parseColor("#E6E6E6"));
             }
             title.setText(al_title.get(i).toString());
-            title.setLayoutParams(params1);
-            row.addView(title);
-            row.setLayoutParams(params2);
-            tl_news.addView(row);
+            title.setMinimumWidth(mWidth);
+            hsv.addView(title);
+            hsv.setHorizontalScrollBarEnabled(false);
+            ll_hotnews.addView(hsv);
+            System.out.println("count: "+ll_hotnews.getChildCount());
         }
         Log.i("Initial","Initial get RSS success");
     }
@@ -557,14 +562,17 @@ public class Main extends AppCompatActivity {
     private void gotoSubjectElarn(View v){
         String subject_code = ((TextView)v).getText().toString().substring(2,8);
         String temp = ((TextView)v).getText().toString();
-        String subjecy_start_time = temp.substring((temp.indexOf("Time:")+7),(temp.indexOf("Time:")+15));
+        String subject_start_time = temp.substring((temp.indexOf("Time:")+7),(temp.indexOf("Time:")+15));
         System.out.println("code:"+subject_code);
         System.out.println("Index:"+(temp.indexOf("Time:")+9));
-        System.out.println("start time:"+subjecy_start_time);
-        /*Intent intent = new Intent(Main.this, Subject_elearn.class);
-        intent.putExtra("subject", subject);
+        SQLiteDatabase Subject_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+        Cursor resultSet = Subject_db.rawQuery("SELECT subject_id FROM Subject WHERE subject_code='"+subject_code+"' AND subject_start_time='"+subject_start_time+"';",null);
+        resultSet.moveToFirst();
+        String subject_id = resultSet.getString(resultSet.getColumnIndex("subject_id"));
+        Intent intent = new Intent(Main.this, Subject_elearn.class);
+        intent.putExtra("subject_id", subject_id);
         intent.putExtra("from","Main");
-        startActivity(intent);*/
+        startActivity(intent);
         Log.i("GT","Go to subject elearning list");
     }
 
@@ -717,12 +725,6 @@ public class Main extends AppCompatActivity {
     public void gotoAbout(View v){
         Intent intent = new Intent(this,About.class);
         startActivity(intent);
-    }
-
-    public void gotoHome(View v){
-        Intent intent = new Intent(this, Main.class);
-        startActivity(intent);
-        Log.i("GT","Go to Home");
     }
 
     public void gotoNoti(View v){

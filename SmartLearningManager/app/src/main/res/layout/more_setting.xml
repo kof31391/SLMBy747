@@ -124,9 +124,7 @@
                     android:background="#091534"
                     android:layout_marginLeft="30dp"
                     android:layout_alignTop="@+id/imageButton3"
-                    android:layout_alignParentEnd="true"
-                    android:onClick="gotoSetting"
-                    />
+                    android:layout_alignParentEnd="true" />
 
             </LinearLayout>
 

@@ -96,8 +96,7 @@
                         android:background="#091534"
                         android:layout_marginLeft="30dp"
                         android:layout_alignTop="@+id/imageButton"
-                        android:layout_toEndOf="@+id/imageButton"
-                        android:onClick="gotoTodo"/>
+                        android:layout_toEndOf="@+id/imageButton" />
 
                     <ImageButton
                         android:layout_width="wrap_content"

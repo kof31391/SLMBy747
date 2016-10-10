@@ -106,7 +106,6 @@
                         android:src="@drawable/videob"
                         android:background="#091534"
                         android:layout_marginLeft="30dp"
-                        android:onClick="gotoElean"
                         android:layout_alignTop="@+id/imageButton"
                         android:layout_toEndOf="@+id/imageButton" />
 

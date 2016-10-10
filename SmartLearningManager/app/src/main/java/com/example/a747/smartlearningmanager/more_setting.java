@@ -41,10 +41,6 @@ public class more_setting extends AppCompatActivity {
         Intent intent = new Intent(this, Todo_List.class);
         startActivity(intent);
     }
-    public void gotoSetting(View v){
-        Intent intent = new Intent(this, more_setting.class);
-        startActivity(intent);
-    }
 
     public void gotoHome(View v){
         Intent intent = new Intent(this, Main.class);

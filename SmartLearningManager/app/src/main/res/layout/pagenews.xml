@@ -88,8 +88,7 @@
                         android:background="#091534"
                         android:layout_marginLeft="30dp"
                         android:layout_alignTop="@+id/imageButton"
-                        android:layout_toEndOf="@+id/imageButton"
-                        android:onClick="gotopagenews"/>
+                        android:layout_toEndOf="@+id/imageButton" />
 
                     <ImageButton
                         android:layout_width="wrap_content"
@@ -188,10 +187,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:text="refresh"
-                        android:id="@+id/clear"
+                        android:id="@+id/refreshRSS"
                         android:background="#f6ee00"
                         android:layout_marginLeft="7dp"
-                        android:onClick="setRSS" />
+                        android:onClick="refreshRSS" />
 
                 </LinearLayout>
 

@@ -10,7 +10,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal">
 
         <LinearLayout
@@ -77,9 +77,7 @@
                         android:id="@+id/imageButton9"
                         android:src="@drawable/home"
                         android:background="#091534"
-                        android:layout_alignParentBottom="true"
-                        android:onClick="gotoHome"
-                        />
+                        android:layout_alignParentBottom="true" />
 
                     <ImageButton
                         android:layout_width="30dp"
@@ -274,7 +272,8 @@
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:gravity="center_vertical"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:id="@+id/ll_header_hotnews">
 
                     <ImageButton
                         android:layout_width="25dp"
@@ -299,33 +298,15 @@
                         android:layout_alignParentStart="true" />
 
                 </LinearLayout>
-
-                <ScrollView
-                    android:id="@+id/scroller"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fillViewport="true"
-                    android:layout_below="@+id/imageButton6">
-
-                    <HorizontalScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TableLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_below="@+id/tv_ms_std_id"
-                            android:background="#c0d4e0"
-                            android:id="@+id/tl_news">
-
-                        </TableLayout>
-                    </HorizontalScrollView>
-                </ScrollView>
-
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/ll_header_hotnews"
+                    android:id="@+id/ll_hotnews">
+                </LinearLayout>
             </LinearLayout>
-
         </RelativeLayout>
-
     </LinearLayout>
-
 </LinearLayout>

@@ -277,10 +277,6 @@ public class Todo_List extends AppCompatActivity {
         }
     }
 
-    public void gotoTodo(View v){
-        Intent intent = new Intent(this, Todo_List.class);
-        startActivity(intent);
-    }
     public void gotoSetting(View v){
         Intent intent = new Intent(this, more_setting.class);
         startActivity(intent);
