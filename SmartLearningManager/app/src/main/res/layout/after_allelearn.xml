@@ -68,20 +68,23 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
 
-        <ExpandableListView
-            android:id="@+id/expandableListView"
-            android:layout_height="wrap_content"
+        <ScrollView
             android:layout_width="match_parent"
-            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-            android:divider="@android:color/darker_gray"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:background="#e9e9e9"
-            android:dividerHeight="0.5dp"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView9"
+            android:layout_gravity="center_horizontal"
+            android:fillViewport="false">
 
-            />
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+
+                android:id="@+id/tl_datelist">
+
+            </TableLayout>
+        </ScrollView>
+
     </RelativeLayout>
 
 </RelativeLayout>
