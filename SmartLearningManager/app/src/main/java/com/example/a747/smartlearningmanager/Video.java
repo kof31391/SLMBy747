@@ -60,6 +60,11 @@ public class Video extends AppCompatActivity {
     private VideoView video_view;
     private TextView timing;
     private Video_object video_object;
+    private Material_Object material_object;
+    private String m_id;
+    private String m_name;
+    private String m_link;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +176,46 @@ public class Video extends AppCompatActivity {
         long temp = Long.valueOf(e_count);
         temp++;
         tv_count.setText(String.valueOf(temp));
+    }
+
+    protected void setMaterial(){
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            subject_id = extras.getString("id");
+            m_id = extras.getString("m_id");
+            m_name = extras.getString("m_name");
+            m_link = extras.getString("m_link");
+
+            material_object = new Material_Object();
+            material_object.setMaterial_id(m_id);
+            material_object.setMaterial_name(m_name);
+            material_object.setMaterial_url(m_link);
+            material_object.setSubject_id(subject_id);
+
+        }
+      /*  TextView tv_subject = (TextView) findViewById(R.id.video_detail_subcode);
+        tv_subject.setText(e_code+" - "+e_name);
+        TextView tv_lecturer = (TextView) findViewById(R.id.video_detail_lecturer);
+        tv_lecturer.setText(lecturer);
+        TextView tv_room = (TextView) findViewById(R.id.video_detail_room);
+        tv_room.setText(e_room);
+        TextView tv_date = (TextView) findViewById(R.id.video_detail_date);
+        String date_temp = e_date;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            java.util.Date date = df.parse(date_temp);
+            df = new SimpleDateFormat("dd/MM/yyyy");
+            date_temp = df.format(date);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+        tv_date.setText(date_temp);
+        TextView tv_time = (TextView) findViewById(R.id.video_detail_time);
+        tv_time.setText(e_time.substring(0,5));
+        TextView tv_count = (TextView) findViewById(R.id.video_detail_count);
+        long temp = Long.valueOf(e_count);
+        temp++;
+        tv_count.setText(String.valueOf(temp));*/
     }
 
     protected void getPreload() {
