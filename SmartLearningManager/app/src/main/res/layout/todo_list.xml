@@ -312,9 +312,10 @@
         android:src="@drawable/addw"
         android:onClick="gotoEditor"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="9dp"
+        style="@android:style/Widget.DeviceDefault.Light.ActionButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        style="@android:style/Widget.DeviceDefault.Light.ActionButton" />
+        android:layout_marginEnd="8dp" />
 
 </RelativeLayout>

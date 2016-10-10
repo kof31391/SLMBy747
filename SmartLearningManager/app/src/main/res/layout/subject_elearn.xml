@@ -173,6 +173,7 @@
                 app:srcCompat="@drawable/mail"
                 android:id="@+id/imgB_mail"
                 android:layout_alignParentBottom="true"
+                style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                 android:layout_alignParentEnd="true" />
 
             <ImageButton
@@ -180,6 +181,7 @@
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/call"
                 android:id="@+id/imgB_call"
+                style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                 android:layout_alignParentBottom="true"
                 android:layout_toStartOf="@+id/imgB_mail" />
         </RelativeLayout>
