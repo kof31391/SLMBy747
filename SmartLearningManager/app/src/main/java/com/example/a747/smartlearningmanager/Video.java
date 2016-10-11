@@ -59,6 +59,7 @@ public class Video extends AppCompatActivity {
     private String e_link;
     private String lecturer;
     private int lastMinute = 0;
+    private String from;
     private ProgressDialog preload_dialog;
     private SeekBar seekBar;
     private VideoView video_view;
@@ -307,12 +308,23 @@ public class Video extends AppCompatActivity {
     protected void gotoSubjectElearn(View v) {
         video_object.setLastMinute(seekBar.getProgress());
         video_object.saveInstace();
-        Intent intent = new Intent(this, Subject_elearn.class);
-        intent.putExtra("subject_id",subject_id);
-        Intent temp = getIntent();
-        String from = temp.getExtras().getString("from");
-        intent.putExtra("from",from);
-        startActivity(intent);
+        Intent intent = getIntent();
+        from = intent.getExtras().getString("from");
+        if(from.equalsIgnoreCase("Subject_elearn")){
+            intent = new Intent(this, Subject_elearn.class);
+            intent.putExtra("subject_id",subject_id);
+            Intent temp = getIntent();
+            String from = temp.getExtras().getString("from");
+            intent.putExtra("from",from);
+            startActivity(intent);
+        }else{
+            intent = new Intent(this, Subject_elearnAll.class);
+            intent.putExtra("subject_id",subject_id);
+            Intent temp = getIntent();
+            String from = temp.getExtras().getString("from");
+            intent.putExtra("from",from);
+            startActivity(intent);
+        }
     }
 
     @Override

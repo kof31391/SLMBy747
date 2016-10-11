@@ -277,7 +277,7 @@
                 android:layout_below="@+id/textView9"
                 android:layout_alignBottom="@+id/textView9">
 
-                <com.example.a747.smartlearningmanager.MyListView
+                <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
                     android:background="#ffffff"
