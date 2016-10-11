@@ -105,7 +105,7 @@ public class After_allelearn extends AppCompatActivity {
                                     Cursor resultSet = Subjectlist_db.rawQuery("SELECT * FROM Subject_List WHERE Subject_code='"+subject_code+"';",null);
                                     resultSet.moveToFirst();
                                     temp = resultSet.getString(resultSet.getColumnIndex("subject_id"));
-                                    Intent intent = new Intent(After_allelearn.this,Subject_elearn.class);
+                                    Intent intent = new Intent(After_allelearn.this,Subject_elearnAll.class);
                                     intent.putExtra("subject_id",temp);
                                     intent.putExtra("from","After_allelearn");
                                     intent.putExtra("department",department);
