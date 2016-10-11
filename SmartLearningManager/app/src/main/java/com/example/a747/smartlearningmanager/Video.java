@@ -64,12 +64,6 @@ public class Video extends AppCompatActivity {
     private VideoView video_view;
     private TextView timing;
     private Video_object video_object;
-    private Material_Object material_object;
-    private String m_id;
-    private String m_name;
-    private String m_link;
-    private int m_amount;
-    private ArrayList<Material_Object> al;
 
 
     @Override
@@ -183,46 +177,6 @@ public class Video extends AppCompatActivity {
         temp++;
         tv_count.setText(String.valueOf(temp));
     }
-
- /*   protected void setMaterial(){
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            subject_id = extras.getString("id");
-            m_id = extras.getString("m_id");
-            m_name = extras.getString("m_name");
-            m_link = extras.getString("m_link");
-            m_amount = Integer.parseInt(extras.getString("m_amount"));
-
-            material_object = new Material_Object();
-            material_object.setMaterial_id(m_id);
-            material_object.setMaterial_name(m_name);
-            material_object.setMaterial_url(m_link);
-            material_object.setSubject_id(subject_id);
-
-
-        }
-        ListView lv = (ListView)findViewById(R.id.material_list);
-        ViewGroup.LayoutParams vlp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        Display display = getWindowManager().getDefaultDisplay();
-        int mWidth = display.getWidth();
-        for(int i=0;i<m_amount;i++) {
-            HorizontalScrollView hsv = new HorizontalScrollView(this);
-            TextView title = new TextView(this);
-            title.setId(i);
-            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            title.setPadding(20, 20, 20, 20);
-            if ((i % 2) == 0) {
-                title.setBackgroundColor(Color.parseColor("#E6E6E6"));
-            }
-            title.setText(al_title.get(i).toString());
-            title.setLayoutParams(vlp);
-            title.setMinimumWidth(mWidth);
-            hsv.addView(title);
-            hsv.setHorizontalScrollBarEnabled(false);
-            lv.addView(hsv);
-        }
-
-    }*/
 
     protected void getPreload() {
         preload_dialog = new ProgressDialog(this);

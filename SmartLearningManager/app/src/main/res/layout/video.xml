@@ -249,47 +249,4 @@
             </TableLayout>
         </ScrollView>
     </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/video_detail">
-
-        <TextView
-            android:text="Material"
-            android:layout_width="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_height="40dp"
-            android:background="@color/colorPrimary"
-            android:textAllCaps="false"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:textColor="@android:color/background_light"
-            android:id="@+id/textView9" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/scrollView3"
-            android:layout_below="@+id/textView9"
-            android:layout_alignBottom="@+id/textView9">
-
-            <com.example.a747.smartlearningmanager.MyListView
-                android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:background="#ffffff"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_above="@+id/btnAddItem"
-                android:id="@+id/material_list"
-                />
-        </ScrollView>
-
-
-    </RelativeLayout>
 </RelativeLayout>

@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/subject_elearn_all"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    tools:context="com.example.a747.smartlearningmanager.Subject_elearn">
+    tools:context="com.example.a747.smartlearningmanager.Subject_elearnAll">
 
     <LinearLayout
         android:orientation="vertical"
@@ -187,35 +187,6 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:gravity="center_horizontal"
-            android:background="#ff1619"
-            android:layout_height="wrap_content">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Absent"
-                android:textColor="#ffffff"
-                android:id="@+id/textView11" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="25dp"
-                android:layout_marginLeft="10dp"
-                android:textColor="#ffffff"
-                android:background="#ff1619"
-                android:id="@+id/absent" />
-
-        </LinearLayout>
-
-        <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -323,5 +294,6 @@
         </LinearLayout>
 
     </LinearLayout>
+
 
 </RelativeLayout>
