@@ -264,7 +264,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="190dp"
+            android:layout_height="160dp"
             android:id="@+id/scrollView9"
             android:layout_gravity="center_horizontal"
             android:fillViewport="false">
@@ -280,6 +280,7 @@
 
         </ScrollView>
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/video_detail">
@@ -305,7 +306,7 @@
                 android:layout_below="@+id/textView9"
                 android:layout_alignBottom="@+id/textView9">
 
-                <com.example.a747.smartlearningmanager.MyListView
+                <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
                     android:background="#ffffff"

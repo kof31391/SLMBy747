@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
@@ -97,6 +98,7 @@ public class Subject_elearn extends AppCompatActivity {
 
         Intent intent = getIntent();
         subject_id = intent.getExtras().getString("subject_id");
+        System.out.println("subj: "+subject_id);
         from = intent.getExtras().getString("from");
         if (from.equals("Elearning")) {
             getSubjectDetial();
@@ -104,6 +106,7 @@ public class Subject_elearn extends AppCompatActivity {
         } else {
             getOtherSubject();
         }
+        getMaterial();
     }
 
     private void getSubjectDetial() {
@@ -348,10 +351,9 @@ public class Subject_elearn extends AppCompatActivity {
         class GetDataJSON extends AsyncTask<String, Void, String> {
             HttpURLConnection urlConnection = null;
             private String strJSON;
-
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Search_VideoLink.php?subject_id=" + subject_id + "&status=n");
+                    URL url = new URL("http://54.169.58.93/Search_VideoLink.php?subject_id=" + subject_id + "&status="+status+"");
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {
@@ -377,6 +379,10 @@ public class Subject_elearn extends AppCompatActivity {
                 try {
                     Log.i("Setup", "Setup other subject...");
                     JSONArray data = new JSONArray(strJSON);
+                    if(data.length()==0){
+                        status = "p";
+                        getOtherSubject();
+                    }
                     SQLiteDatabase Elearning_db = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
                     Elearning_db.execSQL("DROP TABLE IF EXISTS Elearning");
                     Elearning_db.execSQL("CREATE TABLE IF NOT EXISTS Elearning(video_id VARCHAR, video_name VARCHAR, video_link VARCHAR, video_room VARCHAR, video_date VARCHAR, video_visitor_count VARCHAR, subject_id INT, subject_start_time VARCHAR);");
@@ -625,6 +631,17 @@ public class Subject_elearn extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    private String encodeUnicode(String str) {
+        String strEncoded = "";
+        try {
+            byte[] bytes = str.getBytes("UTF-8");
+            strEncoded = new String(bytes, "UTF-8");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return strEncoded;
+    }
+
     private void getMaterial()  {
         class GetDataJSON extends AsyncTask<String, Void, String> {
             HttpURLConnection urlConnection = null;
@@ -632,7 +649,7 @@ public class Subject_elearn extends AppCompatActivity {
 
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Elearning_DateList.php?student_id=" + std_id + "&subject_id=" + subject_id + "&status=" + status);
+                    URL url = new URL("http://54.169.58.93/Material_List.php?subject_id="+subject_id);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {
@@ -666,8 +683,10 @@ public class Subject_elearn extends AppCompatActivity {
                         cell.setId(i);
                         cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                         cell.setPadding(20, 20, 0, 20);
+                        cell.setClickable(true);
+                        cell.setMovementMethod(LinkMovementMethod.getInstance());
                         cell.setText(Html.fromHtml(
-                                "<a href=\""+c.getString("material_link")+"\">"+c.getString("material_name")+"</a> "));
+                                "<a href=\""+c.getString("material_link")+"\">"+encodeUnicode(c.getString("material_title"))+"</a> "));
                         cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                         row.addView(cell);
                         row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
