@@ -240,17 +240,17 @@ public class Todo_edit extends AppCompatActivity {
             String content = temp.getDesc();
             int id = temp.getNotiId();
             if(temp.isFinish()==false) {
-                cancelNotification(getNotification(title,content),id);
-                scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future));
+                cancelNotification(getNotification(title,content,dateFuture.getTime()),id);
+                scheduleNotification(getNotification(title, content,dateFuture.getTime()), getSchedule(getTimeCurrent(), future));
             }else{
-                cancelNotification(getNotification(title, content),id);
+                cancelNotification(getNotification(title, content,dateFuture.getTime()),id);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private Notification getNotification(String title, String content) {
+    private Notification getNotification(String title, String content,long time) {
         temps = Util.setValue(topic.getText().toString(),desc.getText().toString(),category,Util.getDateFromEditText(todoDate,todoTime));
         Intent intent = new Intent(this, Todo_View.class);
         intent.putExtra("message", (Parcelable) temps);
@@ -266,6 +266,7 @@ public class Todo_edit extends AppCompatActivity {
                 .setContentText(content)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
+                .setWhen(time)
                 .setSound(alarmSound)
                 .build();
         return notification;

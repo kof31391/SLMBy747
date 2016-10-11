@@ -185,7 +185,7 @@ public class Todo_Add extends AppCompatActivity {
                 String title = temp.getTopic();
                 String content = temp.getDesc();
                 if(temp.isFinish()==false) {
-                scheduleNotification(getNotification(title, content), getSchedule(getTimeCurrent(), future),temp);
+                scheduleNotification(getNotification(title, content,dateFuture.getTime()), getSchedule(getTimeCurrent(), future),temp);
                 }
             }
             items.add(temp);
@@ -261,7 +261,7 @@ public class Todo_Add extends AppCompatActivity {
     }
 
 
-    private Notification getNotification(String title,String content) {
+    private Notification getNotification(String title,String content,long time) {
         temp = Util.setValue(topic.getText().toString(),desc.getText().toString(),category,Util.getDateFromEditText(todoDate,todoTime));
         NotificationObj noti = new NotificationObj(temp);
         writeNoti(noti);        //stop
@@ -280,6 +280,7 @@ public class Todo_Add extends AppCompatActivity {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setSound(alarmSound)
+                .setWhen(time)
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .build();
         return notification;
