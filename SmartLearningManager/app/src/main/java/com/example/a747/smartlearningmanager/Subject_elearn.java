@@ -71,12 +71,6 @@ public class Subject_elearn extends AppCompatActivity {
     ImageView lecturerImage;
     TextView subjName;
     TextView absent;
-    private Material_Object material_object;
-    private String m_id;
-    private String m_name;
-    private String m_link;
-    private int m_amount;
-    private ArrayList<Material_Object> al;
 
 
     @Override

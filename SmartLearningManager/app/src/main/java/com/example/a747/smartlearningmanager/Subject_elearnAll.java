@@ -72,18 +72,12 @@ public class Subject_elearnAll extends AppCompatActivity {
     ImageView lecturerImage;
     TextView subjName;
     TextView absent;
-    private Material_Object material_object;
-    private String m_id;
-    private String m_name;
-    private String m_link;
-    private int m_amount;
-    private ArrayList<Material_Object> al;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.subject_elearn);
+        setContentView(R.layout.subject_elearn_all);
         subjCode = (TextView) findViewById(R.id.subjCode);
         subjName = (TextView) findViewById(R.id.subjname);
         lecturer = (TextView) findViewById(R.id.lecturerName);
@@ -92,7 +86,6 @@ public class Subject_elearnAll extends AppCompatActivity {
         imgB_call = (ImageButton) findViewById(R.id.imgB_call);
         imgB_mail = (ImageButton) findViewById(R.id.imgB_mail);
         lecturerImage = (ImageView) findViewById(R.id.lecturerImage);
-        absent = (TextView) findViewById(R.id.absent);
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         std_id = pref.getString("std_id", null);
