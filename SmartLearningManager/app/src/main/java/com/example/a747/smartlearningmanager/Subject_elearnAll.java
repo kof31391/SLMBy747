@@ -363,4 +363,24 @@ public class Subject_elearnAll extends AppCompatActivity {
         new GetDataJSON().execute();
     }
 
+    public void gotoElearn(View view) {
+        Intent temp = getIntent();
+        String from = temp.getExtras().getString("from");
+        String dep = temp.getExtras().getString("department");
+        if (from.equals("Elearning")) {
+            Intent intent = new Intent(this, Elearning.class);
+            startActivity(intent);
+            Log.i("GT", "Go to Elearning");
+        } else if (from.equals("After_allelearn")) {
+            Intent intent = new Intent(this, After_allelearn.class);
+            System.out.println("DEP: " + dep);
+            intent.putExtra("department", dep);
+            startActivity(intent);
+            Log.i("GT", "Go to Afterall Elearn");
+        } else {
+            Intent intent = new Intent(this, Main.class);
+            startActivity(intent);
+            Log.i("GT", "Go to Main");
+        }
+    }
 }

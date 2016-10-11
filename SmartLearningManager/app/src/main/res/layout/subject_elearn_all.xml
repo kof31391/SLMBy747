@@ -43,7 +43,7 @@
                         android:background="#091534"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true"
-                        android:onClick="gotoElean"
+                        android:onClick="gotoElearn"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1" />
