@@ -106,9 +106,9 @@ public class After_allelearn extends AppCompatActivity {
                                     resultSet.moveToFirst();
                                     temp = resultSet.getString(resultSet.getColumnIndex("subject_id"));
                                     Intent intent = new Intent(After_allelearn.this,Subject_elearn.class);
-                                    System.out.println("temp: "+temp);
                                     intent.putExtra("subject_id",temp);
                                     intent.putExtra("from","After_allelearn");
+                                    intent.putExtra("department",department);
                                     startActivity(intent);
                                 }
                             });
