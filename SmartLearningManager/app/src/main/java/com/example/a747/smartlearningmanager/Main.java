@@ -379,7 +379,7 @@ public class Main extends AppCompatActivity {
                             long diffSec = sDate.getTime() - nDate.getTime();
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " เริ่มเรียนเวลา " + c.getString("subject_start_time") + " จนถึง " + c.getString("subject_end_time"))
+                                        " เริ่มเรียนเวลา " + c.getString("subject_start_time") + " จนถึง " + c.getString("subject_end_time"),sDate.getTime())
                                         , diffSec);
                             }
                         }else{
@@ -390,7 +390,7 @@ public class Main extends AppCompatActivity {
                             long diffSec = sDate.getTime() - nDate.getTime();
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " เริ่มเรียนเวลา " + c.getString("subject_start_time") + " จนถึง " + c.getString("subject_end_time"))
+                                        " เริ่มเรียนเวลา " + c.getString("subject_start_time") + " จนถึง " + c.getString("subject_end_time"),sDate.getTime())
                                         , diffSec);
                             }
                         }
@@ -679,7 +679,7 @@ public class Main extends AppCompatActivity {
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
 
-    private Notification getNotification(String title, String content) {
+    private Notification getNotification(String title, String content,long time) {
         Intent intent = new Intent(this, Main.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(Main.class);
@@ -692,6 +692,7 @@ public class Main extends AppCompatActivity {
                 .setContentText(content)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
+                .setWhen(time)
                 .setSound(alarmSound)
                 .build();
         return notification;
