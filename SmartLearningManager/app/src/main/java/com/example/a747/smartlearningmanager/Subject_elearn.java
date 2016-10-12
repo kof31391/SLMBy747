@@ -60,6 +60,7 @@ public class Subject_elearn extends AppCompatActivity {
     String telno;
     String watch_status;
     String from;
+    int enroll_id;
     int c_absent = 0;
     TextView subjCode;
     TextView lecturer;
@@ -227,14 +228,8 @@ public class Subject_elearn extends AppCompatActivity {
                         row.addView(cell);
                         row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
                         tl_datelist.addView(row);
+                        enroll_id = c.getInt("enrollment_id");
                     }
-                    Elearning_db.close();
-                    SQLiteDatabase Enrollment_db = openOrCreateDatabase("Enrollment", MODE_PRIVATE, null);
-                    Cursor resultSet = Enrollment_db.rawQuery("SELECT * FROM Enrollment;", null);
-                    resultSet.moveToFirst();
-                    TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
-                    tv_title_semester.setText(" Semester " + resultSet.getString(resultSet.getColumnIndex("enrollment_semester")) + "/" + resultSet.getString(resultSet.getColumnIndex("enrollment_year")));
-                    resultSet.close();
                     Elearning_db.close();
                     Log.i("Setup", "Set video detail success");
                 } catch (Exception e) {
@@ -243,6 +238,19 @@ public class Subject_elearn extends AppCompatActivity {
             }
         }
         new GetDataJSON().execute();
+        getEnrollment();
+    }
+
+    protected void getEnrollment(){
+        Log.i("Setup", "Set subject enrollment...");
+        SQLiteDatabase enrollment_db = openOrCreateDatabase("Enrollment", MODE_PRIVATE, null);
+        System.out.println("e_id: "+enroll_id);
+        Cursor resultSet = enrollment_db.rawQuery("SELECT * FROM Enrollment WHERE enrollment_id='"+enroll_id+"';",null);
+        resultSet.moveToFirst();
+        TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
+        //tv_title_semester.setText(" semester "+resultSet.getString(resultSet.getColumnIndex("enrollment_semester"))+" / "+resultSet.getString(resultSet.getColumnIndex("enrollment_year")));
+        enrollment_db.close();
+        Log.i("Setup", "Set subject enrollment success");
     }
 
     public void getPastSubjectVideo(View v) {
