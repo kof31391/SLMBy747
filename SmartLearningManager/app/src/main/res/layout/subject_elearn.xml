@@ -259,7 +259,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text=" Semester 1/2559"
                     android:id="@+id/title_semester"
                     android:textColor="#000000"
                     android:textStyle="bold"

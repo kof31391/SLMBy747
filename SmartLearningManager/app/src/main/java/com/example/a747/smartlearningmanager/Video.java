@@ -50,6 +50,7 @@ import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAP
 public class Video extends AppCompatActivity {
     private String std_id;
     private String subject_id;
+    private String department;
     private String e_code;
     private String e_name;
     private String e_room;
@@ -133,6 +134,8 @@ public class Video extends AppCompatActivity {
             e_time = extras.getString("time");
             e_count = extras.getString("count");
             e_link = extras.getString("link");
+            from = extras.getString("from");
+            department = extras.getString("department");
 
             video_object = new Video_object(this);
             video_object.setE_code(e_code);
@@ -270,7 +273,15 @@ public class Video extends AppCompatActivity {
                         autoHideControl();
                     }
                 });
-            }else{
+                video_view.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+
+                    @Override
+                    public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                        preload_dialog.dismiss();
+                        return false;
+                    }
+                });
+            }else {
                 /*Set layout fullscreen*/
                 RelativeLayout rl_video_titlebar = (RelativeLayout) findViewById(R.id.video_titlebar);
                 rl_video_titlebar.setVisibility(View.INVISIBLE);
@@ -283,7 +294,6 @@ public class Video extends AppCompatActivity {
                 btn_fullscreen.setImageResource(R.drawable.fullscreen_exit);
 
                 setVideoDetail();
-                //getPreload();
                 timing = (TextView) findViewById(R.id.timing);
                 video_view = (VideoView) findViewById(R.id.video_view);
                 video_view.setVideoURI(Uri.parse(e_link));
@@ -291,12 +301,20 @@ public class Video extends AppCompatActivity {
                 video_view.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
-                        //preload_dialog.dismiss();
+                        preload_dialog.dismiss();
                         seekBar.setMax(video_view.getDuration());
                         seekBar.postDelayed(onEverySecond, 1000);
                         video_view.getCurrentPosition();
                         video_view.start();
                         autoHideControl();
+                    }
+                });
+                video_view.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+
+                    @Override
+                    public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                        preload_dialog.dismiss();
+                        return false;
                     }
                 });
             }
@@ -308,20 +326,15 @@ public class Video extends AppCompatActivity {
     protected void gotoSubjectElearn(View v) {
         video_object.setLastMinute(seekBar.getProgress());
         video_object.saveInstace();
-        Intent intent = getIntent();
-        from = intent.getExtras().getString("from");
         if(from.equalsIgnoreCase("Subject_elearn")){
-            intent = new Intent(this, Subject_elearn.class);
+            Intent intent = new Intent(this, Subject_elearn.class);
             intent.putExtra("subject_id",subject_id);
-            Intent temp = getIntent();
-            String from = temp.getExtras().getString("from");
             intent.putExtra("from",from);
             startActivity(intent);
         }else{
-            intent = new Intent(this, Subject_elearnAll.class);
+            Intent intent = new Intent(this, Subject_elearnAll.class);
             intent.putExtra("subject_id",subject_id);
-            Intent temp = getIntent();
-            String from = temp.getExtras().getString("from");
+            intent.putExtra("department",department);
             intent.putExtra("from",from);
             startActivity(intent);
         }
@@ -335,12 +348,18 @@ public class Video extends AppCompatActivity {
             Log.d("CDA", "onKeyDown Called");
             video_object.setLastMinute(seekBar.getProgress());
             video_object.saveInstace();
-            Intent intent = new Intent(this, Subject_elearn.class);
-            intent.putExtra("subject_id",subject_id);
-            Intent temp = getIntent();
-            String from = temp.getExtras().getString("from");
-            intent.putExtra("from",from);
-            startActivity(intent);
+            if(from.equalsIgnoreCase("Subject_elearn")){
+                Intent intent = new Intent(this, Subject_elearn.class);
+                intent.putExtra("subject_id",subject_id);
+                intent.putExtra("from",from);
+                startActivity(intent);
+            }else{
+                Intent intent = new Intent(this, Subject_elearnAll.class);
+                intent.putExtra("subject_id",subject_id);
+                intent.putExtra("department",department);
+                intent.putExtra("from",from);
+                startActivity(intent);
+            }
             return true;
         }
         return super.onKeyDown(keyCode, event);

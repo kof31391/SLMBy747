@@ -14,6 +14,7 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -42,6 +43,8 @@ public class Subject_elearnAll extends AppCompatActivity {
     String telno;
     String email;
     String from;
+    String department;
+    int last_enroll = 0;
     String lecturer_fristname;
     TextView subjCode;
     TextView lecturer;
@@ -68,8 +71,10 @@ public class Subject_elearnAll extends AppCompatActivity {
 
         Intent intent = getIntent();
         subject_id = intent.getExtras().getString("subject_id");
+        department = intent.getExtras().getString("department");
 
         getSubjectDetial();
+        getEnrollment();
         getSubjectVideo();
         getMaterial();
     }
@@ -119,26 +124,25 @@ public class Subject_elearnAll extends AppCompatActivity {
                     telno = c.getString("lecturer_phone");
                     email = c.getString("lecturer_email");
                     imgB_call.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                                callIntent.setData(Uri.parse("tel:" + telno));
-                                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(callIntent);
+                        @Override
+                        public void onClick(View v) {
+                            Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                            callIntent.setData(Uri.parse("tel:" + telno));
+                            callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(callIntent);
 
-                            }
-                        });
+                        }
+                    });
                     imgB_mail.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-                                emailIntent.setType("plain/text");
-                                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{email});
-                                startActivity(emailIntent);
-                            }
-                        });
+                        @Override
+                        public void onClick(View v) {
+                            Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                            emailIntent.setType("plain/text");
+                            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{email});
+                            startActivity(emailIntent);
+                        }
+                    });
                     String uri = "lecturer_"+(lecturer_fristname.toLowerCase());
-                    System.out.println("uri: "+uri);
                     int imageResource = getResources().getIdentifier(uri, "drawable", getPackageName());
                     Drawable image = getResources().getDrawable(imageResource);
                     lecturerImage.setImageDrawable(image);
@@ -197,44 +201,45 @@ public class Subject_elearnAll extends AppCompatActivity {
                 try {
                     Log.i("Setup", "Set video detail...");
                     JSONArray data = new JSONArray(strJSON);
-                    SQLiteDatabase Elearning_db = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
-                    Elearning_db.execSQL("DROP TABLE IF EXISTS Elearning");
-                    Elearning_db.execSQL("CREATE TABLE IF NOT EXISTS Elearning(video_id VARCHAR, video_name VARCHAR, video_link VARCHAR, video_room VARCHAR, video_date VARCHAR, video_visitor_count VARCHAR, subject_id INT, subject_start_time VARCHAR);");
-                    TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
-                    for (int i = 0; i < data.length(); i++) {
-                        JSONObject c = data.getJSONObject(i);
-                        Elearning_db.execSQL("INSERT INTO Elearning VALUES('" + c.getString("video_id") + "','" + c.getString("video_name") + "','" + c.getString("video_link") + "','" + c.getString("video_room") + "','" + c.getString("video_date") + "','" + c.getString("video_visitor_count") + "','" + c.getString("subject_id") + "','" + c.getString("subject_start_time") + "');");
-                        TableRow row = new TableRow(Subject_elearnAll.this);
-                        TextView cell = new TextView(Subject_elearnAll.this);
-                        cell.setId(i);
-                        cell.setClickable(true);
-                        cell.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {gotoVideo(v);
-                            }
-                        });
-                        cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-                        cell.setPadding(20, 20, 0, 20);
-                        String date_temp = c.getString("video_date");
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                        java.util.Date date = df.parse(date_temp);
-                        df = new SimpleDateFormat("dd/MM/yyyy");
-                        date_temp = df.format(date);
-                        cell.setText(date_temp + "  " + c.getString("subject_start_time"));
-                        cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
-                        row.addView(cell);
-                        row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
-                        tl_datelist.addView(row);
-                        TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
-                        tv_title_semester.setText(" Semester " + c.getString("enrollment_semester") + "/" + c.getString("enrollment_year"));
+                    if(data.length()>0) {
+                        SQLiteDatabase Elearning_db = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
+                        Elearning_db.execSQL("DROP TABLE IF EXISTS Elearning");
+                        Elearning_db.execSQL("CREATE TABLE IF NOT EXISTS Elearning(video_id VARCHAR, video_name VARCHAR, video_link VARCHAR, video_room VARCHAR, video_date VARCHAR, video_visitor_count VARCHAR, subject_id INT, subject_start_time VARCHAR);");
+                        TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject c = data.getJSONObject(i);
+                            Elearning_db.execSQL("INSERT INTO Elearning VALUES('" + c.getString("video_id") + "','" + c.getString("video_name") + "','" + c.getString("video_link") + "','" + c.getString("video_room") + "','" + c.getString("video_date") + "','" + c.getString("video_visitor_count") + "','" + c.getString("subject_id") + "','" + c.getString("subject_start_time") + "');");
+                            TableRow row = new TableRow(Subject_elearnAll.this);
+                            TextView cell = new TextView(Subject_elearnAll.this);
+                            cell.setId(i);
+                            cell.setClickable(true);
+                            cell.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    gotoVideo(v);
+                                }
+                            });
+                            cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                            cell.setPadding(20, 20, 0, 20);
+                            String date_temp = c.getString("video_date");
+                            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                            java.util.Date date = df.parse(date_temp);
+                            df = new SimpleDateFormat("dd/MM/yyyy");
+                            date_temp = df.format(date);
+                            cell.setText(date_temp + "  " + c.getString("subject_start_time"));
+                            cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+                            row.addView(cell);
+                            row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
+                            tl_datelist.addView(row);
+                            TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
+                            tv_title_semester.setText(" Semester " + c.getString("enrollment_semester") + "/" + c.getString("enrollment_year"));
+                        }
+                        Elearning_db.close();
+                    }else{
+                        status = "n";
+                        last_enroll = 0;
+                        getSubjectVideo();
                     }
-                    SQLiteDatabase Enrollment_db = openOrCreateDatabase("Enrollment", MODE_PRIVATE, null);
-                    Cursor resultSet = Enrollment_db.rawQuery("SELECT * FROM Enrollment;", null);
-                    resultSet.moveToFirst();
-                    TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
-                    tv_title_semester.setText(" Semester " + resultSet.getString(resultSet.getColumnIndex("enrollment_semester")) + "/" + resultSet.getString(resultSet.getColumnIndex("enrollment_year")));
-                    resultSet.close();
-                    Elearning_db.close();
                     Log.i("Setup", "Set video detail success");
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -242,6 +247,31 @@ public class Subject_elearnAll extends AppCompatActivity {
             }
         }
         new GetDataJSON().execute();
+    }
+
+    protected void getEnrollment(){
+        Log.i("Setup", "Set enrollment...");
+        SQLiteDatabase Enrollment_db = openOrCreateDatabase("Enrollment", MODE_PRIVATE, null);
+        Cursor resultSet = Enrollment_db.rawQuery("SELECT * FROM Enrollment WHERE enrollment_id = (SELECT MAX(enrollment_id) FROM enrollment)-"+last_enroll+";", null);
+        resultSet.moveToFirst();
+        TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
+        tv_title_semester.setText(" Semester " + resultSet.getString(resultSet.getColumnIndex("enrollment_semester")) + "/" + resultSet.getString(resultSet.getColumnIndex("enrollment_year")));
+        resultSet.close();
+        Enrollment_db.close();
+        Log.i("Setup", "Set enrollment success");
+    }
+
+    public void getPastSubjectVideo(View v){
+        TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
+        tl_datelist.removeAllViews();
+        if(status.equalsIgnoreCase("n")){
+            status = "p";
+            last_enroll = 1;
+        }else{
+            status = "n";
+            last_enroll = 0;
+        }
+        getSubjectVideo();
     }
 
     public void gotoVideo(View v) {
@@ -274,6 +304,8 @@ public class Subject_elearnAll extends AppCompatActivity {
         intent.putExtra("count", rs_elearning.getString(rs_elearning.getColumnIndex("video_visitor_count")));
         intent.putExtra("link", rs_elearning.getString(rs_elearning.getColumnIndex("video_link")));
         intent.putExtra("lecturer", lecturer.getText());
+        intent.putExtra("from","Subject_elearnAll");
+        intent.putExtra("department",department);
 
         try {
             URL url = new URL("http://54.169.58.93/Elearning_UpdateCount.php?video_id=" + rs_elearning.getString(rs_elearning.getColumnIndex("video_id")));
@@ -287,9 +319,6 @@ public class Subject_elearnAll extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Intent temp = getIntent();
-        String from = temp.getExtras().getString("from");
-        intent.putExtra("from", from);
         startActivity(intent);
     }
 
@@ -363,24 +392,24 @@ public class Subject_elearnAll extends AppCompatActivity {
         new GetDataJSON().execute();
     }
 
-    public void gotoElearn(View view) {
-        Intent temp = getIntent();
-        String from = temp.getExtras().getString("from");
-        String dep = temp.getExtras().getString("department");
-        if (from.equals("Elearning")) {
-            Intent intent = new Intent(this, Elearning.class);
-            startActivity(intent);
-            Log.i("GT", "Go to Elearning");
-        } else if (from.equals("After_allelearn")) {
-            Intent intent = new Intent(this, After_allelearn.class);
-            System.out.println("DEP: " + dep);
-            intent.putExtra("department", dep);
-            startActivity(intent);
-            Log.i("GT", "Go to Afterall Elearn");
-        } else {
-            Intent intent = new Intent(this, Main.class);
-            startActivity(intent);
-            Log.i("GT", "Go to Main");
-        }
+    protected void gotoAllElearn(View v){
+        Intent intent = new Intent(this,After_allelearn.class);
+        intent.putExtra("department",department);
+        startActivity(intent);
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            Log.d("CDA", "onKeyDown Called");
+            Intent intent = new Intent(this,After_allelearn.class);
+            intent.putExtra("department",department);
+            startActivity(intent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }
