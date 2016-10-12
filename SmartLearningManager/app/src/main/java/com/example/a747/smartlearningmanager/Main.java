@@ -310,8 +310,9 @@ public class Main extends AppCompatActivity {
                     JSONObject c = data.getJSONObject(0);
                     SQLiteDatabase Enrollment_db = openOrCreateDatabase("Enrollment",MODE_PRIVATE,null);
                     Enrollment_db.execSQL("DROP TABLE IF EXISTS Enrollment");
-                    Enrollment_db.execSQL("CREATE TABLE IF NOT EXISTS Enrollment(enrollment_id VARCHAR,enrollment_semester VARCHAR,enrollment_year VARCHAR);");
-                    Enrollment_db.execSQL("INSERT INTO Enrollment VALUES('"+c.getString("enrollment_id")+"','"+c.getString("enrollment_semester")+"','"+c.getString("enrollment_year")+"');");
+                    Enrollment_db.execSQL("CREATE TABLE IF NOT EXISTS Enrollment(enrollment_id INT,enrollment_semester VARCHAR,enrollment_year VARCHAR);");
+                    Enrollment_db.execSQL("INSERT INTO Enrollment VALUES("+c.getString("enrollment_id")+",'"+c.getString("enrollment_semester")+"','"+c.getString("enrollment_year")+"');");
+                    Enrollment_db.close();
                     Log.i("Initial","Initial set last enrollment success");
                 }catch (Exception e){
                     e.printStackTrace();
