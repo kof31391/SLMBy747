@@ -255,7 +255,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Setting"
-                        android:id="@+id/textView14"
+                        android:id="@+id/textView15"
                         android:layout_marginLeft="20dp"
                         android:textColor="#000000"
                         android:textSize="23dp"
