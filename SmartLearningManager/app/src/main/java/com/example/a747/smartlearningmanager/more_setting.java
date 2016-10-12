@@ -1,25 +1,29 @@
 package com.example.a747.smartlearningmanager;
 
-import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInstaller;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 
-public class more_setting extends AppCompatActivity {
+public class more_setting extends AppCompatActivity{
+    Switch sound;
+    Switch vibrate;
+    SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
+        pref = getApplicationContext().getSharedPreferences("Student", 0);
         String std_id = pref.getString("std_id", null);
         if(std_id != null){
             super.onCreate(savedInstanceState);
             setContentView(R.layout.more_setting);
+            sound = (Switch)findViewById(R.id.soundSwitch);
+            vibrate = (Switch)findViewById(R.id.vibrateSwitch);
+            LoadSetting();
         }else{
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
@@ -27,43 +31,59 @@ public class more_setting extends AppCompatActivity {
         TextView tv_ms_std_id = (TextView) findViewById(R.id.tv_ms_std_id);
         tv_ms_std_id.setText(std_id);
     }
-    protected void setMute(){
-        Notification notification = new Notification();
-        notification.defaults = 0;
-        notification.defaults |= Notification.DEFAULT_VIBRATE;
+
+    private void LoadSetting(){
+            sound.setChecked(pref.getBoolean("sound", false));
+            vibrate.setChecked(pref.getBoolean("vibrate", true));
     }
 
     public void gotoProfile(View v){
+        saveSetting();
         Intent intent = new Intent(this, Profile.class);
         startActivity(intent);
     }
     public void gotoTodo(View v){
+        saveSetting();
         Intent intent = new Intent(this, Todo_List.class);
         startActivity(intent);
     }
 
     public void gotoHome(View v){
+        saveSetting();
         Intent intent = new Intent(this, Main.class);
         startActivity(intent);
     }
 
     public void gotoNoti(View v){
+        saveSetting();
         Intent intent = new Intent(this, Noti.class);
         startActivity(intent);
     }
 
     public void gotoElean(View v){
+        saveSetting();
         Intent intent = new Intent(this, Elearning.class);
         startActivity(intent);
     }
 
     public void gotoAbout(View v){
+        saveSetting();
         Intent intent = new Intent(this,About.class);
         startActivity(intent);
     }
     public void gotopagenews(View v){
+        saveSetting();
         Intent intent = new Intent(this, Page_news.class);
         startActivity(intent);
+    }
+
+    private void saveSetting(){
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("sound",sound.isChecked());
+        editor.putBoolean("vibrate",vibrate.isChecked());
+        editor.commit();
+        finish();
     }
 
     public void logout(View v){
