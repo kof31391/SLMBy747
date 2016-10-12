@@ -9,7 +9,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_gravity="center_horizontal"
         android:background="#091534" >
 
@@ -21,7 +21,7 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="35dp"
                 android:weightSum="1" >
 
                 <TextView
@@ -183,7 +183,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@android:color/holo_blue_bright"
+                    android:background="#66CCFF"
                     android:onClick="gotoProfile">
 
                     <LinearLayout
@@ -234,7 +234,7 @@
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:background="#ffffff"
-                    android:layout_marginTop="10dp"
+
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:gravity="center_vertical"
@@ -266,7 +266,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@android:color/holo_blue_bright"
+                    android:background="#66CCFF"
                     >
 
                     <LinearLayout
@@ -280,7 +280,9 @@
 
                         <RadioGroup
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            >
+
                             <RadioButton
                                 android:text="Sound And Vibrate"
                                 android:layout_width="wrap_content"
@@ -289,7 +291,6 @@
                                 android:layout_weight="1" />
 
                             <RadioButton
-                                android:layout_marginLeft="20dp"
                                 android:text="Vibrate Only"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -311,7 +312,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
+                    android:background="#ffffff"
+                    android:padding="10dp"
                     android:onClick="gotoProfile" >
 
                     <LinearLayout
