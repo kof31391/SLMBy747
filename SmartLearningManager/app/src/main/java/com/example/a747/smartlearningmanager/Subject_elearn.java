@@ -361,6 +361,8 @@ public class Subject_elearn extends AppCompatActivity {
         intent.putExtra("count", rs_elearning.getString(rs_elearning.getColumnIndex("video_visitor_count")));
         intent.putExtra("link", rs_elearning.getString(rs_elearning.getColumnIndex("video_link")));
         intent.putExtra("lecturer", lecturer.getText());
+        intent.putExtra("subject_id",subject_id);
+        intent.putExtra("from","Subject_elearn");
 
         try {
             URL url = new URL("http://54.169.58.93/Elearning_UpdateCount.php?video_id=" + rs_elearning.getString(rs_elearning.getColumnIndex("video_id")));

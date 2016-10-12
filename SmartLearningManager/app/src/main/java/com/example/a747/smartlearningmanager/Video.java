@@ -326,16 +326,18 @@ public class Video extends AppCompatActivity {
     protected void gotoSubjectElearn(View v) {
         video_object.setLastMinute(seekBar.getProgress());
         video_object.saveInstace();
-        if(from.equalsIgnoreCase("Subject_elearn")){
+        if(from.equalsIgnoreCase("Elearning")){
             Intent intent = new Intent(this, Subject_elearn.class);
             intent.putExtra("subject_id",subject_id);
             intent.putExtra("from",from);
+            System.out.println("from "+from);
             startActivity(intent);
         }else{
             Intent intent = new Intent(this, Subject_elearnAll.class);
             intent.putExtra("subject_id",subject_id);
             intent.putExtra("department",department);
             intent.putExtra("from",from);
+            System.out.println("from "+from);
             startActivity(intent);
         }
     }
@@ -348,7 +350,7 @@ public class Video extends AppCompatActivity {
             Log.d("CDA", "onKeyDown Called");
             video_object.setLastMinute(seekBar.getProgress());
             video_object.saveInstace();
-            if(from.equalsIgnoreCase("Subject_elearn")){
+            if(from.equalsIgnoreCase("Elearning")){
                 Intent intent = new Intent(this, Subject_elearn.class);
                 intent.putExtra("subject_id",subject_id);
                 intent.putExtra("from",from);
