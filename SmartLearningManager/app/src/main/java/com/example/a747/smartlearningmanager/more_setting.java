@@ -1,18 +1,24 @@
 package com.example.a747.smartlearningmanager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 public class more_setting extends AppCompatActivity{
-    Switch sound;
-    Switch vibrate;
+    RadioButton sound;
+    RadioButton vibrate;
+    RadioButton silent;
+    AudioManager audioManager;
     SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +27,10 @@ public class more_setting extends AppCompatActivity{
         if(std_id != null){
             super.onCreate(savedInstanceState);
             setContentView(R.layout.more_setting);
-            sound = (Switch)findViewById(R.id.soundSwitch);
-            vibrate = (Switch)findViewById(R.id.vibrateSwitch);
+            sound = (RadioButton)findViewById(R.id.soundAndVibrateSwitch);
+            vibrate = (RadioButton)findViewById(R.id.vibrateSwitch);
+            silent = (RadioButton)findViewById(R.id.silent);
+            audioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
             LoadSetting();
         }else{
             Intent intent = new Intent(this, Login.class);
@@ -33,8 +41,9 @@ public class more_setting extends AppCompatActivity{
     }
 
     private void LoadSetting(){
-            sound.setChecked(pref.getBoolean("sound", false));
-            vibrate.setChecked(pref.getBoolean("vibrate", true));
+            sound.setChecked(pref.getBoolean("soundAndVibrate", true));
+            vibrate.setChecked(pref.getBoolean("vibrate", false));
+            silent.setChecked(pref.getBoolean("silent",false));
     }
 
     public void gotoProfile(View v){
@@ -80,10 +89,19 @@ public class more_setting extends AppCompatActivity{
     private void saveSetting(){
         SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("sound",sound.isChecked());
+        editor.putBoolean("soundAndVibrate",sound.isChecked());
         editor.putBoolean("vibrate",vibrate.isChecked());
+        editor.putBoolean("silent",silent.isChecked());
         editor.commit();
         finish();
+        if(sound.isChecked()){
+            audioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
+        }
+        else if(vibrate.isChecked()){
+            audioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, true);
+        }else{
+            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+        }
     }
 
     public void logout(View v){

@@ -278,20 +278,31 @@
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp">
 
-                        <Switch
-                            android:text="Sound"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/soundSwitch"
-                            android:layout_weight="1" />
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <RadioButton
+                                android:text="Sound And Vibrate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/soundAndVibrateSwitch"
+                                android:layout_weight="1" />
 
-                        <Switch
-                            android:layout_marginLeft="20dp"
-                            android:text="Vibration"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/vibrateSwitch"
-                            android:layout_weight="1" />
+                            <RadioButton
+                                android:layout_marginLeft="20dp"
+                                android:text="Vibrate Only"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/vibrateSwitch"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:text="Silent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/silent"
+                                android:layout_weight="1" />
+                        </RadioGroup>
 
 
                     </LinearLayout>
