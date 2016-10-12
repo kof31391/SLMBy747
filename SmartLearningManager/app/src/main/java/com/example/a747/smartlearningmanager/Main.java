@@ -1,8 +1,10 @@
 package com.example.a747.smartlearningmanager;
 
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -10,6 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.StrictMode;
@@ -17,6 +20,7 @@ import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
@@ -26,13 +30,17 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -71,28 +79,34 @@ public class Main extends AppCompatActivity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         std_id = pref.getString("std_id", null);
-        if(std_id != null){
+        if(isNetworkConnected()){
+            if(std_id != null){
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.main);
+
+                /*Initial*/
+                SharedPreferences prefInitial = getApplicationContext().getSharedPreferences("Initial", 0);
+                SharedPreferences.Editor editorInitial = prefInitial.edit();
+                String iniStatus = prefInitial.getString("Initial","");
+                if(!iniStatus.equals("Initialed")){
+                    clearAlarmNoti();
+                    setProfile();
+                    getEnrollment();
+                    setNotiSchedule();
+                    editorInitial.putString("Initial","Initialed");
+                    editorInitial.commit();
+                }else{
+                    getRSS();
+                    getSchedule();
+                }
+            }else{
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
+            }
+        }else{
+            Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_SHORT).show();
             super.onCreate(savedInstanceState);
             setContentView(R.layout.main);
-        }else{
-            Intent intent = new Intent(this, Login.class);
-            startActivity(intent);
-        }
-
-        /*Initial*/
-        SharedPreferences prefInitial = getApplicationContext().getSharedPreferences("Initial", 0);
-        SharedPreferences.Editor editorInitial = prefInitial.edit();
-        String iniStatus = prefInitial.getString("Initial","");
-        if(!iniStatus.equals("Initialed")){
-            clearAlarmNoti();
-            setProfile();
-            getEnrollment();
-            setNotiSchedule();
-            editorInitial.putString("Initial","Initialed");
-            editorInitial.commit();
-        }else{
-            getRSS();
-            getSchedule();
         }
     }
     @Override
@@ -712,6 +726,11 @@ public class Main extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("ALM", "AlarmManager update was not canceled. " + e.toString());
         }
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 
     public void gotoTodo(View v){
