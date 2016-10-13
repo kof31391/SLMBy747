@@ -278,8 +278,7 @@
                         android:orientation="horizontal"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp">
+                        android:paddingTop="10dp">
 
                         <RadioGroup
                             android:layout_width="match_parent"
@@ -306,11 +305,49 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/silent"
                                 android:layout_weight="1" />
+
                         </RadioGroup>
 
 
                     </LinearLayout>
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="10dp"
+                    android:background="#ffffff"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:text="TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView10"
+                        />
+
+                    <EditText
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                      android:background="@drawable/my_border"
+                        android:id="@+id/editText"
+                         />
+
+                    <Button
+                        android:text="Submit"
+                        android:layout_width="75dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/button2"
+                        />
+
+                </LinearLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -335,6 +372,7 @@
                             android:layout_gravity="right"
                             android:onClick="logout" />
                     </LinearLayout>
+
                 </RelativeLayout>
 
             </LinearLayout>
