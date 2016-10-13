@@ -35,6 +35,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".more_setting"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Todo_Add"

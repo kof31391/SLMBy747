@@ -340,6 +340,7 @@
                         android:id="@+id/notiTime"
                          />
 
+
                     <Button
                         android:text="Submit"
                         android:layout_width="75dp"
@@ -349,6 +350,7 @@
                         />
 
                 </LinearLayout>
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"
