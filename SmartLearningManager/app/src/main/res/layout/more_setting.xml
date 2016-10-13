@@ -337,13 +337,14 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                       android:background="@drawable/my_border"
-                        android:id="@+id/editText"
+                        android:id="@+id/notiTime"
                          />
 
                     <Button
                         android:text="Submit"
                         android:layout_width="75dp"
                         android:layout_height="wrap_content"
+                        android:onClick="saveNotiTime"
                         android:id="@+id/button2"
                         />
 
