@@ -427,12 +427,12 @@ public class Main extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         String date_now = df.format(calendar.getTime());
-        int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
+        nextday = calendar.get(Calendar.DAY_OF_WEEK)-1;
         SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        final Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Subject WHERE day_id='"+nowDayfoweek+"' ORDER BY day_id ASC;",null);
+        final Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Subject WHERE day_id='"+nextday+"' ORDER BY day_id ASC;",null);
         resultSet.moveToFirst();
         TextView title_day = (TextView) findViewById(R.id.title_day);
-        switch (nowDayfoweek) {
+        switch (nextday) {
             case 0 : title_day.setText("Sunday "+date_now);
                 break;
             case 1 : title_day.setText("Monday "+date_now);
@@ -506,12 +506,9 @@ public class Main extends AppCompatActivity {
         calendar.add(Calendar.DATE,diffday);
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         String date_next = df.format(calendar.getTime());
-        if (nextday == 0) {
-            nextday = (calendar.get(Calendar.DAY_OF_WEEK) - 1);
-        }
         nextday++;
-        if (nextday > 7) {
-            nextday = 1;
+        if (nextday > 6) {
+            nextday = 0;
         }
         SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
         final Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Subject WHERE day_id='"+nextday+"' ORDER BY day_id ASC;",null);
@@ -600,12 +597,9 @@ public class Main extends AppCompatActivity {
         calendar.add(Calendar.DATE,diffday);
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         String date_prev = df.format(calendar.getTime());
-        if (nextday == 0) {
-            nextday = (calendar.get(Calendar.DAY_OF_WEEK) - 1);
-        }
         nextday--;
-        if (nextday < 1) {
-            nextday = 7;
+        if (nextday < 0) {
+            nextday = 6;
         }
         SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
         final Cursor resultSet = Schedule_db.rawQuery("SELECT * FROM Subject WHERE day_id='"+nextday+"' ORDER BY day_id ASC;",null);
