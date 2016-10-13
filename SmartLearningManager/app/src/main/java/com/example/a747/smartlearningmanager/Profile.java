@@ -104,7 +104,7 @@ public class Profile extends AppCompatActivity {
             public String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93//Profile.php?std_id="+params[0]);
+                    URL url = new URL("http://54.169.58.93//Profile.php?student_id="+params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -132,17 +132,15 @@ public class Profile extends AppCompatActivity {
                     TextView tv_pf;
                     ImageView tv_pfi;
                     tv_pf = (TextView) findViewById(R.id.tv_pf_std_id);
-                    tv_pf.setText(c.getString("std_id"));
+                    tv_pf.setText(c.getString("student_id"));
                     tv_pf = (TextView) findViewById(R.id.tv_pf_fristname);
-                    tv_pf.setText(c.getString("firstname"));
+                    tv_pf.setText(c.getString("student_name"));
                     tv_pf = (TextView) findViewById(R.id.tv_pf_lastname);
-                    tv_pf.setText(c.getString("lastname"));
-                    tv_pf = (TextView) findViewById(R.id.tv_pf_grade);
-                    tv_pf.setText(c.getString("grade"));
+                    tv_pf.setText(c.getString("student_surname"));
                     tv_pf = (TextView) findViewById(R.id.tv_pf_email);
-                    tv_pf.setText(c.getString("email"));
+                    tv_pf.setText(c.getString("student_email"));
                     tv_pf = (TextView) findViewById(R.id.tv_pf_teleno);
-                    tv_pf.setText(c.getString("phonenum"));
+                    tv_pf.setText(c.getString("student_phone"));
                     tv_pfi = (ImageView) findViewById(R.id.tv_pf_image);
                     new ImageLoadTask("http://54.169.58.93/student_image/"+std_id+".jpg",tv_pfi).execute();
                     //tv_pfi.setImageResource(c.getString("image"));
@@ -156,56 +154,56 @@ public class Profile extends AppCompatActivity {
 
     public void getSchedule(){
         SQLiteDatabase mydatabase = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Schedule;",null);
+        Cursor resultSet = mydatabase.rawQuery("SELECT * FROM Subject ORDER BY day_id ASC;",null);
         resultSet.moveToFirst();
         while(!resultSet.isAfterLast()){
-            switch (resultSet.getString(resultSet.getColumnIndex("subject_date"))){
+            switch (resultSet.getString(resultSet.getColumnIndex("day_id"))){
                 case "1" :
                     monday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     monday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    monday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    monday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_start_time"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     monday.add("ATTEND / TOTAL CLASS:      /      ");
                     monday.add("---------------------------------");
                     break;
                 case "2" :
                     tuesday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     tuesday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    tuesday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    tuesday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_start_time"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     tuesday.add("ATTEND / TOTAL CLASS:      /      ");
                     tuesday.add("---------------------------------");
                     break;
                 case "3" :
                     wednesday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     wednesday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    wednesday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    wednesday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_start_time"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     wednesday.add("ATTEND / TOTAL CLASS:      /      ");
                     wednesday.add("---------------------------------");
                     break;
                 case "4" :
                     thursday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     thursday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    thursday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    thursday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_start_time"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     thursday.add("ATTEND / TOTAL CLASS:      /      ");
                     thursday.add("---------------------------------");
                     break;
                 case "5" :
                     friday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     friday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    friday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    friday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_start_time"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     friday.add("ATTEND / TOTAL CLASS:      /      ");
                     friday.add("---------------------------------");
                     break;
                 case "6" :
                     saturday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     saturday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    saturday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    saturday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_start_time"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     saturday.add("ATTEND / TOTAL CLASS:      /      ");
                     saturday.add("---------------------------------");
                     break;
                 case "7" :
                     sunday.add("CODE: "+resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     sunday.add("NAME: "+resultSet.getString(resultSet.getColumnIndex("subject_name")));
-                    sunday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_time_start"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_time_ended")));
+                    sunday.add("SCHEDULE: "+resultSet.getString(resultSet.getColumnIndex("subject_start_time"))+" - "+resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     sunday.add("ATTEND / TOTAL CLASS:      /      ");
                     sunday.add("---------------------------------");
                     break;

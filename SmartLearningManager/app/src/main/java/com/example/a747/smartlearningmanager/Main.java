@@ -577,8 +577,6 @@ public class Main extends AppCompatActivity {
         String subject_code = ((TextView)v).getText().toString().substring(2,8);
         String temp = ((TextView)v).getText().toString();
         String subject_start_time = temp.substring((temp.indexOf("Time:")+7),(temp.indexOf("Time:")+15));
-        System.out.println("code:"+subject_code);
-        System.out.println("Index:"+(temp.indexOf("Time:")+9));
         SQLiteDatabase Subject_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
         Cursor resultSet = Subject_db.rawQuery("SELECT subject_id FROM Subject WHERE subject_code='"+subject_code+"' AND subject_start_time='"+subject_start_time+"';",null);
         resultSet.moveToFirst();

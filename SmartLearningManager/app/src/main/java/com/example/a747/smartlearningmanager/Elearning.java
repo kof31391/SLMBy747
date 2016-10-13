@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -130,6 +132,19 @@ public class Elearning extends AppCompatActivity {
         intent.putExtra("department",temp);
         intent.putExtra("from","Elearning");
         Elearning.this.startActivity(intent);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            Log.d("CDA", "onKeyDown Called");
+            Intent intent = new Intent(this, Main.class);
+            startActivity(intent);
+            Log.i("GT", "Go to Main");
+        }
+        return true;
     }
 
     public void gotoAbout(View v){

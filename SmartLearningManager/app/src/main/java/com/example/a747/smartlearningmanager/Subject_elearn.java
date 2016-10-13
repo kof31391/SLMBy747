@@ -182,11 +182,11 @@ public class Subject_elearn extends AppCompatActivity {
                     JSONArray data = new JSONArray(strJSON);
                     SQLiteDatabase Elearning_db = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
                     Elearning_db.execSQL("DROP TABLE IF EXISTS Elearning");
-                    Elearning_db.execSQL("CREATE TABLE IF NOT EXISTS Elearning(video_id VARCHAR, video_name VARCHAR, video_link VARCHAR, video_room VARCHAR, video_date VARCHAR, video_visitor_count VARCHAR, subject_id INT,subject_start_time VARCHAR);");
+                    Elearning_db.execSQL("CREATE TABLE IF NOT EXISTS Elearning(video_id VARCHAR, video_room VARCHAR, video_date VARCHAR, video_visitor_count VARCHAR, video_link VARCHAR, subject_id VARCHAR, subject_start_time VARCHAR);");
                     TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
-                        Elearning_db.execSQL("INSERT INTO Elearning VALUES('" + c.getString("video_id") + "','" + c.getString("video_name") + "','" + c.getString("video_link") + "','" + c.getString("video_room") + "','" + c.getString("video_date") + "','" + c.getString("video_visitor_count") + "','" + c.getString("subject_id") + "','" + c.getString("subject_start_time") + "');");
+                        Elearning_db.execSQL("INSERT INTO Elearning VALUES('"+c.getString("video_id")+"','" + c.getString("video_room") + "','" + c.getString("video_date") + "','" + c.getString("video_visitor_count") + "','" + c.getString("video_link") + "','" + c.getString("subject_id") + "','"+c.getString("subject_start_time")+"');");
                         TableRow row = new TableRow(Subject_elearn.this);
                         TextView cell = new TextView(Subject_elearn.this);
                         cell.setId(i);
@@ -281,11 +281,11 @@ public class Subject_elearn extends AppCompatActivity {
                         if (data.length() > 0) {
                             SQLiteDatabase Elearning_db = openOrCreateDatabase("Elearning", MODE_PRIVATE, null);
                             Elearning_db.execSQL("DROP TABLE IF EXISTS Elearning");
-                            Elearning_db.execSQL("CREATE TABLE IF NOT EXISTS Elearning(video_id VARCHAR, video_name VARCHAR, video_link VARCHAR, video_room VARCHAR, video_date VARCHAR, video_visitor_count VARCHAR, subject_id INT, subject_start_time VARCHAR);");
+                            Elearning_db.execSQL("CREATE TABLE IF NOT EXISTS Elearning(video_id VARCHAR, video_room VARCHAR, video_date VARCHAR, video_visitor_count VARCHAR, video_link VARCHAR, subject_id VARCHAR);");
                             TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
-                                Elearning_db.execSQL("INSERT INTO Elearning VALUES('" + c.getString("video_id") + "','" + c.getString("video_name") + "','" + c.getString("video_link") + "','" + c.getString("video_room") + "','" + c.getString("video_date") + "','" + c.getString("video_visitor_count") + "','" + c.getString("subject_id") + "','" + c.getString("subject_start_time") + "');");
+                                Elearning_db.execSQL("INSERT INTO Elearning VALUES('"+c.getString("video_id")+"','" + c.getString("video_room") + "','" + c.getString("video_date") + "','" + c.getString("video_visitor_count") + "','" + c.getString("video_link") + "','" + c.getString("subject_id") + "');");
                                 TableRow row = new TableRow(Subject_elearn.this);
                                 TextView cell = new TextView(Subject_elearn.this);
                                 cell.setId(i);
@@ -346,9 +346,8 @@ public class Subject_elearn extends AppCompatActivity {
             e.printStackTrace();
         }
         String time = text.substring(12, 20);
-        Cursor rs_elearning = Elearning_db.rawQuery("SELECT * FROM Elearning  WHERE video_date='" + date + "' AND subject_start_time='" + time + "';", null);
+        Cursor rs_elearning = Elearning_db.rawQuery("SELECT * FROM Elearning WHERE subject_id='" + subject_id + "' AND video_date='" + date + "' AND subject_start_time='" + time + "';", null);
         rs_elearning.moveToFirst();
-        String subject_id = rs_elearning.getString(rs_elearning.getColumnIndex("subject_id"));
         Cursor rs_subject = Subject_db.rawQuery("SELECT * FROM Subject WHERE subject_id='" + subject_id + "';", null);
         rs_subject.moveToFirst();
         Intent intent = new Intent(this, Video.class);
@@ -375,7 +374,6 @@ public class Subject_elearn extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         Intent temp = getIntent();
         String from = temp.getExtras().getString("from");
         intent.putExtra("from", from);
@@ -395,7 +393,11 @@ public class Subject_elearn extends AppCompatActivity {
             System.out.println("DEP: " + dep);
             intent.putExtra("department", dep);
             startActivity(intent);
-            Log.i("GT", "Go to Afterall Elearn");
+            Log.i("GT", "Go to After all Elearn");
+        } else if(from.equals("Main")){
+            Intent intent = new Intent(this, Main.class);
+            startActivity(intent);
+            Log.i("GT", "Go to Main");
         } else {
             Intent intent = new Intent(this, Main.class);
             startActivity(intent);
@@ -409,8 +411,28 @@ public class Subject_elearn extends AppCompatActivity {
                 && keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
             Log.d("CDA", "onKeyDown Called");
-            Intent intent = new Intent(this, Elearning.class);
-            startActivity(intent);
+            Intent temp = getIntent();
+            String from = temp.getExtras().getString("from");
+            String dep = temp.getExtras().getString("department");
+            if (from.equals("Elearning")) {
+                Intent intent = new Intent(this, Elearning.class);
+                startActivity(intent);
+                Log.i("GT", "Go to Elearning");
+            } else if (from.equals("After_allelearn")) {
+                Intent intent = new Intent(this, After_allelearn.class);
+                System.out.println("DEP: " + dep);
+                intent.putExtra("department", dep);
+                startActivity(intent);
+                Log.i("GT", "Go to After all Elearn");
+            } else if(from.equals("Main")){
+                Intent intent = new Intent(this, Main.class);
+                startActivity(intent);
+                Log.i("GT", "Go to Main");
+            } else {
+                Intent intent = new Intent(this, Main.class);
+                startActivity(intent);
+                Log.i("GT", "Go to Main");
+            }
             return true;
         }
         return super.onKeyDown(keyCode, event);
