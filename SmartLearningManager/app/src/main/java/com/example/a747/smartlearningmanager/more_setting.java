@@ -65,6 +65,7 @@ public class more_setting extends AppCompatActivity{
         tv_ms_std_id.setText(std_id);
         EditText notiTime = (EditText)findViewById(R.id.notiTime);
         notiTime.setText(""+pref.getInt("notiTime",15));
+        notiTime.setSelection(notiTime.length());
     }
 
     private void LoadSetting(){
