@@ -155,7 +155,7 @@
                     android:background="#ffffff"
 
                     android:gravity="center_vertical"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="28dp" >
 
                     <ImageButton
                         android:layout_width="20dp"
