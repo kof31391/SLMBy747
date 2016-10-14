@@ -219,7 +219,6 @@ public class Main extends AppCompatActivity {
                     RSS_db.execSQL("DROP TABLE IF EXISTS RSS");
                     RSS_db.execSQL("CREATE TABLE IF NOT EXISTS RSS(id INT, title VARCHAR, description VARCHAR, pubDate DATE, count INT);");
                     for(int i=0;i<data.length();i++){
-                        System.out.println(data.length());
                         JSONObject c = data.getJSONObject(i);
                         RSS_db.execSQL("INSERT INTO RSS(id, title, description, pubDate, count) SELECT * FROM (SELECT '"+c.getInt("rss_id")+"','"+encodeUnicode(c.getString("rss_title"))+"','"+encodeUnicode(c.getString("rss_description"))+"','"+c.getString("rss_createdate")+"','"+c.getInt("rss_count")+"') AS tmp WHERE NOT EXISTS (SELECT * FROM RSS WHERE id='"+c.getInt("rss_id")+"');");
                         RSS_db.execSQL("UPDATE RSS SET count='"+c.getInt("rss_count")+"' WHERE id='"+c.getInt("rss_id")+"';");
@@ -263,7 +262,6 @@ public class Main extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
         int mWidth = display.getWidth();
         for(int i=0;i<al_title.size();i++) {
-            System.out.println(al_title.size());
             HorizontalScrollView hsv = new HorizontalScrollView(this);
             TextView title = new TextView(this);
             title.setId(i);
@@ -284,7 +282,6 @@ public class Main extends AppCompatActivity {
             hsv.addView(title);
             hsv.setHorizontalScrollBarEnabled(false);
             ll_hotnews.addView(hsv);
-            System.out.println("count: "+ll_hotnews.getChildCount());
         }
         Log.i("Initial","Initial get RSS success");
     }

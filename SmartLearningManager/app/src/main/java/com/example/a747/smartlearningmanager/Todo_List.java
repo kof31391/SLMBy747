@@ -209,7 +209,7 @@ public class Todo_List extends AppCompatActivity {
     }
 
     private  void sendToEditor(int pos){
-        Intent intent = new Intent(this,Todo_edit.class);
+        Intent intent = new Intent(this,Todo_Edit.class);
         intent.putExtra("todo", pos);
         startActivity(intent);
     }

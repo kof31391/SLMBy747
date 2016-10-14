@@ -375,7 +375,6 @@ public class Subject_elearn extends AppCompatActivity {
             Log.i("GT", "Go to Elearning");
         } else if (from.equals("After_allelearn")) {
             Intent intent = new Intent(this, After_allelearn.class);
-            System.out.println("DEP: " + dep);
             intent.putExtra("department", dep);
             startActivity(intent);
             Log.i("GT", "Go to After all Elearn");
@@ -405,7 +404,6 @@ public class Subject_elearn extends AppCompatActivity {
                 Log.i("GT", "Go to Elearning");
             } else if (from.equals("After_allelearn")) {
                 Intent intent = new Intent(this, After_allelearn.class);
-                System.out.println("DEP: " + dep);
                 intent.putExtra("department", dep);
                 startActivity(intent);
                 Log.i("GT", "Go to After all Elearn");

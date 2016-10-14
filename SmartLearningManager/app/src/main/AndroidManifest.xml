@@ -47,7 +47,7 @@
             android:name=".Noti"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Todo_edit"
+            android:name=".Todo_Edit"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Profile"

@@ -43,7 +43,7 @@ import java.util.Collections;
 import java.util.Date;
 
 
-public class Todo_edit extends AppCompatActivity {
+public class Todo_Edit extends AppCompatActivity {
 
     private TextView desc;
     private EditText todoDate;
@@ -103,7 +103,7 @@ public class Todo_edit extends AppCompatActivity {
             public void onClick(View v) {
                 mcurrentTime = Calendar.getInstance();
                 TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(Todo_edit.this, new TimePickerDialog.OnTimeSetListener() {
+                mTimePicker = new TimePickerDialog(Todo_Edit.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         todoTime.setText(Util.getMinuteFormat(selectedHour,selectedMinute));
@@ -148,7 +148,7 @@ public class Todo_edit extends AppCompatActivity {
             Intent intent = new Intent(this,Todo_List.class);
             startActivity(intent);
         }else{
-            AlertDialog alertDialog = new AlertDialog.Builder(Todo_edit.this).create();
+            AlertDialog alertDialog = new AlertDialog.Builder(Todo_Edit.this).create();
             alertDialog.setTitle("Alert: No Topic");
             alertDialog.setMessage("Please Enter Topic.");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",

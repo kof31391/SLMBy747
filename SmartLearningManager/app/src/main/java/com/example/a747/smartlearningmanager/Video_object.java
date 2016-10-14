@@ -128,7 +128,6 @@ public class Video_object extends SQLiteOpenHelper {
             db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery("SELECT * FROM Video WHERE e_code='"+e_code+"' AND e_date='"+e_date+"' AND e_time='"+e_time+"';",null);
             cursor.moveToFirst();
-            System.out.println("Cursor: "+cursor.getCount());
             if(cursor.getCount() >0) {
                 e_code = cursor.getString(cursor.getColumnIndex("e_code"));
                 e_name = cursor.getString(cursor.getColumnIndex("e_name"));

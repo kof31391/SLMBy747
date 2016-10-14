@@ -105,7 +105,6 @@ public class Page_news extends AppCompatActivity {
                         department =  resultSet.getString(resultSet.getColumnIndex("department"));
                         Profile_db.close();
                     }
-                    System.out.println("Dept: "+department);
                     URL url = new URL("http://54.169.58.93/RSS_Feed.php?department="+department);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
