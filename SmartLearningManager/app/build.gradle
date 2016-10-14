@@ -28,4 +28,5 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.6@aar'
     compile files('libs/json-simple-1.1.jar')
     compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 }

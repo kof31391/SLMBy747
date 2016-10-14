@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -27,10 +29,12 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -142,10 +146,8 @@ public class Subject_elearnAll extends AppCompatActivity {
                             startActivity(emailIntent);
                         }
                     });
-                    String uri = "lecturer_"+(lecturer_fristname.toLowerCase());
-                    int imageResource = getResources().getIdentifier(uri, "drawable", getPackageName());
-                    Drawable image = getResources().getDrawable(imageResource);
-                    lecturerImage.setImageDrawable(image);
+                    Bitmap bitmap = DownloadImage("http://54.169.58.93/lecturer_image/lecturer_"+c.getString("lecturer_fristname").toLowerCase()+".gif");
+                    lecturerImage.setImageBitmap(bitmap);
                     Subject_db.close();
                     Log.i("Setup", "Set video detail success");
                 }catch (Exception e){
@@ -154,6 +156,45 @@ public class Subject_elearnAll extends AppCompatActivity {
             }
         }
         new GetDataJSON().execute();
+    }
+
+    private InputStream OpenHttpConnection(String urlString) throws IOException {
+        InputStream in = null;
+        int response = -1;
+
+        URL url = new URL(urlString);
+        URLConnection conn = url.openConnection();
+
+        if (!(conn instanceof HttpURLConnection))
+            throw new IOException("Not an HTTP connection");
+
+        try {
+            HttpURLConnection httpConn = (HttpURLConnection) conn;
+            httpConn.setAllowUserInteraction(false);
+            httpConn.setInstanceFollowRedirects(true);
+            httpConn.setRequestMethod("GET");
+            httpConn.connect();
+            response = httpConn.getResponseCode();
+            if (response == HttpURLConnection.HTTP_OK) {
+                in = httpConn.getInputStream();
+            }
+        } catch (Exception ex) {
+            throw new IOException("Error connecting");
+        }
+        return in;
+    }
+
+    private Bitmap DownloadImage(String URL) {
+        Bitmap bitmap = null;
+        InputStream in = null;
+        try {
+            in = OpenHttpConnection(URL);
+            bitmap = BitmapFactory.decodeStream(in);
+            in.close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return bitmap;
     }
 
     public void Help(View v) {

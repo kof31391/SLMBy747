@@ -7,6 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -20,18 +27,26 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -55,15 +70,83 @@ public class more_setting extends AppCompatActivity{
             silent = (RadioButton)findViewById(R.id.silent);
             audioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
             LoadSetting();
+            setProfile();
         }else{
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
         }
-        TextView tv_ms_std_id = (TextView) findViewById(R.id.tv_ms_std_id);
-        tv_ms_std_id.setText(std_id);
         EditText notiTime = (EditText)findViewById(R.id.notiTime);
         notiTime.setText(""+pref.getInt("notiTime",15));
         notiTime.setSelection(notiTime.length());
+    }
+
+    private void setProfile(){
+        Log.i("Initial","Initial Profile...");
+        TextView tv_ms_std_id = (TextView) findViewById(R.id.tv_ms_std_id);
+        tv_ms_std_id.setText(std_id);
+
+        Bitmap bitmap = DownloadImage("http://54.169.58.93/student_image/"+std_id+".jpg");
+        ImageView iv_std = (ImageView) findViewById(R.id.iv_std);
+        iv_std.setImageBitmap(getCroppedBitmap(bitmap));
+        Log.i("Initial","Initial Profile success");
+    }
+
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
+    }
+
+    private InputStream OpenHttpConnection(String urlString) throws IOException {
+        InputStream in = null;
+        int response = -1;
+
+        URL url = new URL(urlString);
+        URLConnection conn = url.openConnection();
+
+        if (!(conn instanceof HttpURLConnection))
+            throw new IOException("Not an HTTP connection");
+
+        try {
+            HttpURLConnection httpConn = (HttpURLConnection) conn;
+            httpConn.setAllowUserInteraction(false);
+            httpConn.setInstanceFollowRedirects(true);
+            httpConn.setRequestMethod("GET");
+            httpConn.connect();
+            response = httpConn.getResponseCode();
+            if (response == HttpURLConnection.HTTP_OK) {
+                in = httpConn.getInputStream();
+            }
+        } catch (Exception ex) {
+            throw new IOException("Error connecting");
+        }
+        return in;
+    }
+
+    private Bitmap DownloadImage(String URL) {
+        Bitmap bitmap = null;
+        InputStream in = null;
+        try {
+            in = OpenHttpConnection(URL);
+            bitmap = BitmapFactory.decodeStream(in);
+            in.close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return bitmap;
     }
 
     private void LoadSetting(){

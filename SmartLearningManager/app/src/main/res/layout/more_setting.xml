@@ -193,7 +193,7 @@
                         android:layout_centerHorizontal="true">
 
                         <ImageView
-                            android:id="@+id/imageView2"
+                            android:id="@+id/iv_std"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_marginBottom="10dp"
