@@ -75,8 +75,8 @@ public class Page_news extends AppCompatActivity {
                     onClickNews(v);
                 }
             });
-            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            title.setPadding(20, 20, 20, 20);
+            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            title.setPadding(18, 15, 18, 15);
             if ((i % 2) == 0) {
                 title.setBackgroundColor(Color.parseColor("#E6E6E6"));
             }

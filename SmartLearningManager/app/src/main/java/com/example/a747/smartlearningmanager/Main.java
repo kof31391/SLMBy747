@@ -249,7 +249,7 @@ public class Main extends AppCompatActivity {
     private void getRSS(){
         Log.i("Initial","Initial get RSS...");
         SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
-        Cursor resultSet = RSS_db.rawQuery("SELECT title, description FROM RSS ORDER BY count DESC LIMIT 5;",null);
+        Cursor resultSet = RSS_db.rawQuery("SELECT title, description FROM RSS ORDER BY count DESC LIMIT 7;",null);
         resultSet.moveToFirst();
         al_title = new ArrayList();
         al_desc = new ArrayList();
@@ -274,8 +274,8 @@ public class Main extends AppCompatActivity {
                     onClickNews(v);
                 }
             });
-            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            title.setPadding(20, 25, 20, 25);
+            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            title.setPadding(15, 20, 15, 20);
             if ((i % 2) == 0) {
                 title.setBackgroundColor(Color.parseColor("#E6E6E6"));
             }
@@ -461,7 +461,7 @@ public class Main extends AppCompatActivity {
                         gotoSubjectElearn(v);
                     }
                 });
-                cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 cell.setPadding(0, 8, 0, 8);
                 if ((i % 2) == 1) {
                     cell.setBackgroundColor(Color.parseColor("#E6E6E6"));
