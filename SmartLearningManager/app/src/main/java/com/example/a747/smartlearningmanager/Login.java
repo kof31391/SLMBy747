@@ -97,7 +97,6 @@ public class Login extends AppCompatActivity {
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("std_id", uidString);
                 editor.commit();
-                finish();
             }else{
                 Err.setText("Wrong Username or password");
             }

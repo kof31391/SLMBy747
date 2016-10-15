@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -272,14 +273,12 @@ public class Subject_elearnAll extends AppCompatActivity {
                             row.addView(cell);
                             row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
                             tl_datelist.addView(row);
-                            TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
-                            tv_title_semester.setText(" Semester " + c.getString("enrollment_semester") + "/" + c.getString("enrollment_year"));
                         }
                         Elearning_db.close();
                     }else{
-                        status = "n";
+                        Toast.makeText(getApplicationContext(), "Not found", Toast.LENGTH_SHORT).show();
                         last_enroll = 0;
-                        getSubjectVideo();
+                        getEnrollment();
                     }
                     Log.i("Setup", "Set video detail success");
                 } catch (Exception e) {

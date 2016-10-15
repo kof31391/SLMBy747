@@ -189,7 +189,7 @@
                         android:id="@+id/button"
                         android:layout_marginLeft="7dp"
                         android:background="#f6ee00"
-
+                        android:onClick="getScheduleWeekly"
                         />
 
                     <ImageButton

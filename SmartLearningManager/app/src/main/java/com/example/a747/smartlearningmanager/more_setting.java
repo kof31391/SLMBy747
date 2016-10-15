@@ -59,6 +59,7 @@ public class more_setting extends AppCompatActivity{
     AudioManager audioManager;
     int last_noti_id;
     String std_id;
+    int NotiBefore = 0;
     SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,8 @@ public class more_setting extends AppCompatActivity{
                 setProfile();
 
                 EditText notiTime = (EditText)findViewById(R.id.notiTime);
-                notiTime.setText(""+pref.getInt("notiTime",15));
+                NotiBefore = pref.getInt("notiBefore",15);
+                notiTime.setText(String.valueOf(NotiBefore));
                 notiTime.setSelection(notiTime.length());
             }else{
                 Intent intent = new Intent(this, Main.class);
@@ -92,6 +94,21 @@ public class more_setting extends AppCompatActivity{
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    public void changeNotiSchedule(View v){
+        try {
+            EditText notiTime = (EditText) findViewById(R.id.notiTime);
+            NotiBefore = Integer.parseInt(notiTime.getText().toString());
+            clearAlarmNoti();
+            setNotiSchedule();
+
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putInt("notiBefore",NotiBefore);
+            editor.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void setProfile(){
@@ -169,11 +186,6 @@ public class more_setting extends AppCompatActivity{
             silent.setChecked(pref.getBoolean("silent",false));
     }
 
-    public void saveNotiTime(View v){
-        clearAlarmNoti();
-        setNotiSchedule();
-    }
-
     private void setNotiSchedule(){
         class GetDataJSON extends AsyncTask<String,Void,String> {
             HttpURLConnection urlConnection = null;
@@ -204,22 +216,12 @@ public class more_setting extends AppCompatActivity{
             protected void onPostExecute(String strJSON) {
                 try {
                     Log.i("Initial","Initial set notification for schedule...");
-                    SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
-                    Schedule_db.execSQL("DROP TABLE IF EXISTS Subject");
-                    Schedule_db.execSQL("DROP TABLE IF EXISTS Lecturer");
-                    Schedule_db.execSQL("DROP TABLE IF EXISTS Subject_Lecturer");
-                    Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Subject(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_start_time VARCHAR, subject_end_time VARCHAR, day_id INT(2));");
-                    Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Lecturer(lecturer_id VARCHAR, lecturer_prefix VARCHAR,lecturer_fristname VARCHAR, lecturer_lastname VARCHAR, lecturer_email VARCHAR, lecturer_phone VARCHAR, lecturer_image VARCHAR);");
-                    Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Subject_Lecturer(sl_id VARCHAR,subject_id VARCHAR, lecturer_id VARCHAR);");
                     JSONArray data = new JSONArray(strJSON);
                     Calendar calendar = Calendar.getInstance();
                     Date nDate;
                     int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
-                        Schedule_db.execSQL("INSERT INTO Subject VALUES('"+c.getString("subject_id")+"','"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("subject_start_time")+"','"+c.getString("subject_end_time")+"','"+c.getString("day_id")+"');");
-                        Schedule_db.execSQL("INSERT INTO Lecturer VALUES('"+c.getString("lecturer_id")+"','"+c.getString("lecturer_prefix")+"','"+c.getString("lecturer_fristname")+"','"+c.getString("lecturer_lastname")+"','"+c.getString("lecturer_email")+"','"+c.getString("lecturer_phone")+"','"+c.getString("lecturer_image")+"');");
-                        Schedule_db.execSQL("INSERT INTO Subject_Lecturer VALUES('"+c.getString("subject_lecturer_id")+"','"+c.getString("subject_id")+"','"+c.getString("lecturer_id")+"');");
                         nDate = calendar.getTime();
                         Date sDate = calendar.getTime();
                         int scheDayofweek = c.getInt("day_id");
@@ -232,8 +234,8 @@ public class more_setting extends AppCompatActivity{
                             long diffSec = sDate.getTime() - nDate.getTime();
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " เริ่มเรียนเวลา " + c.getString("subject_start_time") + " จนถึง " + c.getString("subject_end_time"),sDate.getTime())
-                                        , diffSec);
+                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
+                                        , (diffSec-(NotiBefore*1000)));
                             }
                         }else{
                             sDate.setDate(sDate.getDate()+diffDayofweek);
@@ -243,12 +245,11 @@ public class more_setting extends AppCompatActivity{
                             long diffSec = sDate.getTime() - nDate.getTime();
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " เริ่มเรียนเวลา " + c.getString("subject_start_time") + " จนถึง " + c.getString("subject_end_time"),sDate.getTime())
-                                        , diffSec);
+                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
+                                        , (diffSec-(NotiBefore*1000)));
                             }
                         }
                     }
-                    Schedule_db.close();
                     Log.i("Initial","Initial set notification for schedule success");
                 }catch (Exception e){
                     e.printStackTrace();
@@ -345,13 +346,11 @@ public class more_setting extends AppCompatActivity{
     }
 
     private void saveSetting(){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean("soundAndVibrate",sound.isChecked());
         editor.putBoolean("vibrate",vibrate.isChecked());
         editor.putBoolean("silent",silent.isChecked());
         editor.commit();
-        finish();
         if(sound.isChecked()){
             audioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
         }
