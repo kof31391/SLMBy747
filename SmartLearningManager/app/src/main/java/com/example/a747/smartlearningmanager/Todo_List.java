@@ -233,6 +233,11 @@ public class Todo_List extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void gotoAdd(View v){
+        Intent intent = new Intent(this,Todo_Add.class);
+        startActivity(intent);
+    }
+
 
     private void readItems() {
         File filesDir = getFilesDir();

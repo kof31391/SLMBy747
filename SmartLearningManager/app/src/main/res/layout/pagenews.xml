@@ -58,7 +58,7 @@
                             android:onClick="gotoAbout"
                             android:id="@+id/imageButton4"
                             android:src="@drawable/infow"
-                            android:background="#091534"
+                            style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                             android:layout_alignTop="@+id/textView"
                             android:layout_gravity="right" />
                     </LinearLayout>
@@ -75,7 +75,7 @@
                         android:layout_height="30dp"
                         android:id="@+id/imageButton9"
                         android:src="@drawable/homew"
-                        android:background="#091534"
+                        style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                         android:layout_alignParentBottom="true"
                         android:onClick="gotoHome"
                         />
@@ -85,7 +85,7 @@
                         android:layout_height="30dp"
                         android:id="@+id/imageButton15"
                         android:src="@drawable/rssbb"
-                        android:background="#091534"
+                        style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                         android:layout_marginLeft="30dp"
                         android:layout_alignTop="@+id/imageButton"
                         android:layout_toEndOf="@+id/imageButton" />
@@ -95,7 +95,7 @@
                         android:layout_height="30dp"
                         android:id="@+id/imageButton10"
                         android:src="@drawable/pencilw"
-                        android:background="#091534"
+                        style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                         android:layout_marginLeft="30dp"
                         android:layout_alignTop="@+id/imageButton"
                         android:layout_toEndOf="@+id/imageButton"
@@ -106,7 +106,7 @@
                         android:layout_height="30dp"
                         android:id="@+id/imageButton0"
                         android:src="@drawable/videow"
-                        android:background="#091534"
+                        style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                         android:layout_marginLeft="30dp"
                         android:onClick="gotoElean"
                         android:layout_alignTop="@+id/imageButton"
@@ -117,7 +117,7 @@
                         android:layout_height="30dp"
                         android:id="@+id/imageButton11"
                         android:src="@drawable/notiw"
-                        android:background="#091534"
+                        style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                         android:layout_marginLeft="30dp"
                         android:onClick="gotoNoti"
                         android:layout_alignTop="@+id/imageButton2"
@@ -129,7 +129,7 @@
                         android:layout_height="30dp"
                         android:id="@+id/imageButton12"
                         android:src="@drawable/morew"
-                        android:background="#091534"
+                        style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                         android:layout_marginLeft="30dp"
                         android:layout_alignTop="@+id/imageButton3"
                         android:layout_alignParentEnd="true"
@@ -182,15 +182,23 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentStart="true" />
 
-                    <Button
-                        style="?android:attr/buttonStyleInset"
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:text="refresh"
-                        android:id="@+id/refreshRSS"
-                        android:background="#f6ee00"
-                        android:layout_marginLeft="7dp"
-                        android:onClick="refreshRSS" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <ImageButton
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:onClick="refreshRSS"
+                            android:src="@drawable/refreshgray"
+                            style="@android:style/Widget.DeviceDefault.Light.ActionButton"
+                            android:id="@+id/imageButton28"
+                            android:layout_gravity="right" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

@@ -50,7 +50,7 @@
                         android:onClick="gotoAbout"
                         android:id="@+id/imageButton18"
                         android:src="@drawable/infow"
-                        android:background="#091534"
+                        style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                         android:layout_alignTop="@+id/textView"
                         android:layout_gravity="right" />
                 </LinearLayout>
@@ -67,7 +67,7 @@
                     android:layout_height="30dp"
                     android:id="@+id/imageButton9"
                     android:src="@drawable/homew"
-                    android:background="#091534"
+                    style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                     android:layout_alignParentBottom="true"
                     android:onClick="gotoHome"
                     />
@@ -77,7 +77,7 @@
                     android:layout_height="30dp"
                     android:id="@+id/imageButton15"
                     android:src="@drawable/rssw"
-                    android:background="#091534"
+                    style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                     android:layout_marginLeft="30dp"
                     android:layout_alignTop="@+id/imageButton"
                     android:layout_toEndOf="@+id/imageButton"
@@ -88,7 +88,7 @@
                     android:layout_height="30dp"
                     android:id="@+id/imageButton10"
                     android:src="@drawable/pencilw"
-                    android:background="#091534"
+                    style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                     android:layout_marginLeft="30dp"
                     android:layout_alignTop="@+id/imageButton"
                     android:layout_toEndOf="@+id/imageButton"
@@ -99,7 +99,7 @@
                     android:layout_height="30dp"
                     android:id="@+id/imageButton0"
                     android:src="@drawable/videow"
-                    android:background="#091534"
+                    style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                     android:layout_marginLeft="30dp"
                     android:onClick="gotoElean"
                     android:layout_alignTop="@+id/imageButton"
@@ -110,7 +110,7 @@
                     android:layout_height="30dp"
                     android:id="@+id/imageButton11"
                     android:src="@drawable/notiw"
-                    android:background="#091534"
+                    style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                     android:layout_marginLeft="30dp"
                     android:onClick="gotoNoti"
                     android:layout_alignTop="@+id/imageButton2"
@@ -122,7 +122,7 @@
                     android:layout_height="30dp"
                     android:id="@+id/imageButton12"
                     android:src="@drawable/moreb"
-                    android:background="#091534"
+                    style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                     android:layout_marginLeft="30dp"
                     android:layout_alignTop="@+id/imageButton3"
                     android:layout_alignParentEnd="true" />
@@ -181,7 +181,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-               android:layout_marginTop="1dp"
+                    android:layout_marginTop="1dp"
                     android:background="#ffff"
                     android:onClick="gotoProfile">
 
@@ -189,6 +189,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true">
 
@@ -236,7 +237,7 @@
                     android:layout_marginTop="10dp"
                     android:background="#ffffff"
                     android:gravity="center_vertical"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="30dp" >
 
                     <ImageButton
                         android:layout_width="20dp"
@@ -261,6 +262,30 @@
                         android:layout_alignParentStart="true" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:background="#ffffff"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="25dp" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="30dp"
+                        android:src="@drawable/muteb" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sound"
+                        android:textSize="14dp"
+                        android:textColor="#000000"
+                        android:paddingStart="18dp"/>
+
+                </LinearLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_marginTop="1dp"
@@ -268,13 +293,14 @@
                     android:background="#ffffff"
                     >
 
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:paddingTop="10dp">
+                       >
 
                         <RadioGroup
                             android:layout_width="match_parent"
@@ -282,17 +308,18 @@
                             >
 
                             <RadioButton
-                                android:text="Sound And Vibrate"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/soundAndVibrateSwitch"
-                                android:layout_weight="1" />
-
-                            <RadioButton
                                 android:text="Vibrate Only"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/vibrateSwitch"
+
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:text="Sound And Vibrate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/soundAndVibrateSwitch"
                                 android:layout_weight="1" />
 
                             <RadioButton
@@ -311,10 +338,35 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
+                    android:background="#ffffff"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="25dp" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="30dp"
+                        android:src="@drawable/classb" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Before Class"
+                        android:textColor="#000000"
+                        android:textSize="14dp"
+                        android:paddingStart="18dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="10dp"
+                    android:layout_marginTop="1dp"
                     android:background="#ffffff"
                     android:gravity="center_horizontal"
                     android:layout_weight="1">
@@ -323,6 +375,7 @@
                         android:text="TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="#000000"
                         android:id="@+id/textView10"
                         />
 
@@ -339,9 +392,10 @@
 
                     <Button
                         android:text="Submit"
-                        android:layout_width="75dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:onClick="changeNotiSchedule"
+                        android:textSize="12dp"
                         android:id="@+id/button2"
                         />
 

@@ -150,7 +150,7 @@ public class Todo_Edit extends AppCompatActivity {
         }else{
             AlertDialog alertDialog = new AlertDialog.Builder(Todo_Edit.this).create();
             alertDialog.setTitle("Alert: No Topic");
-            alertDialog.setMessage("Please Enter Topic.");
+            alertDialog.setMessage(" Please Enter Topic.");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
