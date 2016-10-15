@@ -3,6 +3,7 @@ package com.example.a747.smartlearningmanager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,74 +35,84 @@ public class Elearning extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.elearning);
-        getSchedule();
+        if(isNetworkConnected()) {
+            getSchedule();
 
-        expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
-        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
-        expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
-        expandableListView.setAdapter(expandableListAdapter);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
+            expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+            expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
+            expandableListView.setAdapter(expandableListAdapter);
+            expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Expanded.",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                final String subject = (String) expandableListAdapter.getChild(groupPosition, childPosition);
-                switch (subject){
-                    case "B.Sc.IT" :
-                        gotoAllSubject("B.Sc.IT");
-                        break;
-                    case "B.Sc.CS" :
-                        gotoAllSubject("B.Sc.CS");
-                        break;
-                    case "M.Sc.IT" :
-                        gotoAllSubject("M.Sc.IT");
-                        break;
-                    case "M.Sc.EM/M.Sc.BIS" :
-                        gotoAllSubject("M.Sc.EM/M.Sc.BIS");
-                        break;
-                    case "M.Sc.SE" :
-                        gotoAllSubject("M.Sc.SE");
-                        break;
-                    case "Event" :
-                        gotoAllSubject("Event");
-                        break;
-                    default :
-                        Intent intent = new Intent(Elearning.this, Subject_elearn.class);
-                        intent.putExtra("subject_id",mapSubject.get(subject));
-                        intent.putExtra("from","Elearning");
-                        Elearning.this.startActivity(intent);
-                        break;
+                @Override
+                public void onGroupExpand(int groupPosition) {
+                    Toast.makeText(getApplicationContext(),
+                            expandableListTitle.get(groupPosition) + " List Expanded.",
+                            Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(
-                        getApplicationContext(),
-                        expandableListTitle.get(groupPosition)
-                                + " -> "
-                                + expandableListDetail.get(
-                                expandableListTitle.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT
-                ).show();
-                return false;
-            }
-        });
+            });
+
+            expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+
+                @Override
+                public void onGroupCollapse(int groupPosition) {
+                    Toast.makeText(getApplicationContext(),
+                            expandableListTitle.get(groupPosition) + " List Collapsed.",
+                            Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+            expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                    final String subject = (String) expandableListAdapter.getChild(groupPosition, childPosition);
+                    switch (subject) {
+                        case "B.Sc.IT":
+                            gotoAllSubject("B.Sc.IT");
+                            break;
+                        case "B.Sc.CS":
+                            gotoAllSubject("B.Sc.CS");
+                            break;
+                        case "M.Sc.IT":
+                            gotoAllSubject("M.Sc.IT");
+                            break;
+                        case "M.Sc.EM/M.Sc.BIS":
+                            gotoAllSubject("M.Sc.EM/M.Sc.BIS");
+                            break;
+                        case "M.Sc.SE":
+                            gotoAllSubject("M.Sc.SE");
+                            break;
+                        case "Event":
+                            gotoAllSubject("Event");
+                            break;
+                        default:
+                            Intent intent = new Intent(Elearning.this, Subject_elearn.class);
+                            intent.putExtra("subject_id", mapSubject.get(subject));
+                            intent.putExtra("from", "Elearning");
+                            Elearning.this.startActivity(intent);
+                            break;
+                    }
+                    Toast.makeText(
+                            getApplicationContext(),
+                            expandableListTitle.get(groupPosition)
+                                    + " -> "
+                                    + expandableListDetail.get(
+                                    expandableListTitle.get(groupPosition)).get(
+                                    childPosition), Toast.LENGTH_SHORT
+                    ).show();
+                    return false;
+                }
+            });
+        }else{
+            Intent intent = new Intent(this, Main.class);
+            startActivity(intent);
+        }
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 
     public void getSchedule(){

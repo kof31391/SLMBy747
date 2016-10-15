@@ -1,12 +1,14 @@
 package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class News extends AppCompatActivity {
 
@@ -16,7 +18,6 @@ public class News extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news);
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             from = extras.getString("from");

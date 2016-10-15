@@ -16,6 +16,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.SystemClock;
@@ -30,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -60,24 +62,36 @@ public class more_setting extends AppCompatActivity{
     SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.more_setting);
+
         pref = getApplicationContext().getSharedPreferences("Student", 0);
         std_id = pref.getString("std_id", null);
         if(std_id != null){
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.more_setting);
-            sound = (RadioButton)findViewById(R.id.soundAndVibrateSwitch);
-            vibrate = (RadioButton)findViewById(R.id.vibrateSwitch);
-            silent = (RadioButton)findViewById(R.id.silent);
-            audioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
-            LoadSetting();
-            setProfile();
+            if(isNetworkConnected()) {
+                sound = (RadioButton) findViewById(R.id.soundAndVibrateSwitch);
+                vibrate = (RadioButton) findViewById(R.id.vibrateSwitch);
+                silent = (RadioButton) findViewById(R.id.silent);
+                audioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
+                LoadSetting();
+                setProfile();
+
+                EditText notiTime = (EditText)findViewById(R.id.notiTime);
+                notiTime.setText(""+pref.getInt("notiTime",15));
+                notiTime.setSelection(notiTime.length());
+            }else{
+                Intent intent = new Intent(this, Main.class);
+                startActivity(intent);
+            }
         }else{
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
         }
-        EditText notiTime = (EditText)findViewById(R.id.notiTime);
-        notiTime.setText(""+pref.getInt("notiTime",15));
-        notiTime.setSelection(notiTime.length());
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 
     private void setProfile(){
