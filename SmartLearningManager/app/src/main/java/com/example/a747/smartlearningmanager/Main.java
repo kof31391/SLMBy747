@@ -510,6 +510,10 @@ public class Main extends AppCompatActivity {
     }
 
     protected void refreshSchedule(View v){
+        Log.i("INFO", "Loading...");
+        dialog = new Dialog(this);
+        dialog = getDialogLoading();
+        dialog.show();
         Calendar calendar = Calendar.getInstance();
         int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
         nextday = nowDayfoweek;
@@ -517,6 +521,14 @@ public class Main extends AppCompatActivity {
         TableLayout tb_schedule = (TableLayout) findViewById(R.id.tb_schedule);
         tb_schedule.removeAllViews();
         getSchedule();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+            }
+        }, 1000);
+        Log.i("INFO", "Loading complete");
     }
 
     protected void nextSchedule(View v){
