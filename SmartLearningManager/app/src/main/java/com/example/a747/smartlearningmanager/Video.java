@@ -1,5 +1,6 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -49,7 +50,6 @@ public class Video extends AppCompatActivity {
     private VideoView video_view;
     private TextView timing;
     private Video_object video_object;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -276,6 +276,7 @@ public class Video extends AppCompatActivity {
                 ImageButton btn_fullscreen = (ImageButton) findViewById(R.id.btnFullscreen);
                 btn_fullscreen.setImageResource(R.drawable.fullscreen_exit);
 
+                getPreload();
                 setVideoDetail();
                 timing = (TextView) findViewById(R.id.timing);
                 video_view = (VideoView) findViewById(R.id.video_view);
