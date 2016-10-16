@@ -1,5 +1,6 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -7,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,11 +36,16 @@ import java.util.ArrayList;
 
 public class Page_news extends AppCompatActivity {
 
-    ArrayList<String> al_desc;
-    ArrayList<String> al_title;
+    private ArrayList<String> al_desc;
+    private ArrayList<String> al_title;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("INFO", "Loading...");
+        dialog = new Dialog(this);
+        dialog = getDialogLoading();
+        dialog.show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pagenews);
         if(isNetworkConnected()) {
@@ -46,11 +54,27 @@ public class Page_news extends AppCompatActivity {
             Intent intent = new Intent(this, Main.class);
             startActivity(intent);
         }
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+            }
+        }, 1000);
+        Log.i("INFO", "Loading complete");
     }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    private Dialog getDialogLoading(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.loading);
+        dialog.setCancelable(true);
+        return  dialog;
     }
 
     private void getRSS(){

@@ -83,7 +83,6 @@ public class Subject_elearnAll extends AppCompatActivity {
         department = intent.getExtras().getString("department");
 
         getSubjectDetial();
-        getEnrollment();
         getSubjectVideo();
         getMaterial();
     }
@@ -118,10 +117,6 @@ public class Subject_elearnAll extends AppCompatActivity {
             }
 
             protected void onPostExecute(String strJSON) {
-                Log.i("INFO", "Loading...");
-                dialog = new Dialog(Subject_elearnAll.this);
-                dialog = getDialogLoading();
-                dialog.show();
                 try{
                     Log.i("Setup", "Set video detail...");
                     JSONArray data = new JSONArray(strJSON);
@@ -162,14 +157,6 @@ public class Subject_elearnAll extends AppCompatActivity {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialog.cancel();
-                    }
-                }, 2000);
-                Log.i("INFO", "Loading complete");
             }
         }
         new GetDataJSON().execute();
@@ -264,6 +251,10 @@ public class Subject_elearnAll extends AppCompatActivity {
             }
 
             protected void onPostExecute(String strJSON) {
+                Log.i("INFO", "Loading...");
+                dialog = new Dialog(Subject_elearnAll.this);
+                dialog = getDialogLoading();
+                dialog.show();
                 try {
                     Log.i("Setup", "Set video detail...");
                     JSONArray data = new JSONArray(strJSON);
@@ -297,32 +288,31 @@ public class Subject_elearnAll extends AppCompatActivity {
                             row.addView(cell);
                             row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
                             tl_datelist.addView(row);
+
+                            TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
+                            tv_title_semester.setText(" Semester " +c.getString("enrollment_semester")+" / "+c.getString("enrollment_year"));
                         }
                         Elearning_db.close();
                     }else{
                         Toast.makeText(getApplicationContext(), "Not found", Toast.LENGTH_SHORT).show();
-                        last_enroll = 0;
-                        getEnrollment();
+                        getPastSubjectVideo2();
+                        dialog.cancel();
                     }
                     Log.i("Setup", "Set video detail success");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.cancel();
+                    }
+                }, 1000);
+                Log.i("INFO", "Loading complete");
             }
         }
         new GetDataJSON().execute();
-    }
-
-    protected void getEnrollment(){
-        Log.i("Setup", "Set enrollment...");
-        SQLiteDatabase Enrollment_db = openOrCreateDatabase("Enrollment", MODE_PRIVATE, null);
-        Cursor resultSet = Enrollment_db.rawQuery("SELECT * FROM Enrollment WHERE enrollment_id = (SELECT MAX(enrollment_id) FROM enrollment)-"+last_enroll+";", null);
-        resultSet.moveToFirst();
-        TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
-        tv_title_semester.setText(" Semester " + resultSet.getString(resultSet.getColumnIndex("enrollment_semester")) + "/" + resultSet.getString(resultSet.getColumnIndex("enrollment_year")));
-        resultSet.close();
-        Enrollment_db.close();
-        Log.i("Setup", "Set enrollment success");
     }
 
     public void getPastSubjectVideo(View v){
@@ -330,12 +320,23 @@ public class Subject_elearnAll extends AppCompatActivity {
         tl_datelist.removeAllViews();
         if(status.equalsIgnoreCase("n")){
             status = "p";
-            last_enroll = 1;
+            getSubjectVideo();
         }else{
             status = "n";
-            last_enroll = 0;
+            getSubjectVideo();
         }
-        getSubjectVideo();
+    }
+
+    public void getPastSubjectVideo2(){
+        TableLayout tl_datelist = (TableLayout) findViewById(R.id.tl_datelist);
+        tl_datelist.removeAllViews();
+        if(status.equalsIgnoreCase("n")){
+            status = "p";
+            getSubjectVideo();
+        }else{
+            status = "n";
+            getSubjectVideo();
+        }
     }
 
     public void gotoVideo(View v) {

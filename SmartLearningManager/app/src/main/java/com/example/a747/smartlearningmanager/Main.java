@@ -15,6 +15,8 @@ import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Parcelable;
 import android.os.StrictMode;
 import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
@@ -69,10 +71,15 @@ public class Main extends AppCompatActivity {
     private String department;
     private int last_noti_id;
     private int nextday = 0;
-    int diffday = 0;
+    private int diffday = 0;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("INFO", "Loading...");
+        dialog = new Dialog(this);
+        dialog = getDialogLoading();
+        dialog.show();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -108,6 +115,14 @@ public class Main extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.main);
         }
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+            }
+        }, 1000);
+        Log.i("INFO", "Loading complete");
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
@@ -122,6 +137,14 @@ public class Main extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private Dialog getDialogLoading(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.loading);
+        dialog.setCancelable(true);
+        return  dialog;
     }
 
     private void setProfile(){

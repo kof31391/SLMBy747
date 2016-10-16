@@ -1,14 +1,17 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
@@ -19,20 +22,23 @@ import java.util.List;
 import java.util.Map;
 
 public class Elearning extends AppCompatActivity {
-    Boolean isExpand = false;
-
-    List<String> thisyear = new ArrayList<>();
-    List<String> all = new ArrayList<>();
-
-    ExpandableListView expandableListView;
-    ExpandableListAdapter expandableListAdapter;
-    List<String> expandableListTitle;
-    HashMap<String, List<String>> expandableListDetail;
-
-    Map<String,String> mapSubject;
+    private Boolean isExpand = false;
+    private List<String> thisyear = new ArrayList<>();
+    private List<String> all = new ArrayList<>();
+    private ExpandableListView expandableListView;
+    private ExpandableListAdapter expandableListAdapter;
+    private List<String> expandableListTitle;
+    private HashMap<String, List<String>> expandableListDetail;
+    private Map<String,String> mapSubject;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("INFO", "Loading...");
+        dialog = new Dialog(this);
+        dialog = getDialogLoading();
+        dialog.show();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.elearning);
         if(isNetworkConnected()) {
@@ -108,11 +114,27 @@ public class Elearning extends AppCompatActivity {
             Intent intent = new Intent(this, Main.class);
             startActivity(intent);
         }
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+            }
+        }, 1000);
+        Log.i("INFO", "Loading complete");
     }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    private Dialog getDialogLoading(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.loading);
+        dialog.setCancelable(true);
+        return  dialog;
     }
 
     public void getSchedule(){

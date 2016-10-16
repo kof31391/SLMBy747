@@ -1,6 +1,7 @@
 package com.example.a747.smartlearningmanager;
 
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -53,16 +56,23 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class more_setting extends AppCompatActivity{
-    RadioButton sound;
-    RadioButton vibrate;
-    RadioButton silent;
-    AudioManager audioManager;
-    int last_noti_id;
-    String std_id;
-    int NotiBefore = 0;
-    SharedPreferences pref;
+    private RadioButton sound;
+    private RadioButton vibrate;
+    private RadioButton silent;
+    private AudioManager audioManager;
+    private int last_noti_id;
+    private String std_id;
+    private int NotiBefore = 0;
+    private SharedPreferences pref;
+    private Dialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("INFO", "Loading...");
+        dialog = new Dialog(this);
+        dialog = getDialogLoading();
+        dialog.show();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.more_setting);
 
@@ -89,11 +99,27 @@ public class more_setting extends AppCompatActivity{
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
         }
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+            }
+        }, 1000);
+        Log.i("INFO", "Loading complete");
     }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    private Dialog getDialogLoading(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.loading);
+        dialog.setCancelable(true);
+        return  dialog;
     }
 
     public void changeNotiSchedule(View v){

@@ -1,6 +1,7 @@
 package com.example.a747.smartlearningmanager;
 
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -9,17 +10,20 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 
 import android.view.View;
 
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -54,9 +58,14 @@ public class Todo_List extends AppCompatActivity {
     private SimpleDateFormat time = new SimpleDateFormat("HH:mm");
     private ArrayList<Integer> posTemp;
     private todoObj temps;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("INFO", "Loading...");
+        dialog = new Dialog(this);
+        dialog = getDialogLoading();
+        dialog.show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_list);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
@@ -92,8 +101,23 @@ public class Todo_List extends AppCompatActivity {
             setupListViewListener();
             registerForContextMenu(lvItems);
         }
-        }
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+            }
+        }, 1000);
+        Log.i("INFO", "Loading complete");
+    }
 
+    private Dialog getDialogLoading(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.loading);
+        dialog.setCancelable(true);
+        return  dialog;
+    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,

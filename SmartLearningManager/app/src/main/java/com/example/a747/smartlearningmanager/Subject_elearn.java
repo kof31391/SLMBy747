@@ -26,6 +26,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -38,6 +39,7 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -256,9 +258,6 @@ public class Subject_elearn extends AppCompatActivity {
                         if (c.getString("class_check_status").equalsIgnoreCase("F")) {
                             c_absent++;
                         }
-                        if(c_absent == 3){
-                            dialogAbsent();
-                        }
                         absent.setText(String.valueOf(c_absent));
                         String date_temp = c.getString("video_date");
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -287,6 +286,10 @@ public class Subject_elearn extends AppCompatActivity {
                     }
                 }, 2000);
                 Log.i("INFO", "Loading complete");
+                if(c_absent == 3){
+                    TextView tv_subjcode = (TextView) findViewById(R.id.subjCode);
+                    dialogAbsent(tv_subjcode.getText().toString()+" has been FE.");
+                }
             }
         }
         new GetDataJSON().execute();
@@ -300,16 +303,17 @@ public class Subject_elearn extends AppCompatActivity {
         return  dialog;
     }
 
-    private void dialogAbsent(){
+    private void dialogAbsent(String content){
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_absent);
         dialog.setCancelable(true);
+        TextView tv_content = (TextView) dialog.findViewById(R.id.tv_da_content);
+        tv_content.setText(content);
         Button done = (Button)dialog.findViewById(R.id.bt_da_done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Done", Toast.LENGTH_SHORT);
                 dialog.cancel();
             }
         });
@@ -350,6 +354,10 @@ public class Subject_elearn extends AppCompatActivity {
                 }
 
                 protected void onPostExecute(String strJSON) {
+                    Log.i("INFO", "Loading...");
+                    dialog = new Dialog(Subject_elearn.this);
+                    dialog = getDialogLoading();
+                    dialog.show();
                     try {
                         Log.i("Setup", "Set past video detail...");
                         JSONArray data = new JSONArray(strJSON);
@@ -392,10 +400,19 @@ public class Subject_elearn extends AppCompatActivity {
                             status = "n";
                             c_absent = 0;
                             getSubjectVideo();
+                            dialog.cancel();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.cancel();
+                        }
+                    }, 1000);
+                    Log.i("INFO", "Loading complete");
                 }
             }
             new GetDataJSON().execute();

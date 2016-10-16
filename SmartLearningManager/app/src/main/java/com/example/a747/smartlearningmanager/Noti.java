@@ -1,12 +1,16 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
@@ -32,9 +36,14 @@ public class Noti extends AppCompatActivity {
     private String stdid;
     private ArrayList<String> show;
     private ArrayList<Integer> pos = new ArrayList();
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("INFO", "Loading...");
+        dialog = new Dialog(this);
+        dialog = getDialogLoading();
+        dialog.show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.noti);
         lvitems = (MyListView)findViewById(R.id.noti);
@@ -52,6 +61,22 @@ public class Noti extends AppCompatActivity {
         lvitems.setAdapter(adapter);
         setupListViewListener();
         registerForContextMenu(lvitems);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+            }
+        }, 1000);
+        Log.i("INFO", "Loading complete");
+    }
+
+    private Dialog getDialogLoading(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.loading);
+        dialog.setCancelable(true);
+        return  dialog;
     }
 
     @Override
