@@ -1,5 +1,6 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -42,23 +45,24 @@ import java.text.SimpleDateFormat;
 
 public class Subject_elearnAll extends AppCompatActivity {
 
-    String std_id;
-    String subject_id;
-    String status = "n";
-    String telno;
-    String email;
-    String from;
-    String department;
-    int last_enroll = 0;
-    String lecturer_fristname;
-    TextView subjCode;
-    TextView lecturer;
-    TextView class_room;
-    TextView class_Time;
-    ImageButton imgB_call;
-    ImageButton imgB_mail;
-    ImageView lecturerImage;
-    TextView subjName;
+    private String std_id;
+    private String subject_id;
+    private String status = "n";
+    private String telno;
+    private String email;
+    private String from;
+    private String department;
+    private int last_enroll = 0;
+    private String lecturer_fristname;
+    private TextView subjCode;
+    private TextView lecturer;
+    private TextView class_room;
+    private TextView class_Time;
+    private ImageButton imgB_call;
+    private ImageButton imgB_mail;
+    private ImageView lecturerImage;
+    private TextView subjName;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +118,10 @@ public class Subject_elearnAll extends AppCompatActivity {
             }
 
             protected void onPostExecute(String strJSON) {
+                Log.i("INFO", "Loading...");
+                dialog = new Dialog(Subject_elearnAll.this);
+                dialog = getDialogLoading();
+                dialog.show();
                 try{
                     Log.i("Setup", "Set video detail...");
                     JSONArray data = new JSONArray(strJSON);
@@ -154,9 +162,25 @@ public class Subject_elearnAll extends AppCompatActivity {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.cancel();
+                    }
+                }, 2000);
+                Log.i("INFO", "Loading complete");
             }
         }
         new GetDataJSON().execute();
+    }
+
+    private Dialog getDialogLoading(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.loading);
+        dialog.setCancelable(true);
+        return  dialog;
     }
 
     private InputStream OpenHttpConnection(String urlString) throws IOException {

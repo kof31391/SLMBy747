@@ -1,5 +1,8 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.Dialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,17 +12,23 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -43,22 +52,23 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Subject_elearn extends AppCompatActivity {
-    String std_id;
-    String subject_id;
-    String status = "n";
-    String telno;
-    String watch_status;
-    String from;
-    int c_absent = 0;
-    TextView subjCode;
-    TextView lecturer;
-    TextView class_room;
-    TextView class_Time;
-    ImageButton imgB_call;
-    ImageButton imgB_mail;
-    ImageView lecturerImage;
-    TextView subjName;
-    TextView absent;
+    private String std_id;
+    private String subject_id;
+    private String status = "n";
+    private String telno;
+    private String watch_status;
+    private String from;
+    private int c_absent = 0;
+    private TextView subjCode;
+    private TextView lecturer;
+    private TextView class_room;
+    private TextView class_Time;
+    private ImageButton imgB_call;
+    private ImageButton imgB_mail;
+    private ImageView lecturerImage;
+    private TextView subjName;
+    private TextView absent;
+    private Dialog dialog;
 
 
     @Override
@@ -204,6 +214,10 @@ public class Subject_elearn extends AppCompatActivity {
             }
 
             protected void onPostExecute(String strJSON) {
+                Log.i("INFO", "Loading...");
+                dialog = new Dialog(Subject_elearn.this);
+                dialog = getDialogLoading();
+                dialog.show();
                 try {
                     Log.i("Setup", "Set video detail...");
                     JSONArray data = new JSONArray(strJSON);
@@ -239,9 +253,11 @@ public class Subject_elearn extends AppCompatActivity {
                             cell.setBackgroundColor(Color.parseColor("#FFADEBC7"));
                             watch_status = "Watched.";
                         }
-
                         if (c.getString("class_check_status").equalsIgnoreCase("F")) {
                             c_absent++;
+                        }
+                        if(c_absent == 3){
+                            dialogAbsent();
                         }
                         absent.setText(String.valueOf(c_absent));
                         String date_temp = c.getString("video_date");
@@ -263,9 +279,41 @@ public class Subject_elearn extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.cancel();
+                    }
+                }, 2000);
+                Log.i("INFO", "Loading complete");
             }
         }
         new GetDataJSON().execute();
+    }
+
+    private Dialog getDialogLoading(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.loading);
+        dialog.setCancelable(true);
+        return  dialog;
+    }
+
+    private void dialogAbsent(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_absent);
+        dialog.setCancelable(true);
+        Button done = (Button)dialog.findViewById(R.id.bt_da_done);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Done", Toast.LENGTH_SHORT);
+                dialog.cancel();
+            }
+        });
+        dialog.show();
     }
 
     public void getPastSubjectVideo(View v) {
