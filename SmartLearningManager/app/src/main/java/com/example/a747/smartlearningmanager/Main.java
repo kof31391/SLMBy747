@@ -27,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
@@ -296,7 +297,7 @@ public class Main extends AppCompatActivity {
                 }
             });
             title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-            title.setPadding(15, 20, 15, 20);
+            title.setPadding(30, 18, 30, 18);
             if ((i % 2) == 0) {
                 title.setBackgroundColor(Color.parseColor("#E6E6E6"));
             }
@@ -481,24 +482,31 @@ public class Main extends AppCompatActivity {
                         gotoSubjectElearn(v);
                     }
                 });
-                cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                 cell.setPadding(0, 8, 0, 8);
                 if ((i % 2) == 1) {
                     cell.setBackgroundColor(Color.parseColor("#E6E6E6"));
                 }
-                String result = "";
-                result += "  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
-                result += " ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-                result += "\n  Time:  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_start_time"));
-                result += " - ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_end_time"));
-                cell.setText(result);
+                String result = "<b>CODE: </b>"
+                        +resultSet.getString(resultSet.getColumnIndex("subject_code"))+"<br>"
+                        +"<b>NAME: </b>"
+                        +cutOverlayName(resultSet.getString(resultSet.getColumnIndex("subject_name")))+"<br>"
+                        +"<b>TIME: </b>"
+                        +resultSet.getString(resultSet.getColumnIndex("subject_start_time"))
+                        +" - "
+                        +resultSet.getString(resultSet.getColumnIndex("subject_end_time"))
+                        ;
+                cell.setText(Html.fromHtml(result));
+                if ((i % 2) == 1) {
+                    cell.setBackgroundColor(Color.parseColor("#CEE3F6"));
+                }else{
+                    cell.setBackgroundColor(Color.parseColor("#81BEF7"));
+                }
+                cell.setPadding(20,5,5,20);
                 cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
                 row.addView(cell);
-                row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT, 1f));
+                row.setPadding(0,15,0,0);
+                row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT,1f));
                 tb_schedule.addView(row);
                 resultSet.moveToNext();
             }
@@ -581,19 +589,26 @@ public class Main extends AppCompatActivity {
                 if ((i % 2) == 1) {
                     cell.setBackgroundColor(Color.parseColor("#E6E6E6"));
                 }
-                String result = "";
-                result += "  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
-                result += " ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-                result += "\n  Time:  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_start_time"));
-                result += " - ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_end_time"));
-                cell.setText(result);
+                String result = "<b>CODE: </b>"
+                        +resultSet.getString(resultSet.getColumnIndex("subject_code"))+"<br>"
+                        +"<b>NAME: </b>"
+                        +cutOverlayName(resultSet.getString(resultSet.getColumnIndex("subject_name")))+"<br>"
+                        +"<b>TIME: </b>"
+                        +resultSet.getString(resultSet.getColumnIndex("subject_start_time"))
+                        +" - "
+                        +resultSet.getString(resultSet.getColumnIndex("subject_end_time"))
+                        ;
+                cell.setText(Html.fromHtml(result));
+                if ((i % 2) == 1) {
+                    cell.setBackgroundColor(Color.parseColor("#CEE3F6"));
+                }else{
+                    cell.setBackgroundColor(Color.parseColor("#81BEF7"));
+                }
+                cell.setPadding(20,5,5,20);
                 cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
                 row.addView(cell);
-                row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT, 1f));
+                row.setPadding(0,15,0,0);
+                row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT,1f));
                 tb_schedule.addView(row);
                 resultSet.moveToNext();
             }
@@ -606,9 +621,9 @@ public class Main extends AppCompatActivity {
     }
 
     private void gotoSubjectElearn(View v){
-        String subject_code = ((TextView)v).getText().toString().substring(2,8);
         String temp = ((TextView)v).getText().toString();
-        String subject_start_time = temp.substring((temp.indexOf("Time:")+7),(temp.indexOf("Time:")+15));
+        String subject_code = temp.substring(temp.indexOf("CODE: ")+6,(temp.indexOf("\n")));
+        String subject_start_time = temp.substring((temp.indexOf("TIME: ")+6),(temp.indexOf("TIME: ")+14));
         SQLiteDatabase Subject_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
         Cursor resultSet = Subject_db.rawQuery("SELECT subject_id FROM Subject WHERE subject_code='"+subject_code+"' AND subject_start_time='"+subject_start_time+"';",null);
         resultSet.moveToFirst();
@@ -670,19 +685,26 @@ public class Main extends AppCompatActivity {
                 if ((i % 2) == 1) {
                     cell.setBackgroundColor(Color.parseColor("#E6E6E6"));
                 }
-                String result = "";
-                result += "  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_code"));
-                result += " ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_name"));
-                result += "\n  Time:  ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_start_time"));
-                result += " - ";
-                result += resultSet.getString(resultSet.getColumnIndex("subject_end_time"));
-                cell.setText(result);
+                String result = "<b>CODE: </b>"
+                        +resultSet.getString(resultSet.getColumnIndex("subject_code"))+"<br>"
+                        +"<b>NAME: </b>"
+                        +cutOverlayName(resultSet.getString(resultSet.getColumnIndex("subject_name")))+"<br>"
+                        +"<b>TIME: </b>"
+                        +resultSet.getString(resultSet.getColumnIndex("subject_start_time"))
+                        +" - "
+                        +resultSet.getString(resultSet.getColumnIndex("subject_end_time"))
+                ;
+                cell.setText(Html.fromHtml(result));
+                if ((i % 2) == 1) {
+                    cell.setBackgroundColor(Color.parseColor("#CEE3F6"));
+                }else{
+                    cell.setBackgroundColor(Color.parseColor("#81BEF7"));
+                }
+                cell.setPadding(20,5,5,20);
                 cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
                 row.addView(cell);
-                row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT, 1f));
+                row.setPadding(0,15,0,0);
+                row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT,1f));
                 tb_schedule.addView(row);
                 resultSet.moveToNext();
             }
@@ -692,6 +714,13 @@ public class Main extends AppCompatActivity {
             tb_schedule.removeAllViews();
             Log.i("Initial","Initial empty schedule");
         }
+    }
+
+    private String cutOverlayName(String text){
+        if(text.length() > 27 ){
+            text = text.substring(0,27)+"...";
+        }
+        return text;
     }
 
     private void onClickNews(View v){

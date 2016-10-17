@@ -215,6 +215,7 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/ll_absent"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:gravity="center_horizontal"
@@ -228,7 +229,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Absent"
                 android:textColor="#ffffff"
-                android:id="@+id/textView11" />
+                android:id="@+id/absent_tile" />
 
 
             <TextView

@@ -32,6 +32,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -278,6 +279,34 @@ public class Subject_elearn extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                if(c_absent == 0){
+                    LinearLayout ll_absent = (LinearLayout) findViewById(R.id.ll_absent);
+                    ll_absent.setBackgroundColor(Color.parseColor("#269900"));
+                    TextView tv_absent_tile = (TextView) findViewById(R.id.absent_tile);
+                    tv_absent_tile.setTextColor(Color.parseColor("#ffffff"));
+                    TextView tv_absent = (TextView) findViewById(R.id.absent);
+                    tv_absent.setBackgroundColor(Color.parseColor("#269900"));
+                    tv_absent.setTextColor(Color.parseColor("#ffffff"));
+                }else if(c_absent == 1){
+                    LinearLayout ll_absent = (LinearLayout) findViewById(R.id.ll_absent);
+                    ll_absent.setBackgroundColor(Color.parseColor("#ffff66"));
+                    TextView tv_absent_tile = (TextView) findViewById(R.id.absent_tile);
+                    tv_absent_tile.setTextColor(Color.parseColor("#4d4d4d"));
+                    TextView tv_absent = (TextView) findViewById(R.id.absent);
+                    tv_absent.setBackgroundColor(Color.parseColor("#ffff66"));
+                    tv_absent.setTextColor(Color.parseColor("#4d4d4d"));
+                }else if(c_absent == 2){
+                    LinearLayout ll_absent = (LinearLayout) findViewById(R.id.ll_absent);
+                    ll_absent.setBackgroundColor(Color.parseColor("#ffad33"));
+                    TextView tv_absent_tile = (TextView) findViewById(R.id.absent_tile);
+                    tv_absent_tile.setTextColor(Color.parseColor("#404040"));
+                    TextView tv_absent = (TextView) findViewById(R.id.absent);
+                    tv_absent.setBackgroundColor(Color.parseColor("#ffad33"));
+                    tv_absent.setTextColor(Color.parseColor("#404040"));
+                }else{
+                    TextView tv_subjcode = (TextView) findViewById(R.id.subjCode);
+                    dialogAbsent(tv_subjcode.getText().toString()+" has been FE.");
+                }
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -286,10 +315,6 @@ public class Subject_elearn extends AppCompatActivity {
                     }
                 }, 2000);
                 Log.i("INFO", "Loading complete");
-                if(c_absent == 3){
-                    TextView tv_subjcode = (TextView) findViewById(R.id.subjCode);
-                    dialogAbsent(tv_subjcode.getText().toString()+" has been FE.");
-                }
             }
         }
         new GetDataJSON().execute();
