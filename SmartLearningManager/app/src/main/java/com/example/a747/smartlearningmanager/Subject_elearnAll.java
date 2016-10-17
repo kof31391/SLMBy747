@@ -128,7 +128,7 @@ public class Subject_elearnAll extends AppCompatActivity {
                     subjCode.setText(c.getString("subject_code"));
                     subjName.setText(c.getString("subject_name"));
                     lecturer.setText((lecturer_fristname = c.getString("lecturer_fristname"))+" "+c.getString("lecturer_lastname"));
-                    class_Time.setText(c.getString("subject_start_time")+" - "+c.getString("subject_end_time"));
+                    class_Time.setText(c.getString("subject_start_time").substring(0,5)+" - "+c.getString("subject_end_time").substring(0,5));
                     telno = c.getString("lecturer_phone");
                     email = c.getString("lecturer_email");
                     imgB_call.setOnClickListener(new View.OnClickListener() {
@@ -283,7 +283,7 @@ public class Subject_elearnAll extends AppCompatActivity {
                             java.util.Date date = df.parse(date_temp);
                             df = new SimpleDateFormat("dd/MM/yyyy");
                             date_temp = df.format(date);
-                            cell.setText(date_temp + "  " + c.getString("subject_start_time"));
+                            cell.setText(date_temp + "  " + c.getString("subject_start_time").substring(0,5));
                             cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                             row.addView(cell);
                             row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
@@ -353,7 +353,7 @@ public class Subject_elearnAll extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String time = text.substring(12, 20);
+        String time = text.substring(12, 17)+":00";
         Cursor rs_elearning = Elearning_db.rawQuery("SELECT * FROM Elearning  WHERE video_date='" + date + "' AND subject_start_time='" + time + "';", null);
         rs_elearning.moveToFirst();
         String subject_id = rs_elearning.getString(rs_elearning.getColumnIndex("subject_id"));

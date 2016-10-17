@@ -108,7 +108,7 @@ public class Subject_elearn extends AppCompatActivity {
         subjName.setText(resultSet.getString(resultSet.getColumnIndex("subject_name")));
         lecturer.setText(resultSet.getString(resultSet.getColumnIndex("lecturer_fristname")) + " " + resultSet.getString(resultSet.getColumnIndex("lecturer_lastname")));
         //class_room.setText(resultSet.getString(resultSet.getColumnIndex("subject_room")));
-        class_Time.setText(resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
+        class_Time.setText(resultSet.getString(resultSet.getColumnIndex("subject_start_time")).substring(0,5) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")).substring(0,5));
         telno = resultSet.getString(resultSet.getColumnIndex("lecturer_phone"));
         imgB_call.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,7 +265,7 @@ public class Subject_elearn extends AppCompatActivity {
                         java.util.Date date = df.parse(date_temp);
                         df = new SimpleDateFormat("dd/MM/yyyy");
                         date_temp = df.format(date);
-                        cell.setText(date_temp + "  " + c.getString("subject_start_time") + " " + watch_status);
+                        cell.setText(date_temp + "  " + c.getString("subject_start_time").substring(0,5) + " " + watch_status);
                         cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                         row.addView(cell);
                         row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
@@ -411,7 +411,7 @@ public class Subject_elearn extends AppCompatActivity {
                                 java.util.Date date = df.parse(date_temp);
                                 df = new SimpleDateFormat("dd/MM/yyyy");
                                 date_temp = df.format(date);
-                                cell.setText(date_temp + "  " + c.getString("subject_start_time"));
+                                cell.setText(date_temp + "  " + c.getString("subject_start_time").substring(0,5));
                                 cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                                 row.addView(cell);
                                 row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
@@ -462,7 +462,7 @@ public class Subject_elearn extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String time = text.substring(12, 20);
+        String time = text.substring(12, 17)+":00";
         Cursor rs_elearning = Elearning_db.rawQuery("SELECT * FROM Elearning WHERE subject_id='" + subject_id + "' AND video_date='" + date + "' AND subject_start_time='" + time + "';", null);
         rs_elearning.moveToFirst();
         Cursor rs_subject = Subject_db.rawQuery("SELECT * FROM Subject WHERE subject_id='" + subject_id + "';", null);
