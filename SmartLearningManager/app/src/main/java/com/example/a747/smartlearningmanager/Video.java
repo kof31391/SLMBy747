@@ -280,7 +280,7 @@ public class Video extends AppCompatActivity {
                 setVideoDetail();
                 timing = (TextView) findViewById(R.id.timing);
                 video_view = (VideoView) findViewById(R.id.video_view);
-                video_view.setVideoURI(Uri.parse(e_link));
+                video_view.setVideoURI(Uri.parse(e_link.replaceAll(" ","%20")));
                 video_view.requestFocus();
                 video_view.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
@@ -341,6 +341,11 @@ public class Video extends AppCompatActivity {
                 Intent intent = new Intent(this, Subject_elearn.class);
                 intent.putExtra("subject_id",subject_id);
                 intent.putExtra("from",from);
+                startActivity(intent);
+            }else if(from.equalsIgnoreCase("Main")){
+                Intent intent = new Intent(this, Subject_elearn.class);
+                intent.putExtra("subject_id", subject_id);
+                intent.putExtra("from", from);
                 startActivity(intent);
             }else{
                 Intent intent = new Intent(this, Subject_elearnAll.class);
