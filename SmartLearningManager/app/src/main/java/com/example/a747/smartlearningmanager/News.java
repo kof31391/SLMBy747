@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,6 +31,8 @@ public class News extends AppCompatActivity {
 
             tv_title.setText(title);
             tv_desc.setText(Html.fromHtml(desc));
+            tv_desc.setClickable(true);
+            tv_desc.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 
