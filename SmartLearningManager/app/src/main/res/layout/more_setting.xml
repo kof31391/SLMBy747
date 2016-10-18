@@ -300,7 +300,7 @@
                         android:orientation="horizontal"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                       >
+                        >
 
                         <RadioGroup
                             android:layout_width="match_parent"
@@ -313,7 +313,8 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/vibrateSwitch"
 
-                                android:layout_weight="1" />
+                                android:layout_weight="1"
+                                style="@style/Widget.AppCompat.CompoundButton.RadioButton" />
 
                             <RadioButton
                                 android:text="Sound And Vibrate"
@@ -363,13 +364,13 @@
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:padding="10dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:paddingBottom="10dp"
+
                     android:layout_marginTop="1dp"
                     android:background="#ffffff"
-                    android:gravity="center_horizontal"
-                    android:layout_weight="1">
+                    android:gravity="center_horizontal">
 
                     <TextView
                         android:text="TextView"
@@ -385,48 +386,53 @@
                         android:inputType="numberDecimal"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                      android:background="@drawable/my_border"
+                        android:background="@drawable/my_border"
                         android:id="@+id/notiTime"
-                         />
+                        />
 
 
                     <Button
-                        android:text="Save"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
+                        android:text="Submit"
+                        android:layout_width="65dp"
+                        android:layout_height="30dp"
                         android:onClick="changeNotiSchedule"
-                        android:textSize="12dp"
+                        android:textSize="10dp"
                         android:id="@+id/button2"
-                        />
+                        style="@android:style/Widget.DeviceDefault.Button.Small" />
 
                 </LinearLayout>
 
-
-                <RelativeLayout
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="10dp"
-                    android:onClick="gotoProfile" >
+                    android:layout_marginTop="20dp"
+                    android:background="#ffffff"
+                    android:onClick="logout"
+                    android:gravity="center_vertical"
+                    android:layout_height="35dp" >
 
-                    <LinearLayout
+                    <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:src="@drawable/exitb"
+                        android:layout_marginLeft="10dp"
                         android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true" >
+                        android:layout_alignParentStart="true"
+                        android:background="#ffffff" />
 
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Logout"
-                            android:id="@+id/bt_logout"
-                            android:textColor="#ffffff"
-                            android:background="#0072bc"
-                            android:layout_gravity="right"
-                            android:onClick="logout" />
-                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Logout"
+                        android:layout_marginLeft="18dp"
+                        android:textColor="#000000"
+                        android:textSize="16dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true" />
+                </LinearLayout>
 
-                </RelativeLayout>
+
 
             </LinearLayout>
         </ScrollView>
