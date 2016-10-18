@@ -128,10 +128,12 @@ public class more_setting extends AppCompatActivity{
             NotiBefore = Integer.parseInt(notiTime.getText().toString());
             clearAlarmNoti();
             setNotiSchedule();
-
             SharedPreferences.Editor editor = pref.edit();
             editor.putInt("notiBefore",NotiBefore);
             editor.commit();
+            Toast.makeText(getApplicationContext(), "Save Settings",
+                    Toast.LENGTH_LONG).show();
+            saveSetting();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -332,41 +334,34 @@ public class more_setting extends AppCompatActivity{
     }
 
     public void gotoProfile(View v){
-        saveSetting();
         Intent intent = new Intent(this, Profile.class);
         startActivity(intent);
     }
     public void gotoTodo(View v){
-        saveSetting();
         Intent intent = new Intent(this, Todo_List.class);
         startActivity(intent);
     }
 
     public void gotoHome(View v){
-        saveSetting();
         Intent intent = new Intent(this, Main.class);
         startActivity(intent);
     }
 
     public void gotoNoti(View v){
-        saveSetting();
         Intent intent = new Intent(this, Noti.class);
         startActivity(intent);
     }
 
     public void gotoElean(View v){
-        saveSetting();
         Intent intent = new Intent(this, Elearning.class);
         startActivity(intent);
     }
 
     public void gotoAbout(View v){
-        saveSetting();
         Intent intent = new Intent(this,About.class);
         startActivity(intent);
     }
     public void gotopagenews(View v){
-        saveSetting();
         Intent intent = new Intent(this, Page_news.class);
         startActivity(intent);
     }
