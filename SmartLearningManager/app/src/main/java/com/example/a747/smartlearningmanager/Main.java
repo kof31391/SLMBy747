@@ -681,7 +681,7 @@ public class Main extends AppCompatActivity {
                         +resultSet.getString(resultSet.getColumnIndex("subject_start_time"))
                         +" - "
                         +resultSet.getString(resultSet.getColumnIndex("subject_end_time"))
-                ;
+                        ;
                 cell.setText(Html.fromHtml(result));
                 if ((i % 2) == 1) {
                     cell.setBackgroundColor(Color.parseColor("#CEE3F6"));
@@ -714,7 +714,7 @@ public class Main extends AppCompatActivity {
     private void onClickNews(View v){
         int idv = v.getId();
         String title = al_title.get(idv).toString();
-        String desc = android.text.Html.fromHtml(al_desc.get(idv).toString()).toString();
+        String desc = al_desc.get(idv).toString();
         Intent intent = new Intent(Main.this, News.class);
         intent.putExtra("from","Main");
         intent.putExtra("title",title);

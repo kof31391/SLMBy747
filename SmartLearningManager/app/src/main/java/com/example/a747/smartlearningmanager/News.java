@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,7 +29,7 @@ public class News extends AppCompatActivity {
             TextView tv_desc = (TextView) findViewById(R.id.tv_news_desc);
 
             tv_title.setText(title);
-            tv_desc.setText(desc);
+            tv_desc.setText(Html.fromHtml(desc));
         }
     }
 
