@@ -238,11 +238,15 @@ public class Todo_Edit extends AppCompatActivity {
             String title = temp.getTopic();
             String content = temp.getDesc();
             int id = temp.getNotiId();
-            if(temp.isFinish()==false) {
-                cancelNotification(getNotification(title,content,dateFuture.getTime()),id);
-                scheduleNotification(getNotification(title, content,dateFuture.getTime()), getSchedule(getTimeCurrent(), future));
-            }else{
-                cancelNotification(getNotification(title, content,dateFuture.getTime()),id);
+            Calendar c = Calendar.getInstance();
+            Date dateNow = c.getTime();
+            if(dateFuture.getTime()>dateNow.getTime()) {
+                if (temp.isFinish() == false) {
+                    cancelNotification(getNotification(title, content, dateFuture.getTime()), id);
+                    scheduleNotification(getNotification(title, content, dateFuture.getTime()), getSchedule(getTimeCurrent(), future));
+                } else {
+                    cancelNotification(getNotification(title, content, dateFuture.getTime()), id);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

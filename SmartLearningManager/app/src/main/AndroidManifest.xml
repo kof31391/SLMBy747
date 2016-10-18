@@ -39,6 +39,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Todo_Add"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Elearning"
@@ -48,6 +49,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Todo_Edit"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Profile"
