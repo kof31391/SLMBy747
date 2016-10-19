@@ -107,7 +107,7 @@ public class Subject_elearn extends AppCompatActivity {
         subjCode.setText(resultSet.getString(resultSet.getColumnIndex("subject_code")));
         subjName.setText(resultSet.getString(resultSet.getColumnIndex("subject_name")));
         lecturer.setText(resultSet.getString(resultSet.getColumnIndex("lecturer_fristname")) + " " + resultSet.getString(resultSet.getColumnIndex("lecturer_lastname")));
-        //class_room.setText(resultSet.getString(resultSet.getColumnIndex("subject_room")));
+        class_room.setText(resultSet.getString(resultSet.getColumnIndex("subject_room")));
         class_Time.setText(resultSet.getString(resultSet.getColumnIndex("subject_start_time")).substring(0,5) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")).substring(0,5));
         telno = resultSet.getString(resultSet.getColumnIndex("lecturer_phone"));
         imgB_call.setOnClickListener(new View.OnClickListener() {

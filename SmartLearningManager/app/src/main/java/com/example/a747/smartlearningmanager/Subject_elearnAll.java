@@ -127,6 +127,7 @@ public class Subject_elearnAll extends AppCompatActivity {
                     Subject_db.execSQL("INSERT INTO OtherSubject VALUES('" + c.getString("subject_id") + "','" + c.getString("subject_code") + "','" + c.getString("subject_name") + "','" + c.getString("subject_start_time") + "');");
                     subjCode.setText(c.getString("subject_code"));
                     subjName.setText(c.getString("subject_name"));
+                    class_room.setText(c.getString("subject_room"));
                     lecturer.setText((lecturer_fristname = c.getString("lecturer_fristname"))+" "+c.getString("lecturer_lastname"));
                     class_Time.setText(c.getString("subject_start_time").substring(0,5)+" - "+c.getString("subject_end_time").substring(0,5));
                     telno = c.getString("lecturer_phone");
