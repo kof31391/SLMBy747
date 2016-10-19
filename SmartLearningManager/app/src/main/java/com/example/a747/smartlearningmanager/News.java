@@ -49,6 +49,7 @@ public class News extends AppCompatActivity {
                     url.setClickable(true);
                     url.setMovementMethod(LinkMovementMethod.getInstance());
                 }
+
             }else{
                 tv_desc.setText(desc);
             }
