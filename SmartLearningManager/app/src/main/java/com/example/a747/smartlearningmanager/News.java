@@ -25,14 +25,27 @@ public class News extends AppCompatActivity {
             from = extras.getString("from");
             String title = extras.getString("title");
             String desc = extras.getString("desc");
-
+            String cutAttachment = desc;
+            String temp;
             TextView tv_title = (TextView) findViewById(R.id.tv_news_title);
             TextView tv_desc = (TextView) findViewById(R.id.tv_news_desc);
-
+            TextView url = ((TextView)findViewById(R.id.tv_news_url));
             tv_title.setText(title);
-            tv_desc.setText(Html.fromHtml(desc));
-            tv_desc.setClickable(true);
-            tv_desc.setMovementMethod(LinkMovementMethod.getInstance());
+            if(desc.contains("Attachment")) {
+                while (cutAttachment.contains("Attachment")) {
+                    cutAttachment = desc.substring(0, desc.indexOf("Attachment"));
+                    temp = desc.substring(desc.indexOf("KB") + 2, desc.length());
+                    while (temp.contains("KB")) {
+                        temp = temp.substring(temp.indexOf("KB") + 2, temp.length());
+                    }
+                    tv_desc.setText(cutAttachment);
+                    url.setText(Html.fromHtml(temp));
+                    url.setClickable(true);
+                    url.setMovementMethod(LinkMovementMethod.getInstance());
+                }
+            }else{
+                tv_desc.setText(desc);
+            }
         }
     }
 
