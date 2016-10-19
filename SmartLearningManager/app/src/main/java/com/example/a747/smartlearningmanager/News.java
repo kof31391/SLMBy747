@@ -1,7 +1,7 @@
 package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
-import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -12,9 +12,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class News extends AppCompatActivity {
 
     String from;
+    Boolean updateStatus = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,8 @@ public class News extends AppCompatActivity {
         if (extras != null) {
             from = extras.getString("from");
             String title = extras.getString("title");
+            System.out.println("Title: "+title);
+            RSS_UpdateCount(title);
             String desc = extras.getString("desc");
             String cutAttachment = desc;
             String temp;
@@ -38,9 +44,6 @@ public class News extends AppCompatActivity {
                     while (temp.contains("KB")) {
                         temp = temp.substring(temp.indexOf("KB") + 2, temp.length());
                     }
-                    if(temp.contains("pdf")){
-                        temp = temp.replace("pdf","pdf\n");
-                    }
                     tv_desc.setText(cutAttachment);
                     url.setText(Html.fromHtml(temp));
                     url.setClickable(true);
@@ -50,6 +53,42 @@ public class News extends AppCompatActivity {
                 tv_desc.setText(desc);
             }
         }
+    }
+
+    private void RSS_UpdateCount(String title){
+        class GetDataJSON extends AsyncTask<String,Void,String> {
+            HttpURLConnection urlConnection = null;
+            public String strJSON;
+            protected String doInBackground(String... params) {
+                try {
+                    URL url = new URL("http://54.169.58.93/RSS_UpdateCount.php?title="+params[0]);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    int code = urlConnection.getResponseCode();
+                    if(code==200){
+                        updateStatus = true;
+                    }else{
+                        updateStatus = false;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    urlConnection.disconnect();
+                }
+                return strJSON;
+            }
+            protected void onPostExecute(String strJSON) {
+                try{
+                    if(updateStatus == true){
+                        Toast.makeText(getApplicationContext(),"RSS updated", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(),"RSS not updated", Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        new GetDataJSON().execute(title.replaceAll(" ","%20"));
     }
 
     public void gotoHome(View v){
