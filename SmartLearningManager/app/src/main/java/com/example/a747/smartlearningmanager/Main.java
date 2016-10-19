@@ -479,6 +479,8 @@ public class Main extends AppCompatActivity {
                         +resultSet.getString(resultSet.getColumnIndex("subject_code"))+"<br>"
                         +"<b>NAME: </b>"
                         +cutOverlayName(resultSet.getString(resultSet.getColumnIndex("subject_name")))+"<br>"
+                        +"<b>ROOM: </b>"
+                        +cutOverlayName(resultSet.getString(resultSet.getColumnIndex("subject_room")))+"<br>"
                         +"<b>TIME: </b>"
                         +resultSet.getString(resultSet.getColumnIndex("subject_start_time"))
                         +" - "
@@ -581,6 +583,8 @@ public class Main extends AppCompatActivity {
                         +resultSet.getString(resultSet.getColumnIndex("subject_code"))+"<br>"
                         +"<b>NAME: </b>"
                         +cutOverlayName(resultSet.getString(resultSet.getColumnIndex("subject_name")))+"<br>"
+                        +"<b>ROOM: </b>"
+                        +cutOverlayName(resultSet.getString(resultSet.getColumnIndex("subject_room")))+"<br>"
                         +"<b>TIME: </b>"
                         +resultSet.getString(resultSet.getColumnIndex("subject_start_time"))
                         +" - "
@@ -677,6 +681,8 @@ public class Main extends AppCompatActivity {
                         +resultSet.getString(resultSet.getColumnIndex("subject_code"))+"<br>"
                         +"<b>NAME: </b>"
                         +cutOverlayName(resultSet.getString(resultSet.getColumnIndex("subject_name")))+"<br>"
+                        +"<b>ROOM: </b>"
+                        +cutOverlayName(resultSet.getString(resultSet.getColumnIndex("subject_room")))+"<br>"
                         +"<b>TIME: </b>"
                         +resultSet.getString(resultSet.getColumnIndex("subject_start_time"))
                         +" - "

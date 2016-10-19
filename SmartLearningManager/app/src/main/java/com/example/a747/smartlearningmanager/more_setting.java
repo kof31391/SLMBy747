@@ -398,22 +398,11 @@ public class more_setting extends AppCompatActivity{
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
-
         if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
                 && keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
             Log.d("CDA", "onKeyDown Called");
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.clear();
-            editor.commit();
-
-            SharedPreferences pref2 = getApplicationContext().getSharedPreferences("Initial", 0);
-            SharedPreferences.Editor editor2 = pref2.edit();
-            editor2.clear();
-            editor2.commit();
-
-            Intent setIntent = new Intent(Intent.ACTION_MAIN);
+            Intent setIntent = new Intent(this, Main.class);
             setIntent.addCategory(Intent.CATEGORY_HOME);
             setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(setIntent);

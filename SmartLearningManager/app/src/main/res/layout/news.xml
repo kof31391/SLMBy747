@@ -19,17 +19,6 @@
             android:padding="5dp"
             android:layout_height="wrap_content">
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/backtohome"
-                android:src="@drawable/backb"
-                android:layout_gravity="center_horizontal"
-                android:background="#091534"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:onClick="gotoHome"/>
-
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -60,6 +49,17 @@
                     android:layout_toEndOf="@+id/imageButton25" />
 
             </LinearLayout>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/backtohome"
+                android:src="@drawable/backb"
+                android:layout_gravity="center_horizontal"
+                android:background="#091534"
+                android:onClick="gotoHome"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true" />
 
         </RelativeLayout>
 

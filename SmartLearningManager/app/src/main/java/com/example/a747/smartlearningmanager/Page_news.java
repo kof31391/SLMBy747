@@ -198,7 +198,7 @@ public class Page_news extends AppCompatActivity {
     private void onClickNews(View v){
         int idv = v.getId();
         String title = al_title.get(idv).toString();
-        String desc = android.text.Html.fromHtml(al_desc.get(idv).toString()).toString();
+        String desc = al_desc.get(idv).toString();
         Intent intent = new Intent(Page_news.this, News.class);
         intent.putExtra("from","Page_news");
         intent.putExtra("title",title);
