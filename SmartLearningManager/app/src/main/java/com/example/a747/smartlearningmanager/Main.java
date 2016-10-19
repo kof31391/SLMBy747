@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -24,9 +25,11 @@ import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -518,6 +521,17 @@ public class Main extends AppCompatActivity {
             Schedule_db.close();
             Log.i("Initial","Initial get schedule success");
         }else{
+            TableLayout tb_schedule = (TableLayout) findViewById(R.id.tb_schedule);
+            TableRow row = new TableRow(this);
+            TextView cell = new TextView(this);
+            cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            cell.setTypeface(null, Typeface.BOLD);
+            cell.setText("No class");
+            cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
+            cell.setGravity(Gravity.CENTER);
+            row.addView(cell);
+            row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT,1f));
+            tb_schedule.addView(row);
             Log.i("Initial","Initial empty schedule");
         }
     }
@@ -623,6 +637,16 @@ public class Main extends AppCompatActivity {
             Log.i("Initial","Initial get next schedule success");
         }else{
             tb_schedule.removeAllViews();
+            TableRow row = new TableRow(this);
+            TextView cell = new TextView(this);
+            cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            cell.setTypeface(null, Typeface.BOLD);
+            cell.setText("No class");
+            cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
+            cell.setGravity(Gravity.CENTER);
+            row.addView(cell);
+            row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT,1f));
+            tb_schedule.addView(row);
             Log.i("Initial","Initial empty schedule");
         }
     }
@@ -721,6 +745,16 @@ public class Main extends AppCompatActivity {
             Log.i("Initial","Initial get next schedule success");
         }else{
             tb_schedule.removeAllViews();
+            TableRow row = new TableRow(this);
+            TextView cell = new TextView(this);
+            cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            cell.setTypeface(null, Typeface.BOLD);
+            cell.setText("No class");
+            cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT, 1f));
+            cell.setGravity(Gravity.CENTER);
+            row.addView(cell);
+            row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT,1f));
+            tb_schedule.addView(row);
             Log.i("Initial","Initial empty schedule");
         }
     }
