@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,6 +24,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
@@ -65,10 +67,12 @@ public class more_setting extends AppCompatActivity{
     private int NotiBefore = 0;
     private SharedPreferences pref;
     private Dialog dialog;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("INFO", "Loading...");
+        intent = new Intent(this, Login.class);
         dialog = new Dialog(this);
         dialog = getDialogLoading();
         dialog.show();
@@ -383,18 +387,31 @@ public class more_setting extends AppCompatActivity{
     }
 
     public void logout(View v){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.clear();
-        editor.commit();
+        new AlertDialog.Builder(more_setting.this)
+                .setTitle("Logout confirm ?")
+                .setMessage("Are you sure you want to logout?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.clear();
+                        editor.commit();
 
-        SharedPreferences pref2 = getApplicationContext().getSharedPreferences("Initial", 0);
-        SharedPreferences.Editor editor2 = pref2.edit();
-        editor2.clear();
-        editor2.commit();
+                        SharedPreferences pref2 = getApplicationContext().getSharedPreferences("Initial", 0);
+                        SharedPreferences.Editor editor2 = pref2.edit();
+                        editor2.clear();
+                        editor2.commit();
 
-        Intent intent = new Intent(this, Login.class);
-        startActivity(intent);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
