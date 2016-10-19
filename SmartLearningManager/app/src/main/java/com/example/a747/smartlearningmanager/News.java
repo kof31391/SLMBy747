@@ -38,6 +38,9 @@ public class News extends AppCompatActivity {
                     while (temp.contains("KB")) {
                         temp = temp.substring(temp.indexOf("KB") + 2, temp.length());
                     }
+                    if(temp.contains("pdf")){
+                        temp = temp.replace("pdf","pdf\n");
+                    }
                     tv_desc.setText(cutAttachment);
                     url.setText(Html.fromHtml(temp));
                     url.setClickable(true);
