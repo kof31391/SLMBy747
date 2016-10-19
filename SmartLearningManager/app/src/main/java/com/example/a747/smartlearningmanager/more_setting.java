@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -37,11 +36,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -324,10 +318,8 @@ public class more_setting extends AppCompatActivity{
 
     private void clearAlarmNoti(){
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
         Intent updateServiceIntent = new Intent(this, Main.class);
         PendingIntent pendingUpdateIntent = PendingIntent.getService(this, 0, updateServiceIntent, 0);
-
         // Cancel alarms
         try {
             alarmManager.cancel(pendingUpdateIntent);

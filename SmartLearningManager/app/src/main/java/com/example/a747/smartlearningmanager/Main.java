@@ -70,29 +70,22 @@ public class Main extends AppCompatActivity {
         dialog = new Dialog(this);
         dialog = getDialogLoading();
         dialog.show();
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
         SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         std_id = pref.getString("std_id", null);
-
         NotiBefore = pref.getInt("notiBefore",15);
-
         if(isNetworkConnected()){
             if(std_id != null){
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.main);
-
                 /*Initial*/
                 SharedPreferences prefInitial = getApplicationContext().getSharedPreferences("Initial", 0);
                 SharedPreferences.Editor editorInitial = prefInitial.edit();
                 String ini = prefInitial.getString("Initial",null);
-
                 Calendar c = Calendar.getInstance();
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 String strDate = df.format(c.getTime());
-
                 if(ini == null) {
                     clearAlarmNoti();
                     setProfile();
@@ -757,7 +750,6 @@ public class Main extends AppCompatActivity {
         last_noti_id++;
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, last_noti_id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         long futureInMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
@@ -784,10 +776,8 @@ public class Main extends AppCompatActivity {
 
     private void clearAlarmNoti(){
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
         Intent updateServiceIntent = new Intent(this, Main.class);
         PendingIntent pendingUpdateIntent = PendingIntent.getService(this, 0, updateServiceIntent, 0);
-
         // Cancel alarms
         try {
             alarmManager.cancel(pendingUpdateIntent);
@@ -843,20 +833,15 @@ class HandleXML {
     private String urlString = null;
     private XmlPullParserFactory xmlFactoryObject;
     public volatile boolean parsingComplete = true;
-
     ArrayList al_title = new ArrayList();
     ArrayList al_desc = new ArrayList();
-
     protected ArrayList getAl_desc(){
         return al_desc;
     }
     protected ArrayList getAl_title(){ return al_title; }
-
     private void parseXMLAndStoreIt(XmlPullParser myParser) {
-
         int event;
         String text = null;
-
         try {
             event = myParser.getEventType();
             while (event != XmlPullParser.END_DOCUMENT) {
@@ -893,26 +878,20 @@ class HandleXML {
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
-
                 try {
                     URL url = new URL(urlString);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
                     conn.setReadTimeout(10000 /* milliseconds */);
                     conn.setConnectTimeout(15000 /* milliseconds */);
                     conn.setRequestMethod("GET");
                     conn.setDoInput(true);
-
                     // Starts the query
                     conn.connect();
                     InputStream stream = conn.getInputStream();
-
                     xmlFactoryObject = XmlPullParserFactory.newInstance();
                     XmlPullParser myparser = xmlFactoryObject.newPullParser();
-
                     myparser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
                     myparser.setInput(stream, null);
-
                     parseXMLAndStoreIt(myparser);
                     stream.close();
                 }

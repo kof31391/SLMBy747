@@ -1,6 +1,5 @@
 package com.example.a747.smartlearningmanager;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;

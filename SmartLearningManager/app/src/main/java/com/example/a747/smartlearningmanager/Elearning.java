@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Elearning extends AppCompatActivity {
-    private Boolean isExpand = false;
     private List<String> thisyear = new ArrayList<>();
     private List<String> all = new ArrayList<>();
     private ExpandableListView expandableListView;
@@ -43,7 +42,6 @@ public class Elearning extends AppCompatActivity {
         setContentView(R.layout.elearning);
         if(isNetworkConnected()) {
             getSchedule();
-
             expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
             expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
             expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
@@ -68,7 +66,6 @@ public class Elearning extends AppCompatActivity {
 
                 }
             });
-
             expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {

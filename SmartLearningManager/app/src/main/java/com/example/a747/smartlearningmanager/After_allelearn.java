@@ -33,10 +33,8 @@ public class After_allelearn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.after_allelearn);
-
         Intent intent = getIntent();
         department = intent.getExtras().getString("department");
-
         setTitlebar();
         getDepSubject();
     }

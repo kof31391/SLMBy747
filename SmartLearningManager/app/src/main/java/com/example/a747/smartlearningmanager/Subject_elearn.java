@@ -87,13 +87,10 @@ public class Subject_elearn extends AppCompatActivity {
         imgB_mail = (ImageButton) findViewById(R.id.imgB_mail);
         lecturerImage = (ImageView) findViewById(R.id.lecturerImage);
         absent = (TextView) findViewById(R.id.absent);
-
         SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         std_id = pref.getString("std_id", null);
-
         Intent intent = getIntent();
         subject_id = intent.getExtras().getString("subject_id");
-
         getSubjectDetial();
         getSubjectVideo();
         getMaterial();
@@ -138,13 +135,10 @@ public class Subject_elearn extends AppCompatActivity {
     private InputStream OpenHttpConnection(String urlString) throws IOException {
         InputStream in = null;
         int response = -1;
-
         URL url = new URL(urlString);
         URLConnection conn = url.openConnection();
-
         if (!(conn instanceof HttpURLConnection))
             throw new IOException("Not an HTTP connection");
-
         try {
             HttpURLConnection httpConn = (HttpURLConnection) conn;
             httpConn.setAllowUserInteraction(false);
@@ -270,7 +264,6 @@ public class Subject_elearn extends AppCompatActivity {
                         row.addView(cell);
                         row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f));
                         tl_datelist.addView(row);
-
                         TextView tv_title_semester = (TextView) findViewById(R.id.title_semester);
                         tv_title_semester.setText(" semester "+c.getString("enrollment_semester")+" / "+c.getString("enrollment_year"));
                     }
@@ -353,7 +346,6 @@ public class Subject_elearn extends AppCompatActivity {
             class GetDataJSON extends AsyncTask<String, Void, String> {
                 HttpURLConnection urlConnection = null;
                 private String strJSON;
-
                 protected String doInBackground(String... params) {
                     try {
                         URL url = new URL("http://54.169.58.93/Elearning_DateList.php?student_id=" + std_id + "&subject_id=" + subject_id + "&status=" + status);
@@ -479,7 +471,6 @@ public class Subject_elearn extends AppCompatActivity {
         intent.putExtra("lecturer", lecturer.getText());
         intent.putExtra("subject_id",subject_id);
         intent.putExtra("from","Subject_elearn");
-
         try {
             URL url = new URL("http://54.169.58.93/Elearning_UpdateCount.php?video_id=" + rs_elearning.getString(rs_elearning.getColumnIndex("video_id")));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
