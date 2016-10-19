@@ -83,17 +83,35 @@ public class Main extends AppCompatActivity {
                 /*Initial*/
                 SharedPreferences prefInitial = getApplicationContext().getSharedPreferences("Initial", 0);
                 SharedPreferences.Editor editorInitial = prefInitial.edit();
-                String iniStatus = prefInitial.getString("Initial","");
-                if(!iniStatus.equals("Initialed")){
+                String ini = prefInitial.getString("Initial",null);
+
+                Calendar c = Calendar.getInstance();
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                String strDate = df.format(c.getTime());
+
+                if(ini == null) {
                     clearAlarmNoti();
                     setProfile();
                     getEnrollment();
                     setNotiSchedule();
-                    editorInitial.putString("Initial","Initialed");
+                    editorInitial.putString("Initial", strDate);
                     editorInitial.commit();
                 }else{
-                    getRSS();
-                    getSchedule();
+                    try {
+                        Date iDate = df.parse(ini);
+                        Date cDate = df.parse(strDate);
+                        if(iDate.getTime() < cDate.getTime()){
+                            setRSS();
+                            getRSS();
+                            getSchedule();
+                        }else{
+                            getRSS();
+                            getSchedule();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
             }else{
                 Intent intent = new Intent(this, Login.class);
