@@ -62,6 +62,7 @@ public class Main extends AppCompatActivity {
     private int nextday = 0;
     private int diffday = 0;
     private Dialog dialog;
+    private int NotiBefore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,9 @@ public class Main extends AppCompatActivity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
         std_id = pref.getString("std_id", null);
+
+        NotiBefore = pref.getInt("notiBefore",15);
+
         if(isNetworkConnected()){
             if(std_id != null){
                 super.onCreate(savedInstanceState);
@@ -421,8 +425,8 @@ public class Main extends AppCompatActivity {
                             long diffSec = sDate.getTime() - nDate.getTime();
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " เริ่มเรียนเวลา " + c.getString("subject_start_time") + " จนถึง " + c.getString("subject_end_time"),sDate.getTime())
-                                        , diffSec);
+                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
+                                        , (diffSec-(NotiBefore*1000)));
                             }
                         }else{
                             sDate.setDate(sDate.getDate()+diffDayofweek);
@@ -432,8 +436,8 @@ public class Main extends AppCompatActivity {
                             long diffSec = sDate.getTime() - nDate.getTime();
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " เริ่มเรียนเวลา " + c.getString("subject_start_time") + " จนถึง " + c.getString("subject_end_time"),sDate.getTime())
-                                        , diffSec);
+                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
+                                        , (diffSec-(NotiBefore*1000)));
                             }
                         }
                     }
