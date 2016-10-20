@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.media.MediaCodec;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
@@ -194,6 +195,7 @@ public class Video extends AppCompatActivity {
 
     protected void pause(View v){
         if(video_view.isPlaying()){
+            video_view.setKeepScreenOn(false);
             video_view.pause();
             ImageButton btn_play = (ImageButton) findViewById(R.id.btnPlay);
             btn_play.setImageResource(R.drawable.play);
@@ -251,6 +253,7 @@ public class Video extends AppCompatActivity {
                         seekBar.setMax(video_view.getDuration());
                         seekBar.postDelayed(onEverySecond, 1000);
                         video_view.getCurrentPosition();
+                        video_view.setKeepScreenOn(true);
                         video_view.start();
                         autoHideControl();
                     }
@@ -288,6 +291,7 @@ public class Video extends AppCompatActivity {
                         seekBar.setMax(video_view.getDuration());
                         seekBar.postDelayed(onEverySecond, 1000);
                         video_view.getCurrentPosition();
+                        video_view.setKeepScreenOn(true);
                         video_view.start();
                         autoHideControl();
                     }
