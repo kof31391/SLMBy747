@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -132,5 +133,18 @@ public class After_allelearn extends AppCompatActivity {
     protected void gotoElearn(View v){
         Intent intent = new Intent(this,Elearning.class);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            Log.d("CDA", "onKeyDown Called");
+            Intent intent = new Intent(this, Elearning.class);
+            startActivity(intent);
+            Log.i("GT", "Go to Main");
+        }
+        return true;
     }
 }

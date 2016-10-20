@@ -80,9 +80,9 @@ public class News extends AppCompatActivity {
             protected void onPostExecute(String strJSON) {
                 try{
                     if(updateStatus == true){
-                        Toast.makeText(getApplicationContext(),"RSS updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"News updated", Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(getApplicationContext(),"RSS not updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"News not updated", Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
                     e.printStackTrace();

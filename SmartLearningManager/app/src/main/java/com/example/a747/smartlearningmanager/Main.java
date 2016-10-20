@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -423,6 +424,7 @@ public class Main extends AppCompatActivity {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
                                         " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
                                         , (diffSec-(NotiBefore*1000)));
+                                Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
                             }
                         }else{
                             sDate.setDate(sDate.getDate()+diffDayofweek);
@@ -434,6 +436,13 @@ public class Main extends AppCompatActivity {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
                                         " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
                                         , (diffSec-(NotiBefore*1000)));
+                                Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
+                            }else{
+                                diffSec = diffSec+604800000; //add 1 week
+                                scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
+                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
+                                        , (diffSec-(NotiBefore*1000)));
+                                Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
                             }
                         }
                     }
@@ -505,11 +514,15 @@ public class Main extends AppCompatActivity {
                         +resultSet.getString(resultSet.getColumnIndex("subject_end_time"))
                         ;
                 cell.setText(Html.fromHtml(result));
+                GradientDrawable gd = new GradientDrawable();
                 if ((i % 2) == 1) {
-                    cell.setBackgroundColor(Color.parseColor("#CEE3F6"));
+                    gd.setColor(Color.parseColor("#CEE3F6"));
                 }else{
-                    cell.setBackgroundColor(Color.parseColor("#81BEF7"));
+                    gd.setColor(Color.parseColor("#81BEF7"));
                 }
+                gd.setCornerRadius(8);
+                gd.setStroke(1, 0xFF000000);
+                cell.setBackgroundDrawable(gd);
                 cell.setPadding(20,5,5,20);
                 cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
                 row.addView(cell);
@@ -620,11 +633,15 @@ public class Main extends AppCompatActivity {
                         +resultSet.getString(resultSet.getColumnIndex("subject_end_time"))
                         ;
                 cell.setText(Html.fromHtml(result));
+                GradientDrawable gd = new GradientDrawable();
                 if ((i % 2) == 1) {
-                    cell.setBackgroundColor(Color.parseColor("#CEE3F6"));
+                    gd.setColor(Color.parseColor("#CEE3F6"));
                 }else{
-                    cell.setBackgroundColor(Color.parseColor("#81BEF7"));
+                    gd.setColor(Color.parseColor("#81BEF7"));
                 }
+                gd.setCornerRadius(8);
+                gd.setStroke(1, 0xFF000000);
+                cell.setBackgroundDrawable(gd);
                 cell.setPadding(20,5,5,20);
                 cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
                 row.addView(cell);
@@ -728,11 +745,15 @@ public class Main extends AppCompatActivity {
                         +resultSet.getString(resultSet.getColumnIndex("subject_end_time"))
                         ;
                 cell.setText(Html.fromHtml(result));
+                GradientDrawable gd = new GradientDrawable();
                 if ((i % 2) == 1) {
-                    cell.setBackgroundColor(Color.parseColor("#CEE3F6"));
+                    gd.setColor(Color.parseColor("#CEE3F6"));
                 }else{
-                    cell.setBackgroundColor(Color.parseColor("#81BEF7"));
+                    gd.setColor(Color.parseColor("#81BEF7"));
                 }
+                gd.setCornerRadius(8);
+                gd.setStroke(1, 0xFF000000);
+                cell.setBackgroundDrawable(gd);
                 cell.setPadding(20,5,5,20);
                 cell.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f));
                 row.addView(cell);
@@ -786,7 +807,7 @@ public class Main extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, last_noti_id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         long futureInMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis,AlarmManager.INTERVAL_DAY*7, pendingIntent);
     }
 
     private Notification getNotification(String title, String content,long time) {

@@ -294,7 +294,7 @@ public class more_setting extends AppCompatActivity{
 
         long futureInMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis,AlarmManager.INTERVAL_DAY*7, pendingIntent);
     }
 
     private Notification getNotification(String title, String content, long time) {
