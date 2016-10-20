@@ -121,16 +121,12 @@ public class Page_news extends AppCompatActivity {
         Log.i("Initial","Initial get RSS success");
     }
 
-    protected void setRSS (){
-        LinearLayout ll_news = (LinearLayout) findViewById(R.id.ll_news);
-        ll_news.removeAllViews();
-
+    private void updateRSS(){
         class GetDataJSON extends AsyncTask<String,Void,String> {
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
-            String department = pref.getString("department",null);
-
-            HttpURLConnection urlConnection = null;
-            public String strJSON;
+            private SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
+            private String department = pref.getString("department",null);
+            private HttpURLConnection urlConnection = null;
+            String strJSON;
             protected String doInBackground(String... params) {
                 try {
                     if(department == null){
@@ -138,9 +134,10 @@ public class Page_news extends AppCompatActivity {
                         Cursor resultSet = Profile_db.rawQuery("SELECT * FROM Profile",null);
                         resultSet.moveToFirst();
                         department =  resultSet.getString(resultSet.getColumnIndex("department"));
+                        resultSet.close();
                         Profile_db.close();
                     }
-                    URL url = new URL("http://54.169.58.93/RSS_Feed.php?department="+department);
+                    URL url = new URL("http://54.169.58.93/RSS_UpdateFeed.php?department="+department+"&date="+params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -162,26 +159,47 @@ public class Page_news extends AppCompatActivity {
                 return strJSON;
             }
             protected void onPostExecute(String strJSON) {
-                Log.i("Initial","Initial set RSS...");
+                Log.i("INFO", "Loading...");
+                dialog = new Dialog(Page_news.this);
+                dialog = getDialogLoading();
+                dialog.show();
+                Log.i("Setup","RSS update...");
+                SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
                 try{
                     JSONArray data = new JSONArray(strJSON);
-                    SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
-                    RSS_db.execSQL("DROP TABLE IF EXISTS RSS");
-                    RSS_db.execSQL("CREATE TABLE IF NOT EXISTS RSS(id INT, title VARCHAR, description VARCHAR, pubDate DATE, count INT);");
-                    for(int i=0;i<data.length();i++){
-                        JSONObject c = data.getJSONObject(i);
-                        RSS_db.execSQL("INSERT INTO RSS(id, title, description, pubDate, count) SELECT * FROM (SELECT '"+c.getInt("rss_id")+"','"+encodeUnicode(c.getString("rss_title"))+"','"+encodeUnicode(c.getString("rss_description"))+"','"+c.getString("rss_createdate")+"','"+c.getInt("rss_count")+"') AS tmp WHERE NOT EXISTS (SELECT * FROM RSS WHERE id='"+c.getInt("rss_id")+"');");
-                        RSS_db.execSQL("UPDATE RSS SET count='"+c.getInt("rss_count")+"' WHERE id='"+c.getInt("rss_id")+"';");
+                    if(data.length()>0){
+                        for(int i=0;i<data.length();i++){
+                            JSONObject c = data.getJSONObject(i);
+                            RSS_db.execSQL("INSERT INTO RSS(id, title, description, pubDate, count) SELECT * FROM (SELECT '"+c.getInt("rss_id")+"','"+encodeUnicode(c.getString("rss_title"))+"','"+encodeUnicode(c.getString("rss_description"))+"','"+c.getString("rss_createdate")+"','"+c.getInt("rss_count")+"') AS tmp WHERE NOT EXISTS (SELECT * FROM RSS WHERE id='"+c.getInt("rss_id")+"');");
+                            RSS_db.execSQL("UPDATE RSS SET count='"+c.getInt("rss_count")+"' WHERE id='"+c.getInt("rss_id")+"';");
+                        }
+                        Log.i("Setup","RSS updated");
+                    }else{
+                        Log.i("Setup","RSS not updated");
                     }
-                    RSS_db.close();
-                }catch(Exception e){
+                }catch (Exception e){
                     e.printStackTrace();
+                }finally {
+                    RSS_db.close();
+                    getRSS();
                 }
-                Log.i("Initial","Initial set RSS success");
-                getRSS();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.cancel();
+                    }
+                }, 1000);
+                Log.i("INFO", "Loading complete");
             }
         }
-        new GetDataJSON().execute();
+        SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
+        Cursor resultSet = RSS_db.rawQuery("SELECT MAX(pubDate) FROM RSS;",null);
+        resultSet.moveToFirst();
+        String pubDate = resultSet.getString(resultSet.getColumnIndex("MAX(pubDate)"));
+        resultSet.close();
+        RSS_db.close();
+        new GetDataJSON().execute(pubDate);
     }
 
     private String encodeUnicode(String str) {
@@ -208,8 +226,7 @@ public class Page_news extends AppCompatActivity {
     }
 
     public void refreshRSS(View v){
-        setRSS();
-        getRSS();
+        updateRSS();
     }
 
     @Override

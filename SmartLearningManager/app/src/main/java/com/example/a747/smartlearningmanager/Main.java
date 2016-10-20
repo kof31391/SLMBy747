@@ -30,7 +30,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -102,9 +101,9 @@ public class Main extends AppCompatActivity {
                         Date iDate = df.parse(ini);
                         Date cDate = df.parse(strDate);
                         if(iDate.getTime() < cDate.getTime()){
-                            setRSS();
-                            getRSS();
-                            getSchedule();
+                            updateRSS();
+                            editorInitial.putString("Initial", strDate);
+                            editorInitial.commit();
                         }else{
                             getRSS();
                             getSchedule();
@@ -263,6 +262,76 @@ public class Main extends AppCompatActivity {
             }
         }
         new GetDataJSON().execute();
+    }
+
+    private void updateRSS(){
+        class GetDataJSON extends AsyncTask<String,Void,String> {
+            private SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
+            private String department = pref.getString("department",null);
+            private HttpURLConnection urlConnection = null;
+            String strJSON;
+            protected String doInBackground(String... params) {
+                try {
+                    if(department == null){
+                        SQLiteDatabase Profile_db = openOrCreateDatabase("Profile",MODE_PRIVATE,null);
+                        Cursor resultSet = Profile_db.rawQuery("SELECT * FROM Profile",null);
+                        resultSet.moveToFirst();
+                        department =  resultSet.getString(resultSet.getColumnIndex("department"));
+                        resultSet.close();
+                        Profile_db.close();
+                    }
+                    URL url = new URL("http://54.169.58.93/RSS_UpdateFeed.php?department="+department+"&date="+params[0]);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    int code = urlConnection.getResponseCode();
+                    if(code==200){
+                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                        if (in != null) {
+                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+                            String line;
+                            while ((line = bufferedReader.readLine()) != null)
+                                strJSON = line;
+                        }
+                        in.close();
+                    }
+                    return strJSON;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    urlConnection.disconnect();
+                }
+                return strJSON;
+            }
+            protected void onPostExecute(String strJSON) {
+                Log.i("Setup","RSS update...");
+                SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
+                try{
+                    JSONArray data = new JSONArray(strJSON);
+                    if(data.length()>0){
+                        for(int i=0;i<data.length();i++){
+                            JSONObject c = data.getJSONObject(i);
+                            RSS_db.execSQL("INSERT INTO RSS(id, title, description, pubDate, count) SELECT * FROM (SELECT '"+c.getInt("rss_id")+"','"+encodeUnicode(c.getString("rss_title"))+"','"+encodeUnicode(c.getString("rss_description"))+"','"+c.getString("rss_createdate")+"','"+c.getInt("rss_count")+"') AS tmp WHERE NOT EXISTS (SELECT * FROM RSS WHERE id='"+c.getInt("rss_id")+"');");
+                            RSS_db.execSQL("UPDATE RSS SET count='"+c.getInt("rss_count")+"' WHERE id='"+c.getInt("rss_id")+"';");
+                        }
+                        Log.i("Setup","RSS updated");
+                    }else{
+                        Log.i("Setup","RSS not updated");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    RSS_db.close();
+                    getRSS();
+                    getSchedule();
+                }
+            }
+        }
+        SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
+        Cursor resultSet = RSS_db.rawQuery("SELECT MAX(pubDate) FROM RSS;",null);
+        resultSet.moveToFirst();
+        String pubDate = resultSet.getString(resultSet.getColumnIndex("MAX(pubDate)"));
+        resultSet.close();
+        RSS_db.close();
+        new GetDataJSON().execute(pubDate);
     }
 
     private String encodeUnicode(String str) {

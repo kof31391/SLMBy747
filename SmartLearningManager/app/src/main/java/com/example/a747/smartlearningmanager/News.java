@@ -1,6 +1,8 @@
 package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +39,11 @@ public class News extends AppCompatActivity {
             TextView tv_desc = (TextView) findViewById(R.id.tv_news_desc);
             TextView url = ((TextView)findViewById(R.id.tv_news_url));
             tv_title.setText(title);
+            GradientDrawable gd = new GradientDrawable();
+            gd.setColor(Color.parseColor("#BEBEBE"));
+            gd.setCornerRadius(8);
+            gd.setStroke(1, 0xFF000000);
+            tv_title.setBackgroundDrawable(gd);
             if(desc.contains("Attachment")) {
                 while (cutAttachment.contains("Attachment")) {
                     cutAttachment = desc.substring(0, desc.indexOf("Attachment"));
