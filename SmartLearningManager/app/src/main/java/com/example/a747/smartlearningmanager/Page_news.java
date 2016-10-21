@@ -38,6 +38,7 @@ public class Page_news extends AppCompatActivity {
 
     private ArrayList<String> al_desc;
     private ArrayList<String> al_title;
+    private ArrayList<String> al_pubDate;
     private Dialog dialog;
 
     @Override
@@ -80,13 +81,15 @@ public class Page_news extends AppCompatActivity {
     private void getRSS(){
         Log.i("Initial","Initial get RSS...");
         SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
-        Cursor resultSet = RSS_db.rawQuery("SELECT title, description FROM RSS;",null);
+        Cursor resultSet = RSS_db.rawQuery("SELECT title, description, pubDate FROM RSS;",null);
         resultSet.moveToFirst();
         al_title = new ArrayList();
         al_desc = new ArrayList();
+        al_pubDate = new ArrayList();
         while(!resultSet.isAfterLast()){
             al_title.add(resultSet.getString(resultSet.getColumnIndex("title")));
             al_desc.add(resultSet.getString(resultSet.getColumnIndex("description")));
+            al_pubDate.add(resultSet.getString(resultSet.getColumnIndex("pubDate")));
             resultSet.moveToNext();
         }
         RSS_db.close();
@@ -217,10 +220,12 @@ public class Page_news extends AppCompatActivity {
         int idv = v.getId();
         String title = al_title.get(idv).toString();
         String desc = al_desc.get(idv).toString();
+        String pubDate = al_pubDate.get(idv).toString();
         Intent intent = new Intent(Page_news.this, News.class);
         intent.putExtra("from","Page_news");
         intent.putExtra("title",title);
         intent.putExtra("desc", desc);
+        intent.putExtra("pubDate", pubDate);
         startActivity(intent);
         Log.i("OC","On click news");
     }

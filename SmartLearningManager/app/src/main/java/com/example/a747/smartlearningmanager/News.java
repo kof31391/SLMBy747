@@ -2,6 +2,7 @@ package com.example.a747.smartlearningmanager;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -16,6 +18,9 @@ import android.widget.Toast;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class News extends AppCompatActivity {
 
@@ -30,15 +35,27 @@ public class News extends AppCompatActivity {
         if (extras != null) {
             from = extras.getString("from");
             String title = extras.getString("title");
-            System.out.println("Title: "+title);
             RSS_UpdateCount(title);
             String desc = extras.getString("desc");
             String cutAttachment = desc;
+            String pubDate = extras.getString("pubDate");
+            DateFormat inputPattern = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat outputPattern = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = null;
+            String sDate = null;
+            try{
+                date = inputPattern.parse(pubDate);
+                sDate = outputPattern.format(date);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             String temp;
             TextView tv_title = (TextView) findViewById(R.id.tv_news_title);
             TextView tv_desc = (TextView) findViewById(R.id.tv_news_desc);
             TextView url = ((TextView)findViewById(R.id.tv_news_url));
+            TextView tv_pubDate = (TextView) findViewById(R.id.tv_news_pubDate);
             tv_title.setText(title);
+            tv_pubDate.setText("Date: "+sDate);
             GradientDrawable gd = new GradientDrawable();
             gd.setColor(Color.parseColor("#BEBEBE"));
             gd.setCornerRadius(8);
