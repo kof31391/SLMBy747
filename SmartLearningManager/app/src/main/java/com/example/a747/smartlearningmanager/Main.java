@@ -53,6 +53,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main extends AppCompatActivity {
 
@@ -86,32 +88,17 @@ public class Main extends AppCompatActivity {
                 SharedPreferences prefInitial = getApplicationContext().getSharedPreferences("Initial", 0);
                 SharedPreferences.Editor editorInitial = prefInitial.edit();
                 String ini = prefInitial.getString("Initial",null);
-                Calendar c = Calendar.getInstance();
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                String strDate = df.format(c.getTime());
                 if(ini == null) {
                     clearAlarmNoti();
                     setProfile();
                     getEnrollment();
                     setNotiSchedule();
-                    editorInitial.putString("Initial", strDate);
+                    setTimerUpdate();
+                    editorInitial.putString("Initial", "Initial");
                     editorInitial.commit();
                 }else{
-                    try {
-                        Date iDate = df.parse(ini);
-                        Date cDate = df.parse(strDate);
-                        if(iDate.getTime() < cDate.getTime()){
-                            updateRSS();
-                            editorInitial.putString("Initial", strDate);
-                            editorInitial.commit();
-                        }else{
-                            getRSS();
-                            getSchedule();
-                        }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
+                    getRSS();
+                    getSchedule();
                 }
             }else{
                 Intent intent = new Intent(this, Login.class);
@@ -131,6 +118,37 @@ public class Main extends AppCompatActivity {
         }, 1000);
         Log.i("INFO", "Loading complete");
     }
+
+    private void setTimerUpdate(){
+        Log.i("Initial","Initial timer...");
+        Timer canceTimer = new Timer("SIX-AM");
+        canceTimer.cancel();
+        canceTimer = new Timer("SIX-PM");
+        canceTimer.cancel();
+        Timer timer = new Timer("SIX-AM");
+        TimerTask task1 = new TimerTask() {
+            @Override
+            public void run() {
+                    updateRSS();
+            }
+        };
+        Date updateDate = new Date();
+        updateDate.setHours(6);
+        updateDate.setMinutes(1);
+        timer.schedule(task1,updateDate);
+        timer = new Timer("SIX-PM");
+        TimerTask task2 = new TimerTask() {
+            @Override
+            public void run() {
+                updateRSS();
+            }
+        };
+        updateDate.setHours(18);
+        updateDate.setMinutes(0);
+        timer.schedule(task2,updateDate);
+        Log.i("Initial","Initial timer success");
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
@@ -321,7 +339,6 @@ public class Main extends AppCompatActivity {
                 }finally {
                     RSS_db.close();
                     getRSS();
-                    getSchedule();
                 }
             }
         }

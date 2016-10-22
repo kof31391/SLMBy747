@@ -50,6 +50,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Timer;
 
 public class more_setting extends AppCompatActivity{
     private RadioButton sound;
@@ -378,6 +379,13 @@ public class more_setting extends AppCompatActivity{
         }
     }
 
+    private void removeAllTimer(){
+        Timer canceTimer = new Timer("SIX-AM");
+        canceTimer.cancel();
+        canceTimer = new Timer("SIX-PM");
+        canceTimer.cancel();
+    }
+
     public void logout(View v){
         new AlertDialog.Builder(more_setting.this)
                 .setTitle("Logout confirm ?")
@@ -394,7 +402,10 @@ public class more_setting extends AppCompatActivity{
                         editor2.clear();
                         editor2.commit();
 
+                        removeAllTimer();
+
                         startActivity(intent);
+
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
