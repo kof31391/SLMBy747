@@ -329,6 +329,9 @@ public class Main extends AppCompatActivity {
                             JSONObject c = data.getJSONObject(i);
                             RSS_db.execSQL("INSERT INTO RSS(id, title, description, pubDate, count) SELECT * FROM (SELECT '"+c.getInt("rss_id")+"','"+encodeUnicode(c.getString("rss_title"))+"','"+encodeUnicode(c.getString("rss_description"))+"','"+c.getString("rss_createdate")+"','"+c.getInt("rss_count")+"') AS tmp WHERE NOT EXISTS (SELECT * FROM RSS WHERE id='"+c.getInt("rss_id")+"');");
                             RSS_db.execSQL("UPDATE RSS SET count='"+c.getInt("rss_count")+"' WHERE id='"+c.getInt("rss_id")+"';");
+                            Calendar calendar = Calendar.getInstance();
+                            Notification notification = getNotification("SLM: New news",c.getString("rss_title"),calendar.getTimeInMillis());
+                            notification.notify();
                         }
                         Log.i("Setup","RSS updated");
                     }else{
