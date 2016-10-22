@@ -79,6 +79,9 @@ public class News extends AppCompatActivity {
                 tv_desc.setClickable(true);
                 tv_desc.setMovementMethod(LinkMovementMethod.getInstance());
             }
+            if(tv_desc.getText().length() == 1){
+                tv_desc.setVisibility(View.GONE);
+            }
         }
     }
 
