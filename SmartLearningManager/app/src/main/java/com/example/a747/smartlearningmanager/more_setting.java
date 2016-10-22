@@ -262,7 +262,7 @@ public class more_setting extends AppCompatActivity{
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
                                         " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
-                                        , (diffSec-(NotiBefore*1000)));
+                                        , (diffSec-(NotiBefore*60000)));
                             }
                         }else{
                             sDate.setDate(sDate.getDate()+diffDayofweek);
@@ -273,7 +273,7 @@ public class more_setting extends AppCompatActivity{
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
                                         " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
-                                        , (diffSec-(NotiBefore*1000)));
+                                        , (diffSec-(NotiBefore*60000)));
                             }
                         }
                     }

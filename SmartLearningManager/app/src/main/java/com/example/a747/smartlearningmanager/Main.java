@@ -3,6 +3,7 @@ package com.example.a747.smartlearningmanager;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -60,6 +61,7 @@ public class Main extends AppCompatActivity {
 
     ArrayList<String> al_desc;
     ArrayList<String> al_title;
+    ArrayList<String> al_pubDate;
 
     private String std_id;
     private String department;
@@ -265,7 +267,7 @@ public class Main extends AppCompatActivity {
                     JSONArray data = new JSONArray(strJSON);
                     SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
                     RSS_db.execSQL("DROP TABLE IF EXISTS RSS");
-                    RSS_db.execSQL("CREATE TABLE IF NOT EXISTS RSS(id INT, title VARCHAR, description VARCHAR, pubDate DATE, count INT);");
+                    RSS_db.execSQL("CREATE TABLE IF NOT EXISTS RSS(id INT, title VARCHAR, description VARCHAR, pubDate DATETIME, count INT);");
                     for(int i=0;i<data.length();i++){
                         JSONObject c = data.getJSONObject(i);
                         RSS_db.execSQL("INSERT INTO RSS(id, title, description, pubDate, count) SELECT * FROM (SELECT '"+c.getInt("rss_id")+"','"+encodeUnicode(c.getString("rss_title"))+"','"+encodeUnicode(c.getString("rss_description"))+"','"+c.getString("rss_createdate")+"','"+c.getInt("rss_count")+"') AS tmp WHERE NOT EXISTS (SELECT * FROM RSS WHERE id='"+c.getInt("rss_id")+"');");
@@ -298,7 +300,7 @@ public class Main extends AppCompatActivity {
                         resultSet.close();
                         Profile_db.close();
                     }
-                    URL url = new URL("http://54.169.58.93/RSS_UpdateFeed.php?department="+department+"&date="+params[0]);
+                    URL url = new URL("http://54.169.58.93/RSS_UpdateFeed.php?department="+department+"&date="+params[0].replaceAll(" ","%20"));
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -331,7 +333,8 @@ public class Main extends AppCompatActivity {
                             RSS_db.execSQL("UPDATE RSS SET count='"+c.getInt("rss_count")+"' WHERE id='"+c.getInt("rss_id")+"';");
                             Calendar calendar = Calendar.getInstance();
                             Notification notification = getNotification("SLM: New news",c.getString("rss_title"),calendar.getTimeInMillis());
-                            notification.notify();
+                            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                            notificationManager.notify(1000,notification);
                         }
                         Log.i("Setup","RSS updated");
                     }else{
@@ -368,13 +371,15 @@ public class Main extends AppCompatActivity {
     private void getRSS(){
         Log.i("Initial","Initial get RSS...");
         SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
-        Cursor resultSet = RSS_db.rawQuery("SELECT title, description FROM RSS ORDER BY count DESC LIMIT 7;",null);
+        Cursor resultSet = RSS_db.rawQuery("SELECT title, description, pubDate FROM RSS ORDER BY count DESC LIMIT 7;",null);
         resultSet.moveToFirst();
         al_title = new ArrayList();
         al_desc = new ArrayList();
+        al_pubDate = new ArrayList<>();
         while(!resultSet.isAfterLast()){
             al_title.add(resultSet.getString(resultSet.getColumnIndex("title")));
             al_desc.add(resultSet.getString(resultSet.getColumnIndex("description")));
+            al_pubDate.add(resultSet.getString(resultSet.getColumnIndex("pubDate")));
             resultSet.moveToNext();
         }
         RSS_db.close();
@@ -512,7 +517,7 @@ public class Main extends AppCompatActivity {
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
                                         " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
-                                        , (diffSec-(NotiBefore*1000)));
+                                        , (diffSec-(NotiBefore*10000)));
                                 Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
                             }
                         }else{
@@ -524,13 +529,13 @@ public class Main extends AppCompatActivity {
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
                                         " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
-                                        , (diffSec-(NotiBefore*1000)));
+                                        , (diffSec-(NotiBefore*60000)));
                                 Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
                             }else{
                                 diffSec = diffSec+604800000; //add 1 week
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
                                         " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
-                                        , (diffSec-(NotiBefore*1000)));
+                                        , (diffSec-(NotiBefore*60000)));
                                 Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
                             }
                         }
@@ -880,10 +885,12 @@ public class Main extends AppCompatActivity {
         int idv = v.getId();
         String title = al_title.get(idv).toString();
         String desc = al_desc.get(idv).toString();
+        String pubDate = al_pubDate.get(idv).toString();
         Intent intent = new Intent(Main.this, News.class);
         intent.putExtra("from","Main");
         intent.putExtra("title",title);
-        intent.putExtra("desc", desc);
+        intent.putExtra("desc",desc);
+        intent.putExtra("pubDate",pubDate);
         startActivity(intent);
         Log.i("OC","On click news");
     }

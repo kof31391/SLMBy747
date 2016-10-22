@@ -39,8 +39,8 @@ public class News extends AppCompatActivity {
             String desc = extras.getString("desc");
             String cutAttachment = desc;
             String pubDate = extras.getString("pubDate");
-            DateFormat inputPattern = new SimpleDateFormat("yyyy-MM-dd");
-            DateFormat outputPattern = new SimpleDateFormat("dd/MM/yyyy");
+            DateFormat inputPattern = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            DateFormat outputPattern = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date date = null;
             String sDate = null;
             try{
@@ -55,7 +55,7 @@ public class News extends AppCompatActivity {
             TextView url = ((TextView)findViewById(R.id.tv_news_url));
             TextView tv_pubDate = (TextView) findViewById(R.id.tv_news_pubDate);
             tv_title.setText(title);
-            tv_pubDate.setText("Date: "+sDate);
+            tv_pubDate.setText(sDate);
             GradientDrawable gd = new GradientDrawable();
             gd.setColor(Color.parseColor("#BEBEBE"));
             gd.setCornerRadius(8);
