@@ -361,6 +361,7 @@ public class Subject_elearnAll extends AppCompatActivity {
         rs_subject.moveToFirst();
         Intent intent = new Intent(this, Video.class);
         intent.putExtra("id", rs_subject.getString(rs_subject.getColumnIndex("subject_id")));
+        intent.putExtra("video_id", rs_elearning.getString(rs_elearning.getColumnIndex("video_id")));
         intent.putExtra("code", rs_subject.getString(rs_subject.getColumnIndex("subject_code")));
         intent.putExtra("name", rs_subject.getString(rs_subject.getColumnIndex("subject_name")));
         intent.putExtra("room", rs_elearning.getString(rs_elearning.getColumnIndex("video_room")));

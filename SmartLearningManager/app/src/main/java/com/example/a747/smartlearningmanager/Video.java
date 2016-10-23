@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.media.MediaCodec;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +42,7 @@ public class Video extends AppCompatActivity {
     private String std_id;
     private String subject_id;
     private String department;
+    private String v_id;
     private String e_code;
     private String e_name;
     private String e_room;
@@ -109,6 +117,7 @@ public class Video extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             subject_id = extras.getString("id");
+            v_id = extras.getString("video_id");
             e_code = extras.getString("code");
             lecturer = extras.getString("lecturer");
             e_name = extras.getString("name");
@@ -121,6 +130,7 @@ public class Video extends AppCompatActivity {
             department = extras.getString("department");
 
             video_object = new Video_object(this);
+            video_object.setV_id(v_id);
             video_object.setE_code(e_code);
             video_object.setE_name(e_name);
             video_object.setE_room(e_room);
@@ -129,6 +139,7 @@ public class Video extends AppCompatActivity {
             video_object.setE_link(e_link);
 
             if(video_object.readInstace(e_code,e_date,e_time)){
+                v_id = video_object.getV_id();
                 e_code = video_object.getE_code();
                 e_name = video_object.getE_name();
                 e_room = video_object.getE_room();
@@ -340,6 +351,28 @@ public class Video extends AppCompatActivity {
             Log.d("CDA", "onKeyDown Called");
             video_object.setLastMinute(seekBar.getProgress());
             video_object.saveInstace();
+            class GetDataJSON extends AsyncTask<String,Void,String> {
+                HttpURLConnection urlConnection = null;
+                public String status;
+                protected String doInBackground(String... params) {
+                    try {
+                        URL url = new URL("http://54.169.58.93/Video_UpdateLog.php?description="+params[0]+"&last_min="+params[1]+"&video_id="+params[2]+"&student_id="+params[3]);
+                        urlConnection = (HttpURLConnection) url.openConnection();
+                        urlConnection.getResponseCode();
+                        return status;
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }finally {
+                        urlConnection.disconnect();
+                    }
+                    return status;
+                }
+                protected void onPostExecute(String strJSON) {
+                    Log.i("Video_Log","New video log created");
+                }
+            }
+            new GetDataJSON().execute(null,String.valueOf(video_object.getLastMinute()),video_object.getV_id(),std_id);
+
             if(from.equalsIgnoreCase("Elearning")){
                 Intent intent = new Intent(this, Subject_elearn.class);
                 intent.putExtra("subject_id",subject_id);

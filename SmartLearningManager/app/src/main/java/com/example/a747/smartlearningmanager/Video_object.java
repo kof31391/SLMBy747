@@ -18,6 +18,7 @@ public class Video_object extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_CREATE = "CREATE TABLE IF NOT EXISTS Video (e_code VARCHAR,e_name VARCHAR,e_room VARCHAR,e_date VARCHAR,e_time VARCHAR,e_link VARCHAR,lastMinute VARCHAR);";
 
+    private String v_id;
     private String e_code;
     private String e_name;
     private String e_room;
@@ -28,6 +29,10 @@ public class Video_object extends SQLiteOpenHelper {
 
     public Video_object(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public String getV_id() {
+        return v_id;
     }
 
     public String getE_code(){
@@ -56,6 +61,10 @@ public class Video_object extends SQLiteOpenHelper {
 
     public int getLastMinute() {
         return lastMinute;
+    }
+
+    public void setV_id(String v_id) {
+        this.v_id = v_id;
     }
 
     public void setE_code(String e_code) {
