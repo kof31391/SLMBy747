@@ -26,6 +26,7 @@ public class Service_onBackground extends Service {
     private Handler handler;
     private Runnable runnable;
     private final IBinder mBinder = new LocalBinder();
+    int count;
 
     @Nullable
     @Override
@@ -41,6 +42,7 @@ public class Service_onBackground extends Service {
 
     @Override
     public void onCreate() {
+        count = 0;
     }
 
     @Override
@@ -70,8 +72,11 @@ public class Service_onBackground extends Service {
                 NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 nm.notify(1000,notification);
                 num++;
-
                 handler.postDelayed(this,6000);
+                count++;
+                if(count==2){
+                    handler.removeCallbacks(runnable);
+                }
             }
         };
         handler.post(runnable);
@@ -89,7 +94,7 @@ public class Service_onBackground extends Service {
                 .setContentTitle(title)
                 .setContentText(content)
                 .setAutoCancel(true)
-                .setWhen(time)
+                .setWhen(System.currentTimeMillis())
                 .setSound(alarmSound)
                 .build();
         return notification;
