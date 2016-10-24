@@ -1,5 +1,6 @@
 package com.example.a747.smartlearningmanager;
 
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.Notification;
@@ -386,6 +387,16 @@ public class more_setting extends AppCompatActivity{
         canceTimer.cancel();
     }
 
+    private boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void logout(View v){
         new AlertDialog.Builder(more_setting.this)
                 .setTitle("Logout confirm ?")
@@ -403,6 +414,11 @@ public class more_setting extends AppCompatActivity{
                         editor2.commit();
 
                         removeAllTimer();
+
+                        if(isServiceRunning(Service_onBackground.class)){
+                            stopService(new Intent(more_setting.this,Service_onBackground.class));
+                            Log.i("Runnable","Runnable stop");
+                        }
 
                         startActivity(intent);
 
