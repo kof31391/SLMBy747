@@ -514,10 +514,11 @@ public class Main extends AppCompatActivity {
                             sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
                             sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
                             long diffSec = sDate.getTime() - nDate.getTime();
+                            diffSec = diffSec-(NotiBefore*60000);
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
-                                        , (diffSec-(NotiBefore*10000)));
+                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),nDate.getTime()+diffSec)
+                                        , diffSec);
                                 Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
                             }
                         }else{
@@ -528,14 +529,14 @@ public class Main extends AppCompatActivity {
                             long diffSec = sDate.getTime() - nDate.getTime();
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
-                                        , (diffSec-(NotiBefore*60000)));
+                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),nDate.getTime()+diffSec)
+                                        , diffSec);
                                 Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
                             }else{
                                 diffSec = diffSec+604800000; //add 1 week
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
-                                        , (diffSec-(NotiBefore*60000)));
+                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),nDate.getTime()+diffSec)
+                                        , diffSec);
                                 Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
                             }
                         }
