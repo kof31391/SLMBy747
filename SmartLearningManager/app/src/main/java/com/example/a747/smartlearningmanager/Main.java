@@ -5,7 +5,9 @@ import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,7 +18,9 @@ import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Binder;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.StrictMode;
 import android.os.SystemClock;
 import android.support.v4.app.TaskStackBuilder;
@@ -56,6 +60,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class Main extends AppCompatActivity {
 
@@ -70,6 +79,8 @@ public class Main extends AppCompatActivity {
     private int diffday = 0;
     private Dialog dialog;
     private int NotiBefore;
+    private Handler handler;
+    private Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +112,10 @@ public class Main extends AppCompatActivity {
                 }else{
                     getRSS();
                     getSchedule();
+
+                    startService(new Intent(this,Service_onBackground.class));
+
+
                 }
             }else{
                 Intent intent = new Intent(this, Login.class);
@@ -136,7 +151,7 @@ public class Main extends AppCompatActivity {
         };
         Date updateDate = new Date();
         updateDate.setHours(6);
-        updateDate.setMinutes(1);
+        updateDate.setMinutes(0);
         timer.schedule(task1,updateDate);
         timer = new Timer("SIX-PM");
         TimerTask task2 = new TimerTask() {
@@ -149,6 +164,28 @@ public class Main extends AppCompatActivity {
         updateDate.setMinutes(0);
         timer.schedule(task2,updateDate);
         Log.i("Initial","Initial timer success");
+    }
+
+    private void setTimerUpdate2(){
+        /*Log.i("Runnable","Runnable run...");
+        handler = new Handler();
+        runnable = new Runnable() {
+            int num = 0;
+            @Override
+            public void run() {
+                Date d = new Date();
+                d.setHours(17);
+                d.setMinutes(30);
+                String s = String.valueOf(num);
+                Notification notification = getNotification("Hello",s,d.getTime());
+                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                nm.notify(1000,notification);
+                num++;
+
+                handler.postDelayed(this,6000);
+            }
+        };
+        handler.post(runnable);*/
     }
 
     @Override

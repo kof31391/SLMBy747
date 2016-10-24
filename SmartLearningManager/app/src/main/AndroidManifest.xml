@@ -69,6 +69,7 @@
         <activity android:name=".Page_news" />
         <activity android:name=".After_allelearn" />
         <activity android:name=".Subject_elearnAll"></activity>
+        <service android:name=".Service_onBackground"></service>
     </application>
 
 </manifest>
