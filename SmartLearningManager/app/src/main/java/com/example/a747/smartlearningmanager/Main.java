@@ -373,8 +373,8 @@ public class Main extends AppCompatActivity {
         SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
         Cursor resultSet = RSS_db.rawQuery("SELECT title, description, pubDate FROM RSS ORDER BY count DESC LIMIT 7;",null);
         resultSet.moveToFirst();
-        al_title = new ArrayList();
-        al_desc = new ArrayList();
+        al_title = new ArrayList<String>();
+        al_desc = new ArrayList<String>();
         al_pubDate = new ArrayList<>();
         while(!resultSet.isAfterLast()){
             al_title.add(resultSet.getString(resultSet.getColumnIndex("title")));
@@ -508,13 +508,13 @@ public class Main extends AppCompatActivity {
                         Date sDate = calendar.getTime();
                         int scheDayofweek = c.getInt("day_id");
                         int diffDayofweek = scheDayofweek - nowDayfoweek;
+                        sDate.setDate(sDate.getDate()+(diffDayofweek+7));
+                        String hmstart = c.getString("subject_start_time");
+                        sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
+                        sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
+                        long diffSec = sDate.getTime() - nDate.getTime();
+                        diffSec = diffSec-(NotiBefore*60000);
                         if(diffDayofweek < 0){
-                            sDate.setDate(sDate.getDate()+(diffDayofweek+7));
-                            String hmstart = c.getString("subject_start_time");
-                            sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
-                            sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
-                            long diffSec = sDate.getTime() - nDate.getTime();
-                            diffSec = diffSec-(NotiBefore*60000);
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
                                         " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),nDate.getTime()+diffSec)
@@ -522,11 +522,6 @@ public class Main extends AppCompatActivity {
                                 Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
                             }
                         }else{
-                            sDate.setDate(sDate.getDate()+diffDayofweek);
-                            String hmstart = c.getString("subject_start_time");
-                            sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
-                            sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
-                            long diffSec = sDate.getTime() - nDate.getTime();
                             if(diffSec>0) {
                                 scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
                                         " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),nDate.getTime()+diffSec)
@@ -985,12 +980,12 @@ class HandleXML {
     private String urlString = null;
     private XmlPullParserFactory xmlFactoryObject;
     public volatile boolean parsingComplete = true;
-    ArrayList al_title = new ArrayList();
-    ArrayList al_desc = new ArrayList();
-    protected ArrayList getAl_desc(){
+    ArrayList<String> al_title = new ArrayList<String>();
+    ArrayList<String> al_desc = new ArrayList<String>();
+    protected ArrayList<String> getAl_desc(){
         return al_desc;
     }
-    protected ArrayList getAl_title(){ return al_title; }
+    protected ArrayList<String> getAl_title(){ return al_title; }
     private void parseXMLAndStoreIt(XmlPullParser myParser) {
         int event;
         String text = null;
