@@ -19,7 +19,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,6 +29,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 /**
@@ -101,7 +103,6 @@ public class Service_onBackground extends Service {
         class GetDataJSON extends AsyncTask<String,Void,String> {
             HttpURLConnection urlConnection = null;
             private String strJSON;
-
             protected String doInBackground(String... params) {
                 try {
                     URL url = new URL("http://54.169.58.93/Messenger_getFeed.php?student_id=" + params[0] + "&datetime=" + params[1].replaceAll(" ", "%20"));
@@ -136,15 +137,16 @@ public class Service_onBackground extends Service {
                             JSONObject c = data.getJSONObject(i);
                             Log.i("Receiver", "Receive key: " + c.getString("messenger_topic_key") + " - " + c.getString("messenger_description"));
                             Receiver_db.execSQL("INSERT INTO Receiver VALUES('" + c.getString("messenger_id") + "','" + c.getString("messenger_topic_key") + "','" + c.getString("messenger_description") + "','" + c.getString("messenger_send_time") + "','" + c.getString("messenger_status") + "','" + c.getString("messenger_reply_time") + "');");
+                            updateReceiveStatus(c.getString("messenger_id"));
                             switch (c.getInt("messenger_topic_key")) {
                                 case 1:
-                                    setProfile();
+                                    updateProfile();
                                     break;
                                 case 2:
-                                    setRSS();
+                                    updateRSS();
                                     break;
                                 case 3:
-                                    setSchedule();
+                                    updateSchedule();
                                     break;
                             }
                         }
@@ -182,10 +184,59 @@ public class Service_onBackground extends Service {
         return receiveTime;
     }
 
-    protected void setProfile(){
+    protected void updateProfile(){
+        class GetDataJSON extends AsyncTask<String,Void,String> {
+            HttpURLConnection urlConnection = null;
+            public String strJSON;
+            protected String doInBackground(String... params) {
+                try {
+                    URL url = new URL("http://54.169.58.93/Profile.php?student_id="+params[0]);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    int code = urlConnection.getResponseCode();
+                    if(code==200){
+                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                        if (in != null) {
+                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+                            String line;
+                            while ((line = bufferedReader.readLine()) != null)
+                                strJSON = line;
+                        }
+                        in.close();
+                    }
+                    return strJSON;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    urlConnection.disconnect();
+                }
+                return strJSON;
+            }
+            protected void onPostExecute(String strJSON) {
+                Log.i("Initial","Initial Profile...");
+                try {
+                    String department;
+                    JSONArray data = new JSONArray(strJSON);
+                    JSONObject c = data.getJSONObject(0);
+                    SQLiteDatabase Prfile_db = openOrCreateDatabase("Profile",MODE_PRIVATE,null);
+                    Prfile_db.execSQL("DROP TABLE IF EXISTS Profile");
+                    Prfile_db.execSQL("CREATE TABLE IF NOT EXISTS Profile(firstname VARCHAR, lastname VARCHAR, department VARCHAR, email VARCHAR, phonenum VARCHAR, image VARCHAR);");
+                    Prfile_db.execSQL("INSERT INTO Profile VALUES('"+c.getString("student_name")+"','"+c.getString("student_surname")+"','"+c.getString("department_briefly")+"','"+c.getString("student_email")+"','"+c.getString("student_phone")+"','"+c.getString("student_image")+"');");
+                    Prfile_db.close();
+                    department = c.getString("department_briefly");
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("department",department);
+                    editor.commit();
+                    Log.i("Initial","Initial Profile success");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        new GetDataJSON().execute(student_id);
     }
 
-    protected void setRSS(){
+    protected void updateRSS(){
         class GetDataJSON extends AsyncTask<String,Void,String> {
             private SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
             private String department = pref.getString("department",null);
@@ -257,7 +308,7 @@ public class Service_onBackground extends Service {
         new GetDataJSON().execute(pubDate);
     }
 
-    protected void setSchedule(){
+    protected void updateSchedule(){
     }
 
     private String encodeUnicode(String str) {
@@ -269,6 +320,28 @@ public class Service_onBackground extends Service {
             e.printStackTrace();
         }
         return strEncoded;
+    }
+
+    private void updateReceiveStatus(String messenger_id){
+        Log.i("Receiver","Change status");
+        class GetDataJSON extends AsyncTask<String,Void,String> {
+            private HttpURLConnection urlConnection = null;
+            String strJSON;
+            protected String doInBackground(String... params) {
+                try {
+                    Calendar c = Calendar.getInstance();
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String sdate = df.format(c.getTime());
+                    URL url = new URL("http://54.169.58.93/Messenger_Reply.php?messenger_id="+params[0]+"&reply_time="+sdate.replaceAll(" ","%20"));
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.getResponseCode();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                return strJSON;
+            }
+        }
+        new GetDataJSON().execute(messenger_id);
     }
 
     private Notification getNotification(String title, String content) {
