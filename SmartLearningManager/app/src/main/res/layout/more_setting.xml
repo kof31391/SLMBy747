@@ -274,6 +274,64 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="30dp"
+                        android:src="@drawable/classb" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Before Class"
+                        android:textColor="#000000"
+                        android:textSize="14dp"
+                        android:paddingStart="18dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+
+                    android:layout_marginTop="1dp"
+                    android:background="#ffffff"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:text="Before, Notification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000000"
+                        android:id="@+id/textView10"
+                        />
+
+                    <EditText
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/my_border"
+                        android:id="@+id/notiTime"
+                        />
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:background="#ffffff"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="25dp" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="30dp"
                         android:src="@drawable/muteb" />
 
                     <TextView
@@ -289,6 +347,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_marginTop="1dp"
+                    android:padding="5dp"
                     android:layout_height="match_parent"
                     android:background="#ffffff"
                     >
@@ -339,68 +398,22 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:background="#ffffff"
-                    android:layout_marginTop="1dp"
-                    android:gravity="center_vertical"
-                    android:layout_height="25dp" >
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="30dp"
-                        android:src="@drawable/classb" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Before Class"
-                        android:textColor="#000000"
-                        android:textSize="14dp"
-                        android:paddingStart="18dp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="10dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
 
-                    android:layout_marginTop="1dp"
                     android:background="#ffffff"
                     android:gravity="center_horizontal">
 
-                    <TextView
-                        android:text="Before, Notification"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#000000"
-                        android:id="@+id/textView10"
-                        />
-
-                    <EditText
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/my_border"
-                        android:id="@+id/notiTime"
-                        />
-
-
                     <Button
                         android:text="Submit"
-                        android:layout_width="65dp"
-                        android:layout_height="33dp"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
                         android:onClick="changeNotiSchedule"
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         android:id="@+id/button2"
                         style="@android:style/Widget.DeviceDefault.Button.Small" />
-
-                </LinearLayout>
+    </LinearLayout>
 
                 <LinearLayout
                     android:orientation="horizontal"
