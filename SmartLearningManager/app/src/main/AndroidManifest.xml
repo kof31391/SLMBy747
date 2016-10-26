@@ -35,12 +35,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".more_setting"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Todo_Add"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Elearning"
             android:screenOrientation="portrait" />
@@ -49,8 +49,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Todo_Edit"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Profile"
             android:screenOrientation="portrait" />
@@ -68,8 +68,11 @@
         <activity android:name=".Video" />
         <activity android:name=".Page_news" />
         <activity android:name=".After_allelearn" />
-        <activity android:name=".Subject_elearnAll"></activity>
-        <service android:name=".Service_onBackground"></service>
+        <activity android:name=".Subject_elearnAll" />
+
+        <service android:name=".Service_onBackground" />
+
+        <activity android:name=".Weekly"></activity>
     </application>
 
 </manifest>
