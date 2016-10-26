@@ -671,6 +671,11 @@ public class Main extends AppCompatActivity {
         Log.i("GT","Go to subject elearning list");
     }
 
+    public void getScheduleWeekly(View v){
+        Intent intent = new Intent(this, Weekly.class);
+        startActivity(intent);
+    }
+
     protected void prevSchedule(View v) {
         Log.i("Initial", "Initial get prev schedule...");
         Calendar calendar = Calendar.getInstance();

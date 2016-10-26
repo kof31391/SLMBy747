@@ -138,11 +138,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
-                android:id="@+id/textView10"
+                android:id="@+id/mon"
                 />
 
 
         </LinearLayout>
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -184,7 +185,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
-                android:id="@+id/textView11"
+                android:id="@+id/tue"
                 />
 
 
@@ -230,7 +231,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
-                android:id="@+id/textView18"
+                android:id="@+id/wed"
                 />
 
 
@@ -276,7 +277,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
-                android:id="@+id/textView13"
+                android:id="@+id/thu"
                 />
 
 
@@ -322,7 +323,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
-                android:id="@+id/textView14"
+                android:id="@+id/fri"
                 />
 
 
@@ -369,7 +370,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
-                android:id="@+id/textView16"
+                android:id="@+id/sat"
                 />
 
 
@@ -416,7 +417,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
-                android:id="@+id/textView17"
+                android:id="@+id/sun"
                 />
 
 
