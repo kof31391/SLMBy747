@@ -81,7 +81,7 @@ public class Page_news extends AppCompatActivity {
     private void getRSS(){
         Log.i("Initial","Initial get RSS...");
         SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
-        Cursor resultSet = RSS_db.rawQuery("SELECT title, description, pubDate FROM RSS;",null);
+        Cursor resultSet = RSS_db.rawQuery("SELECT title, description, pubDate FROM RSS ORDER BY pubDate DESC;",null);
         resultSet.moveToFirst();
         al_title = new ArrayList();
         al_desc = new ArrayList();
