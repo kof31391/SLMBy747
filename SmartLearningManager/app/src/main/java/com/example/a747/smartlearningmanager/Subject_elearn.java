@@ -55,12 +55,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Subject_elearn extends AppCompatActivity {
+    private String host = "http://54.169.58.93/";
     private String std_id;
     private String subject_id;
     private String status = "n";
     private String telno;
     private String watch_status;
-    private String from;
     private int c_absent = 0;
     private TextView subjCode;
     private TextView lecturer;
@@ -103,7 +103,7 @@ public class Subject_elearn extends AppCompatActivity {
         resultSet.moveToFirst();
         subjCode.setText(resultSet.getString(resultSet.getColumnIndex("subject_code")));
         subjName.setText(resultSet.getString(resultSet.getColumnIndex("subject_name")));
-        lecturer.setText(resultSet.getString(resultSet.getColumnIndex("lecturer_fristname")) + " " + resultSet.getString(resultSet.getColumnIndex("lecturer_lastname")));
+        lecturer.setText(resultSet.getString(resultSet.getColumnIndex("lecturer_firstname")) + " " + resultSet.getString(resultSet.getColumnIndex("lecturer_lastname")));
         class_room.setText(resultSet.getString(resultSet.getColumnIndex("subject_room")));
         class_Time.setText(resultSet.getString(resultSet.getColumnIndex("subject_start_time")).substring(0,5) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")).substring(0,5));
         telno = resultSet.getString(resultSet.getColumnIndex("lecturer_phone"));
@@ -126,7 +126,7 @@ public class Subject_elearn extends AppCompatActivity {
                 startActivity(emailIntent);
             }
         });
-        Bitmap bitmap = DownloadImage("http://54.169.58.93/lecturer_image/lecturer_"+resultSet.getString(resultSet.getColumnIndex("lecturer_fristname")).toLowerCase()+".gif");
+        Bitmap bitmap = DownloadImage(host+"lecturer_image/lecturer_"+resultSet.getString(resultSet.getColumnIndex("lecturer_firstname")).toLowerCase()+".gif");
         lecturerImage.setImageBitmap(bitmap);
         Schedule_db.close();
         Log.i("Setup", "Setup subject detail success");
@@ -188,7 +188,7 @@ public class Subject_elearn extends AppCompatActivity {
 
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Elearning_DateList.php?student_id=" + std_id + "&subject_id=" + subject_id + "&status=" + status);
+                    URL url = new URL(host+"Elearning_DateList.php?student_id=" + std_id + "&subject_id=" + subject_id + "&status=" + status);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {
@@ -348,7 +348,7 @@ public class Subject_elearn extends AppCompatActivity {
                 private String strJSON;
                 protected String doInBackground(String... params) {
                     try {
-                        URL url = new URL("http://54.169.58.93/Elearning_DateList.php?student_id=" + std_id + "&subject_id=" + subject_id + "&status=" + status);
+                        URL url = new URL(host+"Elearning_DateList.php?student_id=" + std_id + "&subject_id=" + subject_id + "&status=" + status);
                         urlConnection = (HttpURLConnection) url.openConnection();
                         int code = urlConnection.getResponseCode();
                         if (code == 200) {
@@ -473,7 +473,7 @@ public class Subject_elearn extends AppCompatActivity {
         intent.putExtra("subject_id",subject_id);
         intent.putExtra("from","Subject_elearn");
         try {
-            URL url = new URL("http://54.169.58.93/Elearning_UpdateCount.php?video_id=" + rs_elearning.getString(rs_elearning.getColumnIndex("video_id")));
+            URL url = new URL(host+"Elearning_UpdateCount.php?video_id=" + rs_elearning.getString(rs_elearning.getColumnIndex("video_id")));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             if (urlConnection.getResponseCode() == 200) {
                 Log.i("ELS", "Added watch count");
@@ -563,7 +563,7 @@ public class Subject_elearn extends AppCompatActivity {
 
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Material_List.php?subject_id="+subject_id);
+                    URL url = new URL(host+"Material_List.php?subject_id="+subject_id);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {

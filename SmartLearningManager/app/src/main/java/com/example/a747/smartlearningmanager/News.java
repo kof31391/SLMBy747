@@ -23,9 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class News extends AppCompatActivity {
-
-    String from;
-    Boolean updateStatus = false;
+    private String host = "http://54.169.58.93/";
+    private String from;
+    private Boolean updateStatus = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +91,7 @@ public class News extends AppCompatActivity {
             public String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/RSS_UpdateCount.php?title="+params[0]);
+                    URL url = new URL(host+"RSS_UpdateCount.php?title="+params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){

@@ -53,7 +53,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 
-public class more_setting extends AppCompatActivity{
+public class more_setting extends AppCompatActivity {
+    private String host = "http://54.169.58.93/";
     private RadioButton sound;
     private RadioButton vibrate;
     private RadioButton silent;
@@ -63,7 +64,7 @@ public class more_setting extends AppCompatActivity{
     private int NotiBefore = 0;
     private SharedPreferences pref;
     private Dialog dialog;
-    Intent intent;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +145,7 @@ public class more_setting extends AppCompatActivity{
         TextView tv_ms_std_id = (TextView) findViewById(R.id.tv_ms_std_id);
         tv_ms_std_id.setText(std_id);
 
-        Bitmap bitmap = DownloadImage("http://54.169.58.93/student_image/"+std_id+".jpg");
+        Bitmap bitmap = DownloadImage(host+"student_image/"+std_id+".jpg");
         ImageView iv_std = (ImageView) findViewById(R.id.iv_std);
         iv_std.setImageBitmap(getCroppedBitmap(bitmap));
         Log.i("Initial","Initial Profile success");
@@ -220,7 +221,7 @@ public class more_setting extends AppCompatActivity{
             private String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Schedule.php?student_id="+params[0]+"&past_enroll=0");
+                    URL url = new URL(host+"Schedule.php?student_id="+params[0]+"&past_enroll=0");
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){

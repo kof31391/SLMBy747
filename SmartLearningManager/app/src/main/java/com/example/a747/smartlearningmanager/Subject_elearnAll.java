@@ -43,8 +43,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Subject_elearnAll extends AppCompatActivity {
-
-    private String std_id;
+    private String host = "http://54.169.58.93/";
     private String subject_id;
     private String status = "n";
     private String telno;
@@ -52,7 +51,7 @@ public class Subject_elearnAll extends AppCompatActivity {
     private String from;
     private String department;
     private int last_enroll = 0;
-    private String lecturer_fristname;
+    private String lecturer_firstname;
     private TextView subjCode;
     private TextView lecturer;
     private TextView class_room;
@@ -93,7 +92,7 @@ public class Subject_elearnAll extends AppCompatActivity {
 
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Search_SubjectDetail.php?subject_id=" + subject_id);
+                    URL url = new URL(host+"Search_SubjectDetail.php?subject_id=" + subject_id);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {
@@ -127,7 +126,7 @@ public class Subject_elearnAll extends AppCompatActivity {
                     subjCode.setText(c.getString("subject_code"));
                     subjName.setText(c.getString("subject_name"));
                     class_room.setText(c.getString("subject_room"));
-                    lecturer.setText((lecturer_fristname = c.getString("lecturer_fristname"))+" "+c.getString("lecturer_lastname"));
+                    lecturer.setText((lecturer_firstname = c.getString("lecturer_firstname"))+" "+c.getString("lecturer_lastname"));
                     class_Time.setText(c.getString("subject_start_time").substring(0,5)+" - "+c.getString("subject_end_time").substring(0,5));
                     telno = c.getString("lecturer_phone");
                     email = c.getString("lecturer_email");
@@ -150,7 +149,7 @@ public class Subject_elearnAll extends AppCompatActivity {
                             startActivity(emailIntent);
                         }
                     });
-                    Bitmap bitmap = DownloadImage("http://54.169.58.93/lecturer_image/lecturer_"+c.getString("lecturer_fristname").toLowerCase()+".gif");
+                    Bitmap bitmap = DownloadImage(host+"lecturer_image/lecturer_"+c.getString("lecturer_firstname").toLowerCase()+".gif");
                     lecturerImage.setImageBitmap(bitmap);
                     Subject_db.close();
                     Log.i("Setup", "Set video detail success");
@@ -228,7 +227,7 @@ public class Subject_elearnAll extends AppCompatActivity {
             private String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Search_VideoLink.php?subject_id=" + subject_id + "&status="+status+"");
+                    URL url = new URL(host+"Search_VideoLink.php?subject_id=" + subject_id + "&status="+status+"");
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {
@@ -374,7 +373,7 @@ public class Subject_elearnAll extends AppCompatActivity {
         intent.putExtra("department",department);
 
         try {
-            URL url = new URL("http://54.169.58.93/Elearning_UpdateCount.php?video_id=" + rs_elearning.getString(rs_elearning.getColumnIndex("video_id")));
+            URL url = new URL(host+"Elearning_UpdateCount.php?video_id=" + rs_elearning.getString(rs_elearning.getColumnIndex("video_id")));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             if (urlConnection.getResponseCode() == 200) {
                 Log.i("ELS", "Added watch count");
@@ -406,7 +405,7 @@ public class Subject_elearnAll extends AppCompatActivity {
 
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Material_List.php?subject_id="+subject_id);
+                    URL url = new URL(host+"Material_List.php?subject_id="+subject_id);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {

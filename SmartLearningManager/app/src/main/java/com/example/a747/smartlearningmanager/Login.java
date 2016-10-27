@@ -21,12 +21,13 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 public class Login extends AppCompatActivity {
-    TextView uid;
-    TextView pwd;
-    Button btn;
-    String uidString ;
-    String passString ;
-    TextView Err;
+    private String host = "http://54.169.58.93/";
+    private TextView uid;
+    private TextView pwd;
+    private Button btn;
+    private String uidString ;
+    private String passString ;
+    private TextView Err;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class Login extends AppCompatActivity {
         protected String doInBackground(String... params) {
             StringBuilder stringBuilder = null;
             try {
-                URL url = new URL("http://54.169.58.93/LDAP_Login.php");
+                URL url = new URL(host+"LDAP_Login.php");
                 HttpURLConnection client = (HttpURLConnection) url.openConnection();
                 client.setRequestMethod("POST");
                 String urlParameters = "username=" + params[0] + "&password=" + params[1];

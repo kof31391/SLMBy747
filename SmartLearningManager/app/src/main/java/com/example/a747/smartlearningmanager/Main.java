@@ -58,11 +58,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Main extends AppCompatActivity {
-
-    ArrayList<String> al_desc;
-    ArrayList<String> al_title;
-    ArrayList<String> al_pubDate;
-
+    private String host = "http://54.169.58.93/";
+    private ArrayList<String> al_desc;
+    private ArrayList<String> al_title;
+    private ArrayList<String> al_pubDate;
     private String std_id;
     private String department;
     private int last_noti_id;
@@ -151,7 +150,7 @@ public class Main extends AppCompatActivity {
             public String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Profile.php?student_id="+params[0]);
+                    URL url = new URL(host+"Profile.php?student_id="+params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -211,7 +210,7 @@ public class Main extends AppCompatActivity {
                         department =  resultSet.getString(resultSet.getColumnIndex("department"));
                         Profile_db.close();
                     }
-                    URL url = new URL("http://54.169.58.93/RSS_Feed.php?department="+department);
+                    URL url = new URL(host+"RSS_Feed.php?department="+department);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -271,8 +270,8 @@ public class Main extends AppCompatActivity {
         SQLiteDatabase RSS_db = openOrCreateDatabase("RSS",MODE_PRIVATE,null);
         Cursor resultSet = RSS_db.rawQuery("SELECT title, description, pubDate FROM RSS ORDER BY count DESC LIMIT 7;",null);
         resultSet.moveToFirst();
-        al_title = new ArrayList<String>();
-        al_desc = new ArrayList<String>();
+        al_title = new ArrayList<>();
+        al_desc = new ArrayList<>();
         al_pubDate = new ArrayList<>();
         while(!resultSet.isAfterLast()){
             al_title.add(resultSet.getString(resultSet.getColumnIndex("title")));
@@ -315,7 +314,7 @@ public class Main extends AppCompatActivity {
             private String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Enrollment_List.php");
+                    URL url = new URL(host+"Enrollment_List.php");
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {
@@ -362,7 +361,7 @@ public class Main extends AppCompatActivity {
             private String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Schedule.php?student_id="+params[0]+"&past_enroll=0");
+                    URL url = new URL(host+"Schedule.php?student_id="+params[0]+"&past_enroll=0");
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -391,7 +390,7 @@ public class Main extends AppCompatActivity {
                     Schedule_db.execSQL("DROP TABLE IF EXISTS Lecturer");
                     Schedule_db.execSQL("DROP TABLE IF EXISTS Subject_Lecturer");
                     Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Subject(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_start_time VARCHAR, subject_end_time VARCHAR, day_id INT(2), subject_room VARCHAR);");
-                    Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Lecturer(lecturer_id VARCHAR, lecturer_prefix VARCHAR,lecturer_fristname VARCHAR, lecturer_lastname VARCHAR, lecturer_email VARCHAR, lecturer_phone VARCHAR, lecturer_image VARCHAR);");
+                    Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Lecturer(lecturer_id VARCHAR, lecturer_prefix VARCHAR,lecturer_firstname VARCHAR, lecturer_lastname VARCHAR, lecturer_email VARCHAR, lecturer_phone VARCHAR, lecturer_image VARCHAR);");
                     Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Subject_Lecturer(sl_id VARCHAR,subject_id VARCHAR, lecturer_id VARCHAR);");
                     JSONArray data = new JSONArray(strJSON);
                     Calendar calendar = Calendar.getInstance();
@@ -400,7 +399,7 @@ public class Main extends AppCompatActivity {
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
                         Schedule_db.execSQL("INSERT INTO Subject VALUES('"+c.getString("subject_id")+"','"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("subject_start_time")+"','"+c.getString("subject_end_time")+"','"+c.getString("day_id")+"','"+c.getString("subject_room")+"');");
-                        Schedule_db.execSQL("INSERT INTO Lecturer VALUES('"+c.getString("lecturer_id")+"','"+c.getString("lecturer_prefix")+"','"+c.getString("lecturer_fristname")+"','"+c.getString("lecturer_lastname")+"','"+c.getString("lecturer_email")+"','"+c.getString("lecturer_phone")+"','"+c.getString("lecturer_image")+"');");
+                        Schedule_db.execSQL("INSERT INTO Lecturer VALUES('"+c.getString("lecturer_id")+"','"+c.getString("lecturer_prefix")+"','"+c.getString("lecturer_firstname")+"','"+c.getString("lecturer_lastname")+"','"+c.getString("lecturer_email")+"','"+c.getString("lecturer_phone")+"','"+c.getString("lecturer_image")+"');");
                         Schedule_db.execSQL("INSERT INTO Subject_Lecturer VALUES('"+c.getString("subject_lecturer_id")+"','"+c.getString("subject_id")+"','"+c.getString("lecturer_id")+"');");
                         nDate = calendar.getTime();
                         Date sDate = calendar.getTime();
@@ -876,5 +875,4 @@ public class Main extends AppCompatActivity {
         startActivity(intent);
         Log.i("GT","Go to Page News");
     }
-
 }

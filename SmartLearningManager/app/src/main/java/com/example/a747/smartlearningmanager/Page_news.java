@@ -35,7 +35,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class Page_news extends AppCompatActivity {
-
+    private String host = "http://54.169.58.93/";
     private ArrayList<String> al_desc;
     private ArrayList<String> al_title;
     private ArrayList<String> al_pubDate;
@@ -140,7 +140,7 @@ public class Page_news extends AppCompatActivity {
                         resultSet.close();
                         Profile_db.close();
                     }
-                    URL url = new URL("http://54.169.58.93/RSS_UpdateFeed.php?department="+department+"&date="+params[0]);
+                    URL url = new URL(host+"RSS_UpdateFeed.php?department="+department+"&date="+params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){

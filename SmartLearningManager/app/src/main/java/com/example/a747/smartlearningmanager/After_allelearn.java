@@ -28,6 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class After_allelearn extends AppCompatActivity {
+    private String host = "http://54.169.58.93/";
     private String department;
 
     @Override
@@ -52,7 +53,7 @@ public class After_allelearn extends AppCompatActivity {
             @Override
             protected String doInBackground(String... strings) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Subject_List.php?department="+department);
+                    URL url = new URL(host+"Subject_List.php?department="+department);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {

@@ -39,7 +39,7 @@ import java.util.Calendar;
  */
 
 public class Service_onBackground extends Service {
-
+    private String host = "http://54.169.58.93/";
     private Handler handler;
     private Runnable runnable;
     private final IBinder mBinder = new LocalBinder();
@@ -105,7 +105,7 @@ public class Service_onBackground extends Service {
             private String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Messenger_getFeed.php?student_id=" + params[0] + "&datetime=" + params[1].replaceAll(" ", "%20"));
+                    URL url = new URL(host+"Messenger_getFeed.php?student_id=" + params[0] + "&datetime=" + params[1].replaceAll(" ", "%20"));
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if (code == 200) {
@@ -190,7 +190,7 @@ public class Service_onBackground extends Service {
             public String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93/Profile.php?student_id="+params[0]);
+                    URL url = new URL(host+"Profile.php?student_id="+params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -252,7 +252,7 @@ public class Service_onBackground extends Service {
                         resultSet.close();
                         Profile_db.close();
                     }
-                    URL url = new URL("http://54.169.58.93/RSS_UpdateFeed.php?department="+department+"&date="+params[0].replaceAll(" ","%20"));
+                    URL url = new URL(host+"RSS_UpdateFeed.php?department="+department+"&date="+params[0].replaceAll(" ","%20"));
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){
@@ -332,7 +332,7 @@ public class Service_onBackground extends Service {
                     Calendar c = Calendar.getInstance();
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String sdate = df.format(c.getTime());
-                    URL url = new URL("http://54.169.58.93/Messenger_Reply.php?messenger_id="+params[0]+"&reply_time="+sdate.replaceAll(" ","%20"));
+                    URL url = new URL(host+"Messenger_Reply.php?messenger_id="+params[0]+"&reply_time="+sdate.replaceAll(" ","%20"));
                     urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.getResponseCode();
                 } catch (Exception e){

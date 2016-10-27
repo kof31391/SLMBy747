@@ -32,19 +32,19 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Profile extends AppCompatActivity {
+    private String host = "http://54.169.58.93/";
+    private List<String> monday = new ArrayList<>();
+    private List<String> tuesday = new ArrayList<>();
+    private List<String> wednesday = new ArrayList<>();
+    private List<String> thursday = new ArrayList<>();
+    private List<String> friday = new ArrayList<>();
+    private List<String> saturday = new ArrayList<>();
+    private List<String> sunday = new ArrayList<>();
+    private ExpandableListView expandableListView;
+    private ExpandableListAdapter expandableListAdapter;
+    private List<String> expandableListTitle;
+    private HashMap<String, List<String>> expandableListDetail;
 
-    List<String> monday = new ArrayList<>();
-    List<String> tuesday = new ArrayList<>();
-    List<String> wednesday = new ArrayList<>();
-    List<String> thursday = new ArrayList<>();
-    List<String> friday = new ArrayList<>();
-    List<String> saturday = new ArrayList<>();
-    List<String> sunday = new ArrayList<>();
-
-    ExpandableListView expandableListView;
-    ExpandableListAdapter expandableListAdapter;
-    List<String> expandableListTitle;
-    HashMap<String, List<String>> expandableListDetail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
@@ -104,7 +104,7 @@ public class Profile extends AppCompatActivity {
             public String strJSON;
             protected String doInBackground(String... params) {
                 try {
-                    URL url = new URL("http://54.169.58.93//Profile.php?student_id="+params[0]);
+                    URL url = new URL(host+"Profile.php?student_id="+params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     int code = urlConnection.getResponseCode();
                     if(code==200){

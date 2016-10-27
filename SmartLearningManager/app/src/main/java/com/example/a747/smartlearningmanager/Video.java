@@ -39,6 +39,7 @@ import java.text.SimpleDateFormat;
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE;
 
 public class Video extends AppCompatActivity {
+    private String host = "http://54.169.58.93/";
     private String std_id;
     private String subject_id;
     private String department;
@@ -356,7 +357,7 @@ public class Video extends AppCompatActivity {
                 public String status;
                 protected String doInBackground(String... params) {
                     try {
-                        URL url = new URL("http://54.169.58.93/Video_UpdateLog.php?description="+params[0]+"&last_min="+params[1]+"&video_id="+params[2]+"&student_id="+params[3]);
+                        URL url = new URL(host+"Video_UpdateLog.php?description="+params[0]+"&last_min="+params[1]+"&video_id="+params[2]+"&student_id="+params[3]);
                         urlConnection = (HttpURLConnection) url.openConnection();
                         urlConnection.getResponseCode();
                         return status;
