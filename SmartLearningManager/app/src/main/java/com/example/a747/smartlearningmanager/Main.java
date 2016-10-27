@@ -64,7 +64,7 @@ public class Main extends AppCompatActivity {
     private ArrayList<String> al_pubDate;
     private String std_id;
     private String department;
-    private int last_noti_id;
+    private int last_noti_id = 0;
     private int nextday = 0;
     private int diffday = 0;
     private Dialog dialog;
@@ -410,27 +410,23 @@ public class Main extends AppCompatActivity {
                         sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
                         sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
                         long diffSec = sDate.getTime() - nDate.getTime();
-                        diffSec = diffSec-(NotiBefore*60000);
                         if(diffDayofweek < 0){
-                            if(diffSec>0) {
-                                scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),nDate.getTime()+diffSec)
-                                        , diffSec);
-                                Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
-                            }
+                            diffSec = diffSec-(NotiBefore*60000);
+                            scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"), " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),nDate.getTime()+diffSec), diffSec);
+                            Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
                         }else{
-                            if(diffSec>0) {
-                                scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),nDate.getTime()+diffSec)
-                                        , diffSec);
-                                Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
+                            diffSec = diffSec-604800000;
+                            long milliSecBofore = NotiBefore*60000;
+                            diffSec = diffSec-milliSecBofore;
+                            if(diffSec > 0) {
+                                scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"), " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"), nDate.getTime() + diffSec), diffSec);
+                                Log.i("Initial", "Add notification schedule " + c.getString("subject_code"));
                             }else{
-                                diffSec = diffSec+604800000; //add 1 week
-                                scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),nDate.getTime()+diffSec)
-                                        , diffSec);
-                                Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
+                                diffSec = diffSec+604800000;
+                                scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"), " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"), nDate.getTime() + diffSec), diffSec);
+                                Log.i("Initial", "Add notification schedule " + c.getString("subject_code"));
                             }
+
                         }
                     }
                     Schedule_db.close();

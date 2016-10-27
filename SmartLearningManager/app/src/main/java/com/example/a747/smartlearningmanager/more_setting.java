@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -59,7 +60,7 @@ public class more_setting extends AppCompatActivity {
     private RadioButton vibrate;
     private RadioButton silent;
     private AudioManager audioManager;
-    private int last_noti_id;
+    private int last_noti_id = 0;
     private String std_id;
     private int NotiBefore = 0;
     private SharedPreferences pref;
@@ -245,40 +246,51 @@ public class more_setting extends AppCompatActivity {
             protected void onPostExecute(String strJSON) {
                 try {
                     Log.i("Initial","Initial set notification for schedule...");
+                    SQLiteDatabase Schedule_db = openOrCreateDatabase("Schedule",MODE_PRIVATE,null);
+                    Schedule_db.execSQL("DROP TABLE IF EXISTS Subject");
+                    Schedule_db.execSQL("DROP TABLE IF EXISTS Lecturer");
+                    Schedule_db.execSQL("DROP TABLE IF EXISTS Subject_Lecturer");
+                    Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Subject(subject_id VARCHAR, subject_code VARCHAR, subject_name VARCHAR, subject_start_time VARCHAR, subject_end_time VARCHAR, day_id INT(2), subject_room VARCHAR);");
+                    Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Lecturer(lecturer_id VARCHAR, lecturer_prefix VARCHAR,lecturer_firstname VARCHAR, lecturer_lastname VARCHAR, lecturer_email VARCHAR, lecturer_phone VARCHAR, lecturer_image VARCHAR);");
+                    Schedule_db.execSQL("CREATE TABLE IF NOT EXISTS Subject_Lecturer(sl_id VARCHAR,subject_id VARCHAR, lecturer_id VARCHAR);");
                     JSONArray data = new JSONArray(strJSON);
                     Calendar calendar = Calendar.getInstance();
                     Date nDate;
                     int nowDayfoweek = calendar.get(Calendar.DAY_OF_WEEK)-1;
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject c = data.getJSONObject(i);
+                        Schedule_db.execSQL("INSERT INTO Subject VALUES('"+c.getString("subject_id")+"','"+c.getString("subject_code")+"','"+c.getString("subject_name")+"','"+c.getString("subject_start_time")+"','"+c.getString("subject_end_time")+"','"+c.getString("day_id")+"','"+c.getString("subject_room")+"');");
+                        Schedule_db.execSQL("INSERT INTO Lecturer VALUES('"+c.getString("lecturer_id")+"','"+c.getString("lecturer_prefix")+"','"+c.getString("lecturer_firstname")+"','"+c.getString("lecturer_lastname")+"','"+c.getString("lecturer_email")+"','"+c.getString("lecturer_phone")+"','"+c.getString("lecturer_image")+"');");
+                        Schedule_db.execSQL("INSERT INTO Subject_Lecturer VALUES('"+c.getString("subject_lecturer_id")+"','"+c.getString("subject_id")+"','"+c.getString("lecturer_id")+"');");
                         nDate = calendar.getTime();
                         Date sDate = calendar.getTime();
                         int scheDayofweek = c.getInt("day_id");
                         int diffDayofweek = scheDayofweek - nowDayfoweek;
+                        sDate.setDate(sDate.getDate()+(diffDayofweek+7));
+                        String hmstart = c.getString("subject_start_time");
+                        sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
+                        sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
+                        long diffSec = sDate.getTime() - nDate.getTime();
                         if(diffDayofweek < 0){
-                            sDate.setDate(sDate.getDate()+(diffDayofweek+7));
-                            String hmstart = c.getString("subject_start_time");
-                            sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
-                            sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
-                            long diffSec = sDate.getTime() - nDate.getTime();
-                            if(diffSec>0) {
-                                scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
-                                        , (diffSec-(NotiBefore*60000)));
-                            }
+                            diffSec = diffSec-(NotiBefore*60000);
+                            scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"), " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),nDate.getTime()+diffSec), diffSec);
+                            Log.i("Initial","Add notification schedule "+c.getString("subject_code"));
                         }else{
-                            sDate.setDate(sDate.getDate()+diffDayofweek);
-                            String hmstart = c.getString("subject_start_time");
-                            sDate.setHours(Integer.valueOf(hmstart.substring(0, 2)));
-                            sDate.setMinutes(Integer.valueOf(hmstart.substring(3,5)));
-                            long diffSec = sDate.getTime() - nDate.getTime();
-                            if(diffSec>0) {
-                                scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"),
-                                        " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"),sDate.getTime())
-                                        , (diffSec-(NotiBefore*60000)));
+                            diffSec = diffSec-604800000;
+                            long milliSecBofore = NotiBefore*60000;
+                            diffSec = diffSec-milliSecBofore;
+                            if(diffSec > 0) {
+                                scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"), " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"), nDate.getTime() + diffSec), diffSec);
+                                Log.i("Initial", "Add notification schedule " + c.getString("subject_code"));
+                            }else{
+                                diffSec = diffSec+604800000;
+                                scheduleNotification(getNotification(c.getString("subject_code") + " : " + c.getString("subject_name"), " start " + c.getString("subject_start_time") + " until " + c.getString("subject_end_time"), nDate.getTime() + diffSec), diffSec);
+                                Log.i("Initial", "Add notification schedule " + c.getString("subject_code"));
                             }
+
                         }
                     }
+                    Schedule_db.close();
                     Log.i("Initial","Initial set notification for schedule success");
                 }catch (Exception e){
                     e.printStackTrace();
@@ -408,19 +420,15 @@ public class more_setting extends AppCompatActivity {
                         SharedPreferences.Editor editor = pref.edit();
                         editor.clear();
                         editor.commit();
-
                         SharedPreferences pref2 = getApplicationContext().getSharedPreferences("Initial", 0);
                         SharedPreferences.Editor editor2 = pref2.edit();
                         editor2.clear();
                         editor2.commit();
-
                         removeAllTimer();
-
                         if(isServiceRunning(Service_onBackground.class)){
                             stopService(new Intent(more_setting.this,Service_onBackground.class));
                             Log.i("Runnable","Runnable stop");
                         }
-
                         startActivity(intent);
 
                     }
