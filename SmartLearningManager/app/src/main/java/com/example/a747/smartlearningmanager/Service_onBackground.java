@@ -39,7 +39,7 @@ import java.util.Calendar;
  */
 
 public class Service_onBackground extends Service {
-    private String host = "http://54.169.58.93/";
+    private String host = "http://54.254.251.65/";
     private Handler handler;
     private Runnable runnable;
     private final IBinder mBinder = new LocalBinder();

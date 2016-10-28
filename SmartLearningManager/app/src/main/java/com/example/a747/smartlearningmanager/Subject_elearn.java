@@ -55,7 +55,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Subject_elearn extends AppCompatActivity {
-    private String host = "http://54.169.58.93/";
+    private String host = "http://54.254.251.65/";
     private String std_id;
     private String subject_id;
     private String status = "n";
@@ -157,7 +157,7 @@ public class Subject_elearn extends AppCompatActivity {
 
     private Bitmap DownloadImage(String URL) {
         Bitmap bitmap = null;
-        InputStream in = null;
+        InputStream in;
         try {
             in = OpenHttpConnection(URL);
             bitmap = BitmapFactory.decodeStream(in);

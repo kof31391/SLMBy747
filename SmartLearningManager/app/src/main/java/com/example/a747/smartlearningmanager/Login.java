@@ -21,7 +21,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 public class Login extends AppCompatActivity {
-    private String host = "http://54.169.58.93/";
+    private String host = "http://54.254.251.65/";
     private TextView uid;
     private TextView pwd;
     private Button btn;
@@ -59,7 +59,7 @@ public class Login extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            StringBuilder stringBuilder = null;
+            StringBuilder stringBuilder;
             try {
                 URL url = new URL(host+"LDAP_Login.php");
                 HttpURLConnection client = (HttpURLConnection) url.openConnection();
@@ -73,7 +73,7 @@ public class Login extends AppCompatActivity {
                 client.connect();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 stringBuilder = new StringBuilder();
-                String line = null;
+                String line;
                 while ((line = reader.readLine()) != null) {
                     stringBuilder.append(line + "\n");
                 }

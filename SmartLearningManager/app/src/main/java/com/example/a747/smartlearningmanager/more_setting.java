@@ -55,7 +55,7 @@ import java.util.Date;
 import java.util.Timer;
 
 public class more_setting extends AppCompatActivity {
-    private String host = "http://54.169.58.93/";
+    private String host = "http://54.254.251.65/";
     private RadioButton sound;
     private RadioButton vibrate;
     private RadioButton silent;

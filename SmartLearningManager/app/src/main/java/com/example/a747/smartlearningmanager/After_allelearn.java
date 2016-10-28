@@ -28,7 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class After_allelearn extends AppCompatActivity {
-    private String host = "http://54.169.58.93/";
+    private String host = "http://54.254.251.65/";
     private String department;
 
     @Override
