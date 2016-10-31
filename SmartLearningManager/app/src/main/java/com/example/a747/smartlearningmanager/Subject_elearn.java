@@ -238,18 +238,24 @@ public class Subject_elearn extends AppCompatActivity {
                         cell.setPadding(20, 20, 0, 20);
                         watch_status = "";
                         /*check stats*/
-                        if (c.getString("class_check_status").equalsIgnoreCase("F") && c.getString("class_check_watch_video").equalsIgnoreCase("F")) {
+                        if (c.getString("class_check_status").equalsIgnoreCase("2") && c.getString("class_check_watch_video").equalsIgnoreCase("F")) {
                             cell.setBackgroundColor(Color.parseColor("#FFAAAE"));
-                        } else if (c.getString("class_check_status").equalsIgnoreCase("F") && c.getString("class_check_watch_video").equalsIgnoreCase("T")) {
+                        } else if (c.getString("class_check_status").equalsIgnoreCase("2") && c.getString("class_check_watch_video").equalsIgnoreCase("T")) {
                             cell.setBackgroundColor(Color.parseColor("#FFAAAE"));
-                            watch_status = "Watched.";
-                        } else if (c.getString("class_check_status").equalsIgnoreCase("T") && c.getString("class_check_watch_video").equalsIgnoreCase("F")) {
-
-                        } else if (c.getString("class_check_status").equalsIgnoreCase("T") && c.getString("class_check_watch_video").equalsIgnoreCase("T")) {
+                            watch_status = "Watched";
+                        } else if (c.getString("class_check_status").equalsIgnoreCase("1") && c.getString("class_check_watch_video").equalsIgnoreCase("F")) {
+                            cell.setBackgroundColor(Color.parseColor("#FFFF99"));
+                        } else if (c.getString("class_check_status").equalsIgnoreCase("1") && c.getString("class_check_watch_video").equalsIgnoreCase("F")) {
+                            cell.setBackgroundColor(Color.parseColor("#FFFF99"));
+                            watch_status = "Watched";
+                        } else if (c.getString("class_check_status").equalsIgnoreCase("0") && c.getString("class_check_watch_video").equalsIgnoreCase("F")) {
                             cell.setBackgroundColor(Color.parseColor("#FFADEBC7"));
-                            watch_status = "Watched.";
+                        } else if (c.getString("class_check_status").equalsIgnoreCase("0") && c.getString("class_check_watch_video").equalsIgnoreCase("F")) {
+                            cell.setBackgroundColor(Color.parseColor("#FFADEBC7"));
+                            watch_status = "Watched";
                         }
-                        if (c.getString("class_check_status").equalsIgnoreCase("F")) {
+                        /*set absent count*/
+                        if (c.getString("class_check_status").equalsIgnoreCase("2")) {
                             c_absent++;
                         }
                         absent.setText(String.valueOf(c_absent));
@@ -294,6 +300,15 @@ public class Subject_elearn extends AppCompatActivity {
                     tv_absent_tile.setTextColor(Color.parseColor("#404040"));
                     TextView tv_absent = (TextView) findViewById(R.id.absent);
                     tv_absent.setBackgroundColor(Color.parseColor("#ffad33"));
+                    tv_absent.setTextColor(Color.parseColor("#404040"));
+                }
+                else if(c_absent == 3){
+                    LinearLayout ll_absent = (LinearLayout) findViewById(R.id.ll_absent);
+                    ll_absent.setBackgroundColor(Color.parseColor("#e65c00"));
+                    TextView tv_absent_tile = (TextView) findViewById(R.id.absent_tile);
+                    tv_absent_tile.setTextColor(Color.parseColor("#404040"));
+                    TextView tv_absent = (TextView) findViewById(R.id.absent);
+                    tv_absent.setBackgroundColor(Color.parseColor("#e65c00"));
                     tv_absent.setTextColor(Color.parseColor("#404040"));
                 }else{
                     TextView tv_subjcode = (TextView) findViewById(R.id.subjCode);
