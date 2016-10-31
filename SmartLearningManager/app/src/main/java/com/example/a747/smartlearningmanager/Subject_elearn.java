@@ -185,7 +185,6 @@ public class Subject_elearn extends AppCompatActivity {
         class GetDataJSON extends AsyncTask<String, Void, String> {
             HttpURLConnection urlConnection = null;
             private String strJSON;
-
             protected String doInBackground(String... params) {
                 try {
                     URL url = new URL(host+"Elearning_DateList.php?student_id=" + std_id + "&subject_id=" + subject_id + "&status=" + status);

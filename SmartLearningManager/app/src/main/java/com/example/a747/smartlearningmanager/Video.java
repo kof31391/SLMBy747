@@ -325,6 +325,27 @@ public class Video extends AppCompatActivity {
     protected void gotoSubjectElearn(View v) {
         video_object.setLastMinute(seekBar.getProgress());
         video_object.saveInstace();
+        class GetDataJSON extends AsyncTask<String,Void,String> {
+            HttpURLConnection urlConnection = null;
+            public String status;
+            protected String doInBackground(String... params) {
+                try {
+                    URL url = new URL(host+"Video_UpdateLog.php?description="+params[0]+"&last_min="+params[1]+"&video_id="+params[2]+"&student_id="+params[3]);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.getResponseCode();
+                    return status;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    urlConnection.disconnect();
+                }
+                return status;
+            }
+            protected void onPostExecute(String strJSON) {
+                Log.i("Video_Log","New video log created");
+            }
+        }
+        new GetDataJSON().execute(null,String.valueOf(video_object.getLastMinute()),video_object.getV_id(),std_id);
         if(from.equalsIgnoreCase("Elearning")) {
             Intent intent = new Intent(this, Subject_elearn.class);
             intent.putExtra("subject_id", subject_id);

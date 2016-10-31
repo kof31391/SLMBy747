@@ -222,7 +222,6 @@
                             <com.example.a747.smartlearningmanager.MyListView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                                 android:id="@+id/noti"
                                 android:layout_marginTop="1dp"
                                 android:layout_alignParentTop="true"
