@@ -64,7 +64,6 @@ public class Todo_Edit extends AppCompatActivity {
     private String stdid;
     private todoObj temps;
     private ArrayList<NotificationObj> NotiItems;
-    private CheckBox finish;
     private boolean origin;
 
     @Override
@@ -81,7 +80,6 @@ public class Todo_Edit extends AppCompatActivity {
         recObj = items.get(pos);
         items = new ArrayList<>();
         spinner = (Spinner)findViewById(R.id.spinner);
-        finish = (CheckBox)findViewById(R.id.checkBox2);
         topic = (TextView)findViewById(R.id.topic);
         desc = (TextView) findViewById(R.id.todoDesc);
         todoDate =(EditText) findViewById(R.id.datePicker);
@@ -89,9 +87,6 @@ public class Todo_Edit extends AppCompatActivity {
         date = recObj.getDate();
         category = recObj.getCategory();
         origin = recObj.isFinish();
-        if(recObj.isFinish()==true){
-            finish.setChecked(true);
-        }
         spinner.setSelection(recObj.getPosition());
         todoDate.setText(date.getDate()+"/"+(date.getMonth())+"/"+(date.getYear()+1900));
         todoTime.setText(df.format(date));
@@ -220,14 +215,10 @@ public class Todo_Edit extends AppCompatActivity {
         try {
             readItems();
             todoObj temp = Util.setValue(topic.getText().toString(),desc.getText().toString(),category,Util.getDateFromEditText(todoDate,todoTime));
-            if(finish.isChecked()==true){
-                temp.setFinish(true);
-            }else{
-                temp.setFinish(false);
-            }
             temp.setNotiId(recObj.getNotiId());
             items.remove(pos);
             items.add(temp);
+            NotificationObj no = new NotificationObj(temp);
             Collections.sort(items);
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
             ois.writeObject(items);
@@ -241,12 +232,8 @@ public class Todo_Edit extends AppCompatActivity {
             Calendar c = Calendar.getInstance();
             Date dateNow = c.getTime();
             if(dateFuture.getTime()>dateNow.getTime()) {
-                if (temp.isFinish() == false) {
-                    cancelNotification(getNotification(title, content, dateFuture.getTime()), id);
                     scheduleNotification(getNotification(title, content, dateFuture.getTime()), getSchedule(getTimeCurrent(), future));
-                } else {
-                    cancelNotification(getNotification(title, content, dateFuture.getTime()), id);
-                }
+                    writeNoti(no);
             }
         } catch (IOException e) {
             e.printStackTrace();

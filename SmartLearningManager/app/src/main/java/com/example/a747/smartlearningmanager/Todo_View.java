@@ -27,7 +27,6 @@ public class Todo_View extends AppCompatActivity {
     private TextView hour;
     private TextView minute;
     private TextView category;
-    private TextView status;
     private String temp;
     private boolean fromNoti = false;
     private ArrayList<todoObj> item;
@@ -42,7 +41,6 @@ public class Todo_View extends AppCompatActivity {
         Intent intent = getIntent();
         items = new ArrayList<>();
         topic = (TextView)findViewById(R.id.topic);
-        status = (TextView)findViewById(R.id.finishStatus);
         category = (TextView)findViewById(R.id.category);
         desc = (TextView) findViewById(R.id.todoDesc);
         date = (TextView)findViewById(R.id.Date);
@@ -57,11 +55,6 @@ public class Todo_View extends AppCompatActivity {
             topic.setText(todo.getTopic());
             category.setText(todo.getCategory());
             desc.setText(todo.getDesc());
-            if(todo.isFinish()==true){
-                status.setText(status.getText()+"Finish");
-            }else{
-                status.setText(status.getText()+"Not Finish");
-            }
             date.setText("" + todo.getDate().getDate());
             month.setText("" + todo.getDate().getMonth());
             year.setText("" + (todo.getDate().getYear()+1900));
@@ -89,11 +82,6 @@ public class Todo_View extends AppCompatActivity {
         topic.setText(todo.getTopic());
         category.setText(todo.getCategory());
         desc.setText(todo.getDesc());
-        if(todo.isFinish()==true){
-            status.setText(status.getText()+"Finish");
-        }else{
-            status.setText(status.getText()+"Not Finish");
-        }
         date.setText("" + todo.getDate().getDate());
         month.setText("" + todo.getDate().getMonth());
         year.setText("" + (todo.getDate().getYear()+1900));
@@ -136,11 +124,6 @@ public class Todo_View extends AppCompatActivity {
         topic.setText(recObj.getTopic());
         category.setText(recObj.getCategory());
         desc.setText(recObj.getDesc());
-        if (recObj.isFinish() == true) {
-            status.setText(status.getText() + "Finish");
-        } else {
-            status.setText(status.getText() + "Not Finish");
-        }
         date.setText("" + recObj.getDate().getDate());
         month.setText("" + recObj.getDate().getMonth());
         year.setText("" + (recObj.getDate().getYear() + 1900));

@@ -80,10 +80,10 @@ public class Todo_List extends AppCompatActivity {
             adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, show){
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent){
-                    int[] colors = new int[] { Color.parseColor("#c0d4e0") , Color.parseColor("#cecece") };
+                //    int[] colors = new int[] { Color.parseColor("#c0d4e0") , Color.parseColor("#cecece") };
                     View view = super.getView(position, convertView, parent);
-                        int colorPos = new Util().getColors(items,position);
-                    view.setBackgroundColor(colors[colorPos]);
+                   //     int colorPos = new Util().getColors(items,position);
+                    view.setBackgroundColor(Color.parseColor("#c0d4e0"));
                     return view;
                 }
             };
@@ -125,7 +125,6 @@ public class Todo_List extends AppCompatActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.add("Edit");
         menu.add("Delete");
-        menu.add("Mark as finish/not finish");
     }
 
     @Override
