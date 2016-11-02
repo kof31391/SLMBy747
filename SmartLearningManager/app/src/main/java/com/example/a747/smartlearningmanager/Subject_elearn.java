@@ -55,7 +55,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Subject_elearn extends AppCompatActivity {
-    private String host = "http://54.254.251.65/";
+    private String host = "http://10.4.56.17/";
     private String std_id;
     private String subject_id;
     private String status = "n";
@@ -245,12 +245,12 @@ public class Subject_elearn extends AppCompatActivity {
                             watch_status = "Watched";
                         } else if (c.getString("class_check_status").equalsIgnoreCase("1") && c.getString("class_check_watch_video").equalsIgnoreCase("F")) {
                             cell.setBackgroundColor(Color.parseColor("#FFFF99"));
-                        } else if (c.getString("class_check_status").equalsIgnoreCase("1") && c.getString("class_check_watch_video").equalsIgnoreCase("F")) {
+                        } else if (c.getString("class_check_status").equalsIgnoreCase("1") && c.getString("class_check_watch_video").equalsIgnoreCase("T")) {
                             cell.setBackgroundColor(Color.parseColor("#FFFF99"));
                             watch_status = "Watched";
                         } else if (c.getString("class_check_status").equalsIgnoreCase("0") && c.getString("class_check_watch_video").equalsIgnoreCase("F")) {
                             cell.setBackgroundColor(Color.parseColor("#FFADEBC7"));
-                        } else if (c.getString("class_check_status").equalsIgnoreCase("0") && c.getString("class_check_watch_video").equalsIgnoreCase("F")) {
+                        } else if (c.getString("class_check_status").equalsIgnoreCase("0") && c.getString("class_check_watch_video").equalsIgnoreCase("T")) {
                             cell.setBackgroundColor(Color.parseColor("#FFADEBC7"));
                             watch_status = "Watched";
                         }
@@ -493,6 +493,13 @@ public class Subject_elearn extends AppCompatActivity {
                 Log.i("ELS", "Added watch count");
             } else {
                 Log.i("ELS", "No added watch count");
+            }
+            url = new URL(host+"Update_watchElearn.php?student_id="+std_id+"&subject_id=" + rs_subject.getString(rs_subject.getColumnIndex("subject_id")) + "&check_datetime=" + rs_elearning.getString(rs_elearning.getColumnIndex("video_date")));
+            urlConnection = (HttpURLConnection) url.openConnection();
+            if (urlConnection.getResponseCode() == 200) {
+                Log.i("ELS", "Update status watch video");
+            } else {
+                Log.i("ELS", "No update status watch video");
             }
         } catch (Exception e) {
             e.printStackTrace();

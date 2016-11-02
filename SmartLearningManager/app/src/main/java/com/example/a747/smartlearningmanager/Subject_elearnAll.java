@@ -43,7 +43,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Subject_elearnAll extends AppCompatActivity {
-    private String host = "http://54.254.251.65/";
+    private String host = "http://10.4.56.17/";
     private String subject_id;
     private String status = "n";
     private String telno;

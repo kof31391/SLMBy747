@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat;
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE;
 
 public class Video extends AppCompatActivity {
-    private String host = "http://54.254.251.65/";
+    private String host = "http://10.4.56.17/";
     private String std_id;
     private String subject_id;
     private String department;

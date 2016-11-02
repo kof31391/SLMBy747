@@ -58,7 +58,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Main extends AppCompatActivity {
-    private String host = "http://54.254.251.65/";
+    private String host = "http://10.4.56.17/";
     private ArrayList<String> al_desc;
     private ArrayList<String> al_title;
     private ArrayList<String> al_pubDate;

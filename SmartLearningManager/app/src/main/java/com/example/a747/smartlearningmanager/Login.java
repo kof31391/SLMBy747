@@ -21,7 +21,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 public class Login extends AppCompatActivity {
-    private String host = "http://54.254.251.65/";
+    private String host = "http://10.4.56.17/";
     private TextView uid;
     private TextView pwd;
     private Button btn;

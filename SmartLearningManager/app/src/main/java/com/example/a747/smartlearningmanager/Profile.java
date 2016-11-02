@@ -32,7 +32,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Profile extends AppCompatActivity {
-    private String host = "http://54.254.251.65/";
+    private String host = "http://10.4.56.17/";
     private List<String> monday = new ArrayList<>();
     private List<String> tuesday = new ArrayList<>();
     private List<String> wednesday = new ArrayList<>();
