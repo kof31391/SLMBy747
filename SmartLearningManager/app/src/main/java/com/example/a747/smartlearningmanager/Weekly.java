@@ -54,45 +54,45 @@ public class Weekly extends AppCompatActivity {
         while (!resultSet.isAfterLast()) {
             switch (resultSet.getString(resultSet.getColumnIndex("day_id"))) {
                 case "1":
-                    monday.add("Schedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     monday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     monday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    monday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     //monday.add("\nAttend / Total Class:      /      ");
                     break;
                 case "2":
-                    tuesday.add("Schedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     tuesday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     tuesday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    tuesday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     //tuesday.add("\nAttend / Total Class:      /      ");
                     break;
                 case "3":
-                    wednesday.add("Schedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     wednesday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     wednesday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    wednesday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     //wednesday.add("\nAttend / Total Class:      /      ");
                     break;
                 case "4":
-                    thursday.add("Schedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     thursday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     thursday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    thursday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     //thursday.add("\nAttend / Total Class:      /      ");
                     break;
                 case "5":
-                    friday.add("Schedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     friday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     friday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    friday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     //friday.add("\nAttend / Total Class:      /      ");
                     break;
                 case "6":
-                    saturday.add("Schedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
-                    saturday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
+                    saturday.add("Code: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     saturday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    saturday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     //saturday.add("\nAttend / Total Class:      /      ");
                     break;
                 case "7":
-                    sunday.add("Schedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     sunday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     sunday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
+                    sunday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
                     //sunday.add("\nAttend / Total Class:      /      ");
                     break;
             }
@@ -104,7 +104,7 @@ public class Weekly extends AppCompatActivity {
             for (int i = 0; i < monday.size(); i++) {
                 text += monday.get(i);
             }
-            mon.setText(text);
+            mon.setText(text.trim());
             text = "";
         }else{
           mon.setText("No Class");
@@ -113,7 +113,7 @@ public class Weekly extends AppCompatActivity {
             for (int i = 0; i < tuesday.size(); i++) {
                 text += tuesday.get(i);
             }
-            tue.setText(text);
+            tue.setText(text.trim());
             text = "";
         }else{
             tue.setText("No Class");
@@ -123,7 +123,7 @@ public class Weekly extends AppCompatActivity {
             for (int i = 0; i < wednesday.size(); i++) {
                 text += wednesday.get(i);
             }
-            wed.setText(text);
+            wed.setText(text.trim());
             text = "";
         }else{
             wed.setText("No Class");
@@ -133,7 +133,7 @@ public class Weekly extends AppCompatActivity {
             for (int i = 0; i < thursday.size(); i++) {
                 text += thursday.get(i);
             }
-            thu.setText(text);
+            thu.setText(text.trim());
             text = "";
         }else{
             thu.setText("No Class");
@@ -143,7 +143,7 @@ public class Weekly extends AppCompatActivity {
             for (int i = 0; i < friday.size(); i++) {
                 text += friday.get(i);
             }
-            fri.setText(text);
+            fri.setText(text.trim());
             text = "";
         }else{
             fri.setText("No Class");
@@ -153,7 +153,7 @@ public class Weekly extends AppCompatActivity {
             for (int i = 0; i < saturday.size(); i++) {
                 text += saturday.get(i);
             }
-            sat.setText(text);
+            sat.setText(text.trim());
             text = "";
         }else{
             sat.setText("No Class");
@@ -163,7 +163,7 @@ public class Weekly extends AppCompatActivity {
             for (int i = 0; i < sunday.size(); i++) {
                 text += sunday.get(i);
             }
-            sun.setText(text);
+            sun.setText(text.trim());
         }else{
             sun.setText("No Class");
         }
