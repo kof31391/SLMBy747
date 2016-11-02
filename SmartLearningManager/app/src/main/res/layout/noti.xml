@@ -185,14 +185,16 @@
                         android:layout_weight="1"
                         android:orientation="vertical" >
 
-                        <ImageButton
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                        <Button
+                            style="?android:attr/buttonStyleInset"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:text="Clear All"
+                            android:id="@+id/button"
+                            android:layout_marginLeft="7dp"
+                            android:background="#f6ee00"
                             android:onClick="ClearNotification"
-                            android:src="@drawable/refreshgray"
-                            style="@android:style/Widget.DeviceDefault.Light.ActionButton"
-                            android:id="@+id/imageButton28"
-                            android:layout_gravity="right" />
+                            />
 
                     </LinearLayout>
 
