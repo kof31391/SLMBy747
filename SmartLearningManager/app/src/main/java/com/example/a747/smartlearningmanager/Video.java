@@ -8,6 +8,8 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.media.MediaCodec;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -63,55 +65,81 @@ public class Video extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.video);
-
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
-        std_id = pref.getString("std_id", null);
-
-        setVideo(getResources().getConfiguration());
-
-        /*SeekBar*/
-        seekBar = (SeekBar) findViewById(R.id.video_seekBar);
-        seekBar.setProgress(0);
-        seekBar.setMax(100);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
-                int hour = 0;
-                int timecur;
-                int stepSize = 1000;
-                if(fromUser) {
-                    video_view.seekTo(progress);
+        if(isNetworkConnected()) {
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
+            std_id = pref.getString("std_id", null);
+            setVideo(getResources().getConfiguration());
+            /*SeekBar*/
+            seekBar = (SeekBar) findViewById(R.id.video_seekBar);
+            seekBar.setProgress(0);
+            seekBar.setMax(100);
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
                 }
-                progress = (Math.round(progress/stepSize))*stepSize;
-                seekBar.setProgress(progress);
-                timecur = video_view.getCurrentPosition();
-                SimpleDateFormat sdf =  new SimpleDateFormat("mm:ss");
-                if(video_view.getCurrentPosition()>=3600000){
-                    hour ++;
-                    sdf = new SimpleDateFormat(hour+":"+"mm:ss");
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
                 }
-                timing.setText(sdf.format(timecur));
-            }
-        });
-        /*Set seekbar layout*/
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((width*50)/100,LinearLayout.LayoutParams.MATCH_PARENT);
-        seekBar.setLayoutParams(lp);
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    int hour = 0;
+                    int timecur;
+                    int stepSize = 1000;
+                    if (fromUser) {
+                        video_view.seekTo(progress);
+                    }
+                    progress = (Math.round(progress / stepSize)) * stepSize;
+                    seekBar.setProgress(progress);
+                    timecur = video_view.getCurrentPosition();
+                    SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+                    if (video_view.getCurrentPosition() >= 3600000) {
+                        hour++;
+                        sdf = new SimpleDateFormat(hour + ":" + "mm:ss");
+                    }
+                    timing.setText(sdf.format(timecur));
+                }
+            });
+            /*Set seekbar layout*/
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int width = size.x;
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((width * 50) / 100, LinearLayout.LayoutParams.MATCH_PARENT);
+            seekBar.setLayoutParams(lp);
 
-        /*Play continues*/
-        video_view.seekTo(video_object.getLastMinute());
+            /*Play continues*/
+            video_view.seekTo(video_object.getLastMinute());
+        }else{
+            Intent intent = new Intent(this, Main.class);
+            startActivity(intent);
+        }
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            try {
+                URL url = new URL(host);
+                HttpURLConnection urlc = (HttpURLConnection)url.openConnection();
+                urlc.setRequestProperty("User-Agent", "test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1000);
+                urlc.connect();
+                if (urlc.getResponseCode() == 200) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("warning", "Error checking internet connection");
+                return false;
+            }
+        }
+        return false;
     }
 
     protected void setVideoDetail(){

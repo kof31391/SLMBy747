@@ -2,6 +2,8 @@ package com.example.a747.smartlearningmanager;
 
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -33,24 +36,51 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
-        String std_id = pref.getString("std_id", null);
-        if(std_id != null){
-            Intent intent = new Intent(Login.this, Main.class);
-            startActivity(intent);
-        }
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
+            String std_id = pref.getString("std_id", null);
+            if (std_id != null) {
+                Intent intent = new Intent(Login.this, Main.class);
+                startActivity(intent);
+            }
     }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            try {
+                URL url = new URL(host);
+                HttpURLConnection urlc = (HttpURLConnection)url.openConnection();
+                urlc.setRequestProperty("User-Agent", "test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1000);
+                urlc.connect();
+                if (urlc.getResponseCode() == 200) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("warning", "Error checking internet connection");
+                return false;
+            }
+        }
+        return false;
+    }
+
     public void onClickLogin(View view) throws IOException, ExecutionException, InterruptedException {
-
-        uid= (TextView)findViewById(R.id.IdForm);
-        pwd = (TextView)findViewById(R.id.PwdForm);
-        btn = (Button)findViewById(R.id.LoginBtn);
-        Err = (TextView)findViewById(R.id.err);
-        uidString = uid.getText().toString();
-        passString = pwd.getText().toString();
-        LDAPRequests ldap = new LDAPRequests();
-        ldap.execute(uidString,passString);
-
+        if(isNetworkConnected()) {
+            uid = (TextView) findViewById(R.id.IdForm);
+            pwd = (TextView) findViewById(R.id.PwdForm);
+            btn = (Button) findViewById(R.id.LoginBtn);
+            Err = (TextView) findViewById(R.id.err);
+            uidString = uid.getText().toString();
+            passString = pwd.getText().toString();
+            LDAPRequests ldap = new LDAPRequests();
+            ldap.execute(uidString, passString);
+        }else{
+            Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
     class LDAPRequests extends AsyncTask<String, Void, String> {

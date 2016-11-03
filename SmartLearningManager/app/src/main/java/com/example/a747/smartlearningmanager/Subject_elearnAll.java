@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -66,23 +68,49 @@ public class Subject_elearnAll extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subject_elearn_all);
+        if(isNetworkConnected()) {
+            subjCode = (TextView) findViewById(R.id.subjCode);
+            subjName = (TextView) findViewById(R.id.subjname);
+            lecturer = (TextView) findViewById(R.id.lecturerName);
+            class_room = (TextView) findViewById(R.id.class_room);
+            class_Time = (TextView) findViewById(R.id.class_Time);
+            imgB_call = (ImageButton) findViewById(R.id.imgB_call);
+            imgB_mail = (ImageButton) findViewById(R.id.imgB_mail);
+            lecturerImage = (ImageView) findViewById(R.id.lecturerImage);
+            Intent intent = getIntent();
+            subject_id = intent.getExtras().getString("subject_id");
+            department = intent.getExtras().getString("department");
+            getSubjectDetial();
+            getSubjectVideo();
+            getMaterial();
+        }else{
+            Intent intent = new Intent(this, Main.class);
+            startActivity(intent);
+        }
+    }
 
-        subjCode = (TextView) findViewById(R.id.subjCode);
-        subjName = (TextView) findViewById(R.id.subjname);
-        lecturer = (TextView) findViewById(R.id.lecturerName);
-        class_room = (TextView) findViewById(R.id.class_room);
-        class_Time = (TextView) findViewById(R.id.class_Time);
-        imgB_call = (ImageButton) findViewById(R.id.imgB_call);
-        imgB_mail = (ImageButton) findViewById(R.id.imgB_mail);
-        lecturerImage = (ImageView) findViewById(R.id.lecturerImage);
-
-        Intent intent = getIntent();
-        subject_id = intent.getExtras().getString("subject_id");
-        department = intent.getExtras().getString("department");
-
-        getSubjectDetial();
-        getSubjectVideo();
-        getMaterial();
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            try {
+                URL url = new URL(host);
+                HttpURLConnection urlc = (HttpURLConnection)url.openConnection();
+                urlc.setRequestProperty("User-Agent", "test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1000);
+                urlc.connect();
+                if (urlc.getResponseCode() == 200) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("warning", "Error checking internet connection");
+                return false;
+            }
+        }
+        return false;
     }
 
     private void getSubjectDetial() {
