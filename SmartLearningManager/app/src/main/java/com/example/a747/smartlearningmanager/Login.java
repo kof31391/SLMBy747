@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -36,6 +37,10 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
             SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
             String std_id = pref.getString("std_id", null);
             if (std_id != null) {
@@ -51,8 +56,6 @@ public class Login extends AppCompatActivity {
             try {
                 URL url = new URL(host);
                 HttpURLConnection urlc = (HttpURLConnection)url.openConnection();
-                urlc.setRequestProperty("User-Agent", "test");
-                urlc.setRequestProperty("Connection", "close");
                 urlc.setConnectTimeout(1000);
                 urlc.connect();
                 if (urlc.getResponseCode() == 200) {

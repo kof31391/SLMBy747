@@ -224,7 +224,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
                                 android:paddingRight="5dp"
-                                android:text="56xxxxxxxxx"
                                 android:textColor="#515151"
                                 android:textSize="15sp" />
                         </LinearLayout>
@@ -411,7 +410,7 @@
                         android:layout_height="40dp"
                         android:onClick="changeNotiSchedule"
                         android:textSize="12dp"
-                        android:id="@+id/button2"
+                        android:id="@+id/save"
                         style="@android:style/Widget.DeviceDefault.Button.Small" />
     </LinearLayout>
 

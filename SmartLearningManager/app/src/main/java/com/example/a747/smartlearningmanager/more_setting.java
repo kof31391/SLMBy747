@@ -34,6 +34,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -75,29 +76,26 @@ public class more_setting extends AppCompatActivity {
         dialog = new Dialog(this);
         dialog = getDialogLoading();
         dialog.show();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.more_setting);
-
         pref = getApplicationContext().getSharedPreferences("Student", 0);
         std_id = pref.getString("std_id", null);
         if(std_id != null){
+            sound = (RadioButton) findViewById(R.id.soundAndVibrateSwitch);
+            vibrate = (RadioButton) findViewById(R.id.vibrateSwitch);
+            silent = (RadioButton) findViewById(R.id.silent);
+            audioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
+            LoadSetting();
             if(isNetworkConnected()) {
-                sound = (RadioButton) findViewById(R.id.soundAndVibrateSwitch);
-                vibrate = (RadioButton) findViewById(R.id.vibrateSwitch);
-                silent = (RadioButton) findViewById(R.id.silent);
-                audioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
-                LoadSetting();
                 setProfile();
-
-                EditText notiTime = (EditText)findViewById(R.id.notiTime);
-                NotiBefore = pref.getInt("notiBefore",15);
-                notiTime.setText(String.valueOf(NotiBefore));
-                notiTime.setSelection(notiTime.length());
             }else{
-                Intent intent = new Intent(this, Main.class);
-                startActivity(intent);
+                Button bSave = (Button) findViewById(R.id.save);
+                bSave.setEnabled(false);
             }
+            EditText notiTime = (EditText)findViewById(R.id.notiTime);
+            NotiBefore = pref.getInt("notiBefore",15);
+            notiTime.setText(String.valueOf(NotiBefore));
+            notiTime.setSelection(notiTime.length());
         }else{
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
