@@ -65,10 +65,10 @@ public class Video extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.video);
         if(isNetworkConnected()) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            setContentView(R.layout.video);
             SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
             std_id = pref.getString("std_id", null);
             setVideo(getResources().getConfiguration());
