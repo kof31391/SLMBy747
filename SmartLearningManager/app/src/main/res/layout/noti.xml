@@ -141,7 +141,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#cecece">
 
 
             <LinearLayout
@@ -217,7 +218,7 @@
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:background="#ffffff"
+                            android:background="#c0d4e0"
                             android:layout_marginTop="1dp"
                             android:layout_height="match_parent">
 
@@ -229,7 +230,7 @@
                                 android:layout_alignParentTop="true"
                                 android:layout_alignParentLeft="true"
                                 android:layout_alignParentStart="true"
-                                android:layout_marginBottom="10dp"/>
+                                android:layout_marginBottom="3dp"/>
                         </LinearLayout>
 
                     </LinearLayout>

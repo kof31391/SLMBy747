@@ -305,7 +305,6 @@
                             <com.example.a747.smartlearningmanager.MyListView
                                 android:layout_width="match_parent"
                                 android:layout_height="500dp"
-                                style="@android:style/Widget.DeviceDefault.Light.ActionButton"
                                 android:id="@+id/lvItems"
                                 android:layout_alignParentTop="true"
                                 android:layout_alignParentLeft="true"
