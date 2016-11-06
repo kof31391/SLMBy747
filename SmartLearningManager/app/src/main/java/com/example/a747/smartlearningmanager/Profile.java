@@ -165,7 +165,7 @@ public class Profile extends AppCompatActivity {
                     tv_pf = (TextView) findViewById(R.id.tv_pf_teleno);
                     tv_pf.setText(c.getString("student_phone"));
                     tv_pfi = (ImageView) findViewById(R.id.tv_pf_image);
-                    new ImageLoadTask("http://54.169.58.93/student_image/"+std_id+".jpg",tv_pfi).execute();
+                    new ImageLoadTask(host+"student_image/"+std_id+".jpg",tv_pfi).execute();
                     //tv_pfi.setImageResource(c.getString("image"));
                 }catch(Exception e){
                     e.printStackTrace();

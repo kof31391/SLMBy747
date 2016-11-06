@@ -88,6 +88,8 @@ public class more_setting extends AppCompatActivity {
             LoadSetting();
             if(isNetworkConnected()) {
                 setProfile();
+                Button bSave = (Button) findViewById(R.id.save);
+                bSave.setEnabled(true);
             }else{
                 Button bSave = (Button) findViewById(R.id.save);
                 bSave.setEnabled(false);
