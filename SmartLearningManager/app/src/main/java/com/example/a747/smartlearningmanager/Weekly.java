@@ -3,7 +3,6 @@ package com.example.a747.smartlearningmanager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -57,43 +56,36 @@ public class Weekly extends AppCompatActivity {
                     monday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     monday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
                     monday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
-                    //monday.add("\nAttend / Total Class:      /      ");
                     break;
                 case "2":
                     tuesday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     tuesday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
                     tuesday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
-                    //tuesday.add("\nAttend / Total Class:      /      ");
                     break;
                 case "3":
                     wednesday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     wednesday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
                     wednesday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
-                    //wednesday.add("\nAttend / Total Class:      /      ");
                     break;
                 case "4":
                     thursday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     thursday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
                     thursday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
-                    //thursday.add("\nAttend / Total Class:      /      ");
                     break;
                 case "5":
                     friday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     friday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
                     friday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
-                    //friday.add("\nAttend / Total Class:      /      ");
                     break;
                 case "6":
                     saturday.add("Code: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     saturday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
                     saturday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
-                    //saturday.add("\nAttend / Total Class:      /      ");
                     break;
                 case "7":
                     sunday.add("\nCode: " + resultSet.getString(resultSet.getColumnIndex("subject_code")));
                     sunday.add("\nName: " + resultSet.getString(resultSet.getColumnIndex("subject_name")));
                     sunday.add("\nSchedule: " + resultSet.getString(resultSet.getColumnIndex("subject_start_time")) + " - " + resultSet.getString(resultSet.getColumnIndex("subject_end_time")));
-                    //sunday.add("\nAttend / Total Class:      /      ");
                     break;
             }
             resultSet.moveToNext();

@@ -6,15 +6,14 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
-import android.media.MediaCodec;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -28,10 +27,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
@@ -72,7 +67,6 @@ public class Video extends AppCompatActivity {
             SharedPreferences pref = getApplicationContext().getSharedPreferences("Student", 0);
             std_id = pref.getString("std_id", null);
             setVideo(getResources().getConfiguration());
-            /*SeekBar*/
             seekBar = (SeekBar) findViewById(R.id.video_seekBar);
             seekBar.setProgress(0);
             seekBar.setMax(100);
@@ -102,7 +96,6 @@ public class Video extends AppCompatActivity {
                     timing.setText(sdf.format(timecur));
                 }
             });
-            /*Set seekbar layout*/
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
@@ -110,7 +103,6 @@ public class Video extends AppCompatActivity {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((width * 50) / 100, LinearLayout.LayoutParams.MATCH_PARENT);
             seekBar.setLayoutParams(lp);
 
-            /*Play continues*/
             video_view.seekTo(video_object.getLastMinute());
         }else{
             Intent intent = new Intent(this, Main.class);
@@ -307,14 +299,12 @@ public class Video extends AppCompatActivity {
                     }
                 });
             }else {
-                /*Set layout fullscreen*/
                 RelativeLayout rl_video_titlebar = (RelativeLayout) findViewById(R.id.video_titlebar);
                 rl_video_titlebar.setVisibility(View.INVISIBLE);
                 RelativeLayout rl_video_detail = (RelativeLayout) findViewById(R.id.video_detail);
                 rl_video_detail.setVisibility(View.INVISIBLE);
                 RelativeLayout rl_video_display = (RelativeLayout) findViewById(R.id.video_display);
                 rl_video_display.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-                /*End set layout fullscreen*/
                 ImageButton btn_fullscreen = (ImageButton) findViewById(R.id.btnFullscreen);
                 btn_fullscreen.setImageResource(R.drawable.fullscreen_exit);
 

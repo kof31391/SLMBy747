@@ -80,9 +80,7 @@ public class Todo_List extends AppCompatActivity {
             adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, show){
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent){
-                //    int[] colors = new int[] { Color.parseColor("#c0d4e0") , Color.parseColor("#cecece") };
                     View view = super.getView(position, convertView, parent);
-                   //     int colorPos = new Util().getColors(items,position);
                     view.setBackgroundColor(Color.parseColor("#c0d4e0"));
                     return view;
                 }
@@ -253,11 +251,6 @@ public class Todo_List extends AppCompatActivity {
 
     public void gotoAbout(View v){
         Intent intent = new Intent(this,About.class);
-        startActivity(intent);
-    }
-
-    public void gotoAdd(View v){
-        Intent intent = new Intent(this,Todo_Add.class);
         startActivity(intent);
     }
 

@@ -28,7 +28,6 @@ public class Login extends AppCompatActivity {
     private String host = "http://10.4.56.17/";
     private TextView uid;
     private TextView pwd;
-    private Button btn;
     private String uidString ;
     private String passString ;
     private TextView Err;
@@ -75,7 +74,6 @@ public class Login extends AppCompatActivity {
         if(isNetworkConnected()) {
             uid = (TextView) findViewById(R.id.IdForm);
             pwd = (TextView) findViewById(R.id.PwdForm);
-            btn = (Button) findViewById(R.id.LoginBtn);
             Err = (TextView) findViewById(R.id.err);
             uidString = uid.getText().toString();
             passString = pwd.getText().toString();

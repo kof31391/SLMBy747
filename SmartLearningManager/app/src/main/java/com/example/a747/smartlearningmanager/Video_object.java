@@ -8,10 +8,6 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 
-/**
- * Created by lenovo on 22/9/2559.
- */
-
 public class Video_object extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "Video";

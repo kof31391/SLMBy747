@@ -30,14 +30,6 @@ public class Util {
         return dates;
     }
 
-    public int getColors(ArrayList<todoObj> items, int pos) {
-        if (items.get(pos).isFinish()==true) {
-            return 1;
-        }else{
-            return 0;
-        }
-    }
-
     public static String getTimeFormat(){
         Date todo_time = new Date();
         todo_time.setHours(mcurrentTime.get(Calendar.HOUR_OF_DAY));

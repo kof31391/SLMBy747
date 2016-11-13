@@ -222,7 +222,6 @@ public class Todo_Edit extends AppCompatActivity {
             Collections.sort(items);
             ObjectOutputStream ois = new ObjectOutputStream(new FileOutputStream(todoFile));
             ois.writeObject(items);
-             /*Setup Notification*/
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date dateFuture = temp.getDate();
             String future = dateFormat.format(dateFuture);
@@ -232,6 +231,7 @@ public class Todo_Edit extends AppCompatActivity {
             Calendar c = Calendar.getInstance();
             Date dateNow = c.getTime();
             if(dateFuture.getTime()>dateNow.getTime()) {
+                    cancelNotification(getNotification(title, content, dateFuture.getTime()), id);
                     scheduleNotification(getNotification(title, content, dateFuture.getTime()), getSchedule(getTimeCurrent(), future));
                     writeNoti(no);
             }

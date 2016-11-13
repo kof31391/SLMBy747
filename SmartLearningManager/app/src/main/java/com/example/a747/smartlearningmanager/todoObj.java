@@ -8,9 +8,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 
-/**
- * Created by 747 on 27-Aug-16.
- */
 public class todoObj implements Parcelable,Serializable,Comparable<todoObj>{
     private String topic;
     private String desc;
